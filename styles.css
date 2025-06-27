@@ -1,0 +1,177 @@
+:root {
+  --DARK: #383838;
+  --DARKER: #323232;
+  --LIGHTER: #484848;
+  --LIGHT: #414141;
+  --TEXT: #c2c2c2;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  color: var(--TEXT);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 16px;
+}
+
+section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+img {
+  user-select: none;
+}
+
+/* ====NAV SECTION==== */
+#navSection {
+  background-color: var(--DARK);
+  grid-column: 1;
+  display: grid;
+  grid-template-rows: auto 50px;
+  row-gap: 10px;
+}
+
+#navListDiv {
+  grid-row: 1;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+
+#navListDiv > img {
+  width: 80%;
+  margin-top: 10px;
+}
+
+#navList {
+  width: 100%;
+  padding: 10px 10px;
+  cursor: default;
+}
+
+.mainSelection {
+  display: flex;
+  font-size: x-large;
+  margin-top: 5px;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 4px 10px;
+  background-color: var(--DARKER);
+  box-shadow: inset 0px 0px 2px 1px black;
+  user-select: none;
+}
+
+.navListIcon {
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+  padding-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainSelection:hover,
+.mainSelection:active {
+  background-color: var(--LIGHTER);
+}
+
+#navSearchDiv {
+  grid-row: 2;
+  background-color: var(--DARKER);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#navSearchBar {
+  background-color: var(--LIGHTER);
+  color: var(--TEXT);
+  border: none;
+  padding: 5px;
+  width: 90%;
+  border-radius: 5px;
+  box-shadow: inset 0px 1px 1px 1px black;
+  font-size: 16px;
+}
+
+/* ====CONTENT SECTION==== */
+#contentSection {
+  width: 100%;
+  background-color: var(--LIGHTER);
+  grid-column: 2;
+  align-items: center;
+}
+
+#contentDiv {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin: 10px;
+  padding: 15px;
+  background-color: var(--LIGHT);
+  width: 80%;
+  height: 97%;
+  border-radius: 12px;
+  box-shadow: inset 0px 0px 2px 1px black;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+#introLogo {
+  width: 350px;
+  height: auto;
+  padding: 10px 0px;
+}
+
+#contentDiv > p {
+  margin: 10px;
+  padding: 5px 15px;
+}
+
+#contentDiv > p::selection {
+  background: var(--TEXT);
+  color: var(--DARKER);
+}
+
+.pageDivider {
+  margin-top: 25px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: larger;
+  font-weight: bold;
+  border-bottom: var(--TEXT) 2px solid;
+  width: 75%;
+  cursor: default;
+  user-select: none;
+}
+
+/* ====RELATIONS SECTION==== */
+#relationsSection {
+  background-color: var(--LIGHT);
+  grid-column: 3;
+}
+
+/* ====DIAGNOSTICS==== */
+.errorMessage{
+  font-size: large;
+  font-weight: bold;
+}
+
+.errorDetail {
+  margin-bottom: 15px;
+}

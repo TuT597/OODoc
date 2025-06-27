@@ -1,0 +1,9 @@
+<h1>Basic Usage Example</h1>
+<p>Open a mailbox and list message subjects using Mail-Box.</p>
+<pre><code>use Mail::Box::Manager;
+my $mgr = Mail::Box::Manager->new;
+my $folder = $mgr->open(folder => 'Inbox');
+foreach my $msg ($folder->messages) {
+    print $msg->subject, "\n";
+}
+</code></pre>
