@@ -38,6 +38,9 @@ img {
 /* ====NAV SECTION==== */
 #navSection {
   background-color: var(--DARK);
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: hidden;
   grid-column: 1;
   display: grid;
   grid-template-rows: auto 50px;
@@ -60,6 +63,8 @@ img {
   width: 100%;
   padding: 10px 10px;
   cursor: default;
+  overflow-y: scroll;
+  max-height: 80vh;
 }
 
 .mainSelection {
@@ -71,7 +76,6 @@ img {
   padding: 4px 10px;
   background-color: var(--DARKER);
   box-shadow: inset 0px 0px 2px 1px black;
-  user-select: none;
 }
 
 .navListIcon {
@@ -87,6 +91,25 @@ img {
 .mainSelection:hover,
 .mainSelection:active {
   background-color: var(--LIGHTER);
+}
+
+.listElementDiv {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: end;
+  width: 100%;
+}
+
+.navigationListElement {
+  display: flex;
+  font-size: medium;
+  margin-top: 3px;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 4px 10px;
+  background-color: var(--DARKER);
+  box-shadow: inset 0px 0px 2px 1px black;
+  width: 90%;
 }
 
 #navSearchDiv {
@@ -167,7 +190,7 @@ img {
 }
 
 /* ====DIAGNOSTICS==== */
-.errorMessage{
+.errorMessage {
   font-size: large;
   font-weight: bold;
 }
