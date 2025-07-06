@@ -1,0 +1,5 @@
+Rewrite script so all files are fetched when website is loaded then simply
+toggle display:hidden on them instead of fetching files once the button is
+pressed. That way the search function will work for all files all the time. It
+will also solve the problem of new entries constantly being added every time a
+main navigation item is pressed.
