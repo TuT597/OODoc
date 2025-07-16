@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  const data = await fetch("a.json").then((response) => response.json());
+
   const navSection = document.getElementById("navSection");
   const navListMainSelections = document.querySelectorAll(".mainSelection");
   const navSearchBar = document.getElementById("navSearchBar");
@@ -14,52 +16,44 @@ document.addEventListener("DOMContentLoaded", function () {
       contentDiv.innerHTML = html;
     });
 
+  console.log(data);
+
+  for (manual in data.manuals) {
+    console.log(data.manuals[manual].name);
+  }
+
   //Loop over all the main options in the navList and add click functions to them
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
       const fileName = mainSelection.textContent.trim().toLowerCase();
 
-      //Check if menu option is a drop-down if so swap arrow icon
+      //Check if menu option has dropdown icon so we know items have to be added when clicked
       if (mainSelection.querySelector(".navListIcon i")) {
         const icon = mainSelection.querySelector(".navListIcon i");
+        const listDiv = document.getElementById(fileName + "ListDiv");
+        let expanded = mainSelection.dataset.expanded === "true";
 
         if (icon) {
           icon.classList.toggle("fa-chevron-right");
           icon.classList.toggle("fa-chevron-down");
         }
 
-        // Fetch the list of files in the subdirectory and put them in an array
-        fetch("html files/docs/" + fileName + "/")
-          .then((response) => response.text())
-          .then((html) => {
-            // Parse the directory listing (assuming it's an HTML page)
-            const tempDiv = document.createElement("div");
-            tempDiv.innerHTML = html;
-            const links = tempDiv.querySelectorAll("a");
-            const files = [];
-            links.forEach((link) => {
-              const href = link.getAttribute("href");
-              // Filter out parent directory links and directories
-              if (href && href !== "../" && href.endsWith(".html")) {
-                // Get the last part of the href (filename), remove .html extension if present
-                let file = href.split("/").pop();
-                file = file.replace(".html", "");
-                files.push(file);
-              }
-            });
-            console.log(files);
-            //Loop throug the generated file array to generate menu listings for all the files
-            files.forEach((file) => {
-              const navigationListElement = document.createElement("span");
-              navigationListElement.className = "navigationListElement";
-              navigationListElement.innerText = file;
+        //Check to see what menu item is clicked and if its already open or not
+        if (fileName === "packages" && !expanded) {
+          mainSelection.dataset.expanded = "true";
+          for (manual in data.manuals) {
+            const navigationListElement = document.createElement("span");
+            navigationListElement.className = "navigationListElement";
+            navigationListElement.innerText = data.manuals[manual].name;
 
-              document
-                .getElementById(fileName + "ListDiv")
-                .appendChild(navigationListElement);
-            });
-          });
+            listDiv.appendChild(navigationListElement);
+          }
+        } else if (fileName === "packages" && expanded) {
+          mainSelection.dataset.expanded = "false";
+          listDiv.innerHTML = "";
+        }
       }
+
       //If menu option is not a drop down then open related file in content section
       else {
         fetch("html files/" + fileName + ".html")
