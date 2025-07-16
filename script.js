@@ -41,10 +41,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         //Check to see what menu item is clicked and if its already open or not
         if (fileName === "packages" && !expanded) {
           mainSelection.dataset.expanded = "true";
-          for (manual in data.manuals) {
+
+          for (let manual in data.manuals) {
             const navigationListElement = document.createElement("span");
             navigationListElement.className = "navigationListElement";
             navigationListElement.innerText = data.manuals[manual].name;
+            navigationListElement.addEventListener("click", () => {
+              contentDiv.innerHTML = generatePage(data.manuals[manual]).content;
+            });
 
             listDiv.appendChild(navigationListElement);
           }

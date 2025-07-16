@@ -193,7 +193,7 @@ img {
   color: var(--DARKER);
 }
 
-.pageDivider {
+.docChapter {
   margin-top: 25px;
   margin-bottom: 5px;
   text-align: center;
@@ -203,6 +203,18 @@ img {
   width: 75%;
   cursor: default;
   user-select: none;
+}
+
+.docName {
+}
+
+.docTitle {
+}
+
+.docText {
+}
+
+.methodSection {
 }
 
 /* ====RELATIONS SECTION==== */
