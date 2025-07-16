@@ -1,5 +1,0 @@
-<h2>Searching Messages</h2>
-<p>Find all messages with 'urgent' in the subject line.</p>
-<pre><code>my @found = grep { $_->subject =~ /urgent/i } $folder->messages;
-print "Found ", scalar(@found), " urgent messages.\n";
-</code></pre>
