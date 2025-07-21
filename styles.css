@@ -75,6 +75,7 @@ img {
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  overflow-x: hidden;
 }
 
 #navList::-webkit-scrollbar {
@@ -115,18 +116,31 @@ img {
 .listElementDiv {
   display: flex;
   flex-flow: column wrap;
-  align-items: start;
-  margin-left: auto;
+  margin-left: 15px;
   width: 90%;
 }
 
 .navigationListElement {
   display: flex;
+  width: 100%;
   font-size: medium;
   margin-top: 3px;
-  padding: 2px 0px;
-  width: 98%;
+  padding: 4px;
+  text-align: start;
   overflow: visible;
+}
+
+.navigationListElement:hover {
+  background-color: var(--LIGHT);
+  border-radius: 2px;
+  /*width: fit-content;
+  position: absolute;*/
+}
+
+.navigationListElement.active {
+  background-color: var(--TEXT);
+  color: var(--DARK);
+  border-radius: 2px;
 }
 
 #navSearchDiv {

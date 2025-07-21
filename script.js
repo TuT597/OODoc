@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const navSection = document.getElementById("navSection");
   const navListMainSelections = document.querySelectorAll(".mainSelection");
   const navSearchBar = document.getElementById("navSearchBar");
+  let activeItem;
 
   const contentDiv = document.getElementById("contentDiv");
 
@@ -43,12 +44,41 @@ document.addEventListener("DOMContentLoaded", async function () {
             let navigationListElement = document.createElement("span");
             navigationListElement.className = "navigationListElement";
             navigationListElement.innerText = data.manuals[manual].name;
+
+            // Save the full name in case of overflow
+            navigationListElement.dataset.fullName = data.manuals[manual].name;
+
             navigationListElement.addEventListener("click", () => {
               contentDiv.innerHTML = generatePage(data.manuals[manual]).content;
+              activateItem(navigationListElement);
             });
 
             listDiv.appendChild(navigationListElement);
+
+            // Check if the text inside overflows the container
+            if (isOverflown(navigationListElement)) {
+              // Generate shortened name
+              navigationListElement.dataset.shortName = fixOverflownNavText(
+                navigationListElement
+              );
+
+              navigationListElement.innerText =
+                navigationListElement.dataset.shortName;
+
+              // Reveal full name while hovering
+              navigationListElement.addEventListener("mouseover", () => {
+                navigationListElement.innerText =
+                  navigationListElement.dataset.fullName;
+              });
+
+              // Reduce name when no longer hovering
+              navigationListElement.addEventListener("mouseleave", () => {
+                navigationListElement.innerText =
+                  navigationListElement.dataset.shortName;
+              });
+            }
           }
+          // If already extended, collapse the navigation and clear the list
         } else if (fileName === "packages" && expanded) {
           mainSelection.dataset.expanded = "false";
           listDiv.innerHTML = "";
@@ -65,8 +95,27 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     });
   });
-});
 
-function isOverflown(element) {
-  return element.scrollWidth > element.clientWidth;
-}
+  // Check for overflow
+  function isOverflown(element) {
+    return element.scrollWidth > element.clientWidth;
+  }
+
+  // Change innertext to fit in element
+  function fixOverflownNavText(element) {
+    while (isOverflown(element)) {
+      element.innerText = element.innerText.slice(0, -1);
+    }
+
+    return (element.innerText = element.innerText.slice(0, -2).concat("..."));
+  }
+
+  // Add or remove active class from nav items for styling purposes
+  function activateItem(element) {
+    activeItem
+      ? activeItem.classList.toggle("active")
+      : element.classList.toggle("active");
+    if (activeItem) element.classList.toggle("active");
+    activeItem = element;
+  }
+});
