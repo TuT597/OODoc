@@ -34,6 +34,11 @@ img {
   user-select: none;
 }
 
+::selection {
+  background: var(--TEXT);
+  color: var(--DARKER);
+}
+
 /* ====NAV SECTION==== */
 #navSection {
   background-color: var(--DARK);
@@ -119,12 +124,9 @@ img {
   display: flex;
   font-size: medium;
   margin-top: 3px;
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 4px 10px;
-  background-color: var(--DARKER);
-  box-shadow: inset 0px 0px 2px 1px black;
-  width: 97%;
+  padding: 2px 0px;
+  width: 98%;
+  overflow: visible;
 }
 
 #navSearchDiv {
@@ -164,14 +166,9 @@ img {
 #contentDiv {
   display: flex;
   flex-flow: column;
-  align-items: center;
-  margin: 10px;
+  align-items: start;
   padding: 15px;
-  background-color: var(--LIGHT);
-  width: 80%;
-  height: 97%;
-  border-radius: 12px;
-  box-shadow: inset 0px 0px 2px 1px black;
+  width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: none;
@@ -183,20 +180,38 @@ img {
   padding: 10px 0px;
 }
 
-#contentDiv > p {
-  margin: 10px;
-  padding: 5px 15px;
+.docHead {
+  width: 100%;
+  text-align: start;
+  border: solid black 1px;
+  border-radius: 5px;
 }
 
-#contentDiv > p::selection {
-  background: var(--TEXT);
-  color: var(--DARKER);
+.docName {
+  padding: 10px;
+  background-color: var(--DARKER);
+  border-radius: 5px 5px 0px 0px;
+}
+
+.docTitle {
+  padding: 10px;
+  background-color: var(--DARK);
+  border-radius: 0px 0px 5px 5px;
+}
+
+.docDiv {
+  display: flex;
+  flex-flow: column wrap;
+  width: 100%;
+  margin: 10px 0px;
+  padding: 10px;
+  background-color: var(--LIGHT);
+  border-radius: 5px;
 }
 
 .docChapter {
-  margin-top: 25px;
-  margin-bottom: 5px;
-  text-align: center;
+  margin-bottom: 10px;
+  text-align: start;
   font-size: larger;
   font-weight: bold;
   border-bottom: var(--TEXT) 2px solid;
@@ -205,16 +220,13 @@ img {
   user-select: none;
 }
 
-.docName {
-}
-
-.docTitle {
-}
-
-.docText {
+.docMethod {
 }
 
 .methodSection {
+}
+
+.docText {
 }
 
 /* ====RELATIONS SECTION==== */

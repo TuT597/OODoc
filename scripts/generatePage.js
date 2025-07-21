@@ -4,33 +4,50 @@ function generatePage(manual) {
   let detailsContent;
 
   let content = `
-    <h1 class="docName">${manual.name}</h1>
-    <h3 class="docTitle">${manual.title}</h3>
+    <div class="docHead">
+      <h1 class="docName">${manual.name}</h1>
+      <h3 class="docTitle">${manual.title}</h3>
+    </div>
   `;
 
   for (let chapter of manual.chapters) {
     if (chapter.name === "METHODS") {
-      methodContent += `<banner class="docChapter">METHODS</banner>`;
+      methodContent += `
+        <div class="docDiv">
+          <banner class="docChapter">METHODS</banner>
+      `;
+
       if (chapter.nest) {
         for (let method of chapter.nest) {
           methodContent += `
-      <h4 class="methodSection">${method.name}</h4>
-      `;
+          <div class="docMethod">
+            <h4 class="methodSection">${method.name}</h4>
+          </div>
+          `;
         }
       }
+      methodContent += `</div>`;
+      content += methodContent;
     } else if (chapter.name === "DETAILS") {
-      detailsContent += `<banner class="docChapter">DETAILS</banner>`;
+      detailsContent += `
+        <div class="docDiv">
+          <banner class="docChapter">DETAILS</banner>
+      `;
+
       if (chapter.nest) {
       }
+
+      detailsContent += `</div>`;
+      content += detailsContent;
     } else {
       content += `
-    <banner class="docChapter">${chapter.name}</banner>
-    <p class="docText">${chapter.description}</p>
-    `;
+        <div class="docDiv">
+          <banner class="docChapter">${chapter.name}</banner>
+          <p class="docText">${chapter.description}</p>
+        </div>
+      `;
     }
   }
-
-  content += methodContent;
 
   return {
     content: content,
