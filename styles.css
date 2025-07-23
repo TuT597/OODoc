@@ -85,6 +85,8 @@ img {
 }
 
 #packagesListDiv {
+  display: none;
+  margin: 5px 0px;
 }
 
 .mainSelection {
@@ -262,8 +264,8 @@ img {
   text-align: start;
   font-size: larger;
   font-weight: bold;
-  border-bottom: var(--TEXT) 2px solid;
-  width: 650px;
+  border-bottom: var(--DARKER) 2px solid;
+  width: 98%;
   cursor: default;
   user-select: none;
 }
