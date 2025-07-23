@@ -17,13 +17,12 @@ document.addEventListener("DOMContentLoaded", async function () {
       contentDiv.innerHTML = html;
     });
 
-  //console.log(data);
-
   // Loop over all the main options in the navList and add click functions to them
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
       const fileName = mainSelection.textContent.trim().toLowerCase();
 
+      //#region dropdowns
       // Check if menu option has dropdown icon so we know items have to be added when clicked
       if (mainSelection.querySelector(".navListIcon i")) {
         const icon = mainSelection.querySelector(".navListIcon i");
@@ -39,14 +38,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (fileName === "packages" && !expanded) {
           mainSelection.dataset.expanded = "true";
 
+          //#region sub-item generation
           // Generate navigation items
           for (let manual in data.manuals) {
-            let navigationListElement = document.createElement("span");
+            let navigationListElement = document.createElement("div");
             navigationListElement.className = "navigationListElement";
-            navigationListElement.innerText = data.manuals[manual].name;
+            let navigationListElementText = document.createElement("span");
+            navigationListElementText.className = "navigationListElementText";
+            navigationListElementText.innerText = data.manuals[manual].name;
 
             // Save the full name in case of overflow
-            navigationListElement.dataset.fullName = data.manuals[manual].name;
+            navigationListElementText.dataset.fullName =
+              data.manuals[manual].name;
 
             navigationListElement.addEventListener("click", () => {
               contentDiv.innerHTML = generatePage(data.manuals[manual]).content;
@@ -54,36 +57,75 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
 
             listDiv.appendChild(navigationListElement);
+            navigationListElement.appendChild(navigationListElementText);
 
+            //#region long-name items
             // Check if the text inside overflows the container
-            if (isOverflown(navigationListElement)) {
+            if (isOverflown(navigationListElementText)) {
+              // Create new span element to hover over the element
+              let navigationListElementTextFull =
+                document.createElement("span");
+              navigationListElementTextFull.className =
+                "navigationListElementTextFull";
+              navigationListElementTextFull.innerText =
+                navigationListElementText.dataset.fullName;
+              navigationListElementTextFull.style.display = "none";
+
+              document
+                .getElementById("navFloatLayer")
+                .appendChild(navigationListElementTextFull);
+
               // Generate shortened name
-              navigationListElement.dataset.shortName = fixOverflownNavText(
-                navigationListElement
+              navigationListElementText.dataset.shortName = fixOverflownNavText(
+                navigationListElementText
               );
 
-              navigationListElement.innerText =
-                navigationListElement.dataset.shortName;
+              navigationListElementText.innerText =
+                navigationListElementText.dataset.shortName;
+
+              navigationListElement.addEventListener("click", () => {
+                updateFloater(
+                  navigationListElement,
+                  navigationListElementTextFull
+                );
+              });
 
               // Reveal full name while hovering
               navigationListElement.addEventListener("mouseover", () => {
-                navigationListElement.innerText =
-                  navigationListElement.dataset.fullName;
+                navigationListElementText.innerText =
+                  navigationListElementText.dataset.fullName;
+
+                // Generate new floater displayer on top of nav item with full name
+                const rect = navigationListElement.getBoundingClientRect();
+                navigationListElementTextFull.style.top = `${rect.top}px`;
+                navigationListElementTextFull.style.left = `${rect.left}px`;
+                navigationListElementTextFull.style.display = "block";
+
+                // Update the colors on the floater in case nav item is active
+                updateFloater(
+                  navigationListElement,
+                  navigationListElementTextFull
+                );
               });
 
               // Reduce name when no longer hovering
               navigationListElement.addEventListener("mouseleave", () => {
-                navigationListElement.innerText =
-                  navigationListElement.dataset.shortName;
+                navigationListElementText.innerText =
+                  navigationListElementText.dataset.shortName;
+
+                navigationListElementTextFull.style.display = "none";
               });
             }
+            //#endregion long-name items
           }
+          //#endregion sub-item generation
           // If already extended, collapse the navigation and clear the list
         } else if (fileName === "packages" && expanded) {
           mainSelection.dataset.expanded = "false";
           listDiv.innerHTML = "";
         }
       }
+      //#endregion dropdowns
 
       // If menu option is not a drop down then open related file in content section
       else {
@@ -96,6 +138,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 
+  //#region functions
   // Check for overflow
   function isOverflown(element) {
     return element.scrollWidth > element.clientWidth;
@@ -118,4 +161,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (activeItem) element.classList.toggle("active");
     activeItem = element;
   }
+
+  // Update colours on the floating mouseover element
+  function updateFloater(element, floater) {
+    if (element.classList.contains("active")) {
+      floater.style.color = "var(--DARK)";
+      floater.style.backgroundColor = "var(--TEXT)";
+    } else {
+      floater.style.color = "var(--TEXT)";
+      floater.style.backgroundColor = "var(--DARKER)";
+    }
+  }
+  //#endregion functions
 });

@@ -50,19 +50,20 @@ img {
   width: 100%;
 }
 
-#navSection > img {
-  width: 80%;
-  margin-top: 10px;
-}
-
 #navListDiv {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
   align-items: center;
   max-height: 100%;
   min-height: 0;
   width: 100%;
-  border-top: black 2px solid;
+  max-width: 310px;
+  margin-left: auto;
+}
+
+#navListDiv > img {
+  width: 80%;
+  margin-top: 10px;
 }
 
 #navList {
@@ -76,10 +77,14 @@ img {
   scrollbar-width: none;
   -ms-overflow-style: none;
   overflow-x: hidden;
+  border-top: black 2px solid;
 }
 
 #navList::-webkit-scrollbar {
   display: none;
+}
+
+#packagesListDiv {
 }
 
 .mainSelection {
@@ -92,6 +97,7 @@ img {
   padding: 4px 10px;
   background-color: var(--DARKER);
   box-shadow: inset 0px 0px 2px 1px black;
+  user-select: none;
 }
 
 .mainSelection:hover,
@@ -115,32 +121,58 @@ img {
 
 .listElementDiv {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
+  position: relative;
   margin-left: 15px;
   width: 90%;
 }
 
 .navigationListElement {
   display: flex;
-  width: 100%;
+  max-width: 100%;
   font-size: medium;
-  margin-top: 3px;
+  margin-top: 2px;
   padding: 4px;
   text-align: start;
-  overflow: visible;
+  overflow: visable;
+  position: relative;
 }
 
 .navigationListElement:hover {
-  background-color: var(--LIGHT);
+  background-color: var(--DARKER);
   border-radius: 2px;
-  /*width: fit-content;
-  position: absolute;*/
 }
 
 .navigationListElement.active {
   background-color: var(--TEXT);
   color: var(--DARK);
   border-radius: 2px;
+}
+
+.navigationListElementText {
+  width: 100%;
+}
+
+.navigationListElementTextFull {
+  display: flex;
+  max-width: 100%;
+  font-size: medium;
+  margin-top: 0px;
+  padding: 4px;
+  text-align: start;
+  position: absolute;
+  width: fit-content;
+  pointer-events: none;
+  background-color: var(--LIGHT);
+  border-radius: 2px;
+}
+
+#nav-float-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
 }
 
 #navSearchDiv {
@@ -150,6 +182,8 @@ img {
   align-items: center;
   margin-top: auto;
   width: 100%;
+  max-width: 310px;
+  margin-left: auto;
   height: 50px;
   min-height: 50px;
   border-top: black 2px solid;
@@ -229,7 +263,7 @@ img {
   font-size: larger;
   font-weight: bold;
   border-bottom: var(--TEXT) 2px solid;
-  width: 75%;
+  width: 650px;
   cursor: default;
   user-select: none;
 }
@@ -257,4 +291,15 @@ img {
 
 .errorDetail {
   margin-bottom: 15px;
+}
+
+/* ====ULTRAWIDE==== */
+@media only screen and (min-width: 1200px) {
+  #navListDiv {
+    border-left: black 2px solid;
+  }
+
+  #navSearchDiv {
+    border-left: black 2px solid;
+  }
 }
