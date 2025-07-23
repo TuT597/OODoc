@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (mainSelection.querySelector(".navListIcon i")) {
         const icon = mainSelection.querySelector(".navListIcon i");
         const listDiv = document.getElementById(fileName + "ListDiv");
+        listDiv.style.display = "flex";
         let expanded = mainSelection.dataset.expanded === "true";
 
         if (icon) {
@@ -123,6 +124,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else if (fileName === "packages" && expanded) {
           mainSelection.dataset.expanded = "false";
           listDiv.innerHTML = "";
+          listDiv.style.display = "none";
         }
       }
       //#endregion dropdowns
