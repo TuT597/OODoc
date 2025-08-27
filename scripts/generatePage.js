@@ -1,4 +1,7 @@
-function generatePage(manual) {
+function generatePage(manualID) {
+  console.log(manualID);
+  const index = window.data.index;
+  const manual = window.data.index[manualID];
   console.log(manual);
 
   let content = `
@@ -9,39 +12,49 @@ function generatePage(manual) {
   `;
 
   for (let chapter of manual.chapters) {
-    if (chapter.name === "METHODS") {
+    if (index[chapter].path === "NAME") {
+      // placeholder
+    } else if (index[chapter].path === "METHODS") {
       let methodContent = `
         <div class="docDiv">
           <banner class="docChapter">METHODS</banner>
       `;
 
-      if (chapter.nest) {
-        for (let method of chapter.nest) {
+      if (index[chapter].nest) {
+        for (let method of index[chapter].nest) {
           methodContent += `
           <div class="docMethod">
-              <h4 class="methodSection">${method.name}</h4>
-            </div>
+              <h4 class="methodSection">${index[method].name}</h4>
           `;
+          if (index[method].subroutines) {
+            for (let subroutine of index[method].subroutines) {
+              methodContent += `<p class="docText">${index[subroutine].name}</p><br>`;
+
+              if (index[subroutine].options) {
+                for (let option of index[subroutine].options) {
+                  methodContent += `
+                  <p class="docText>${index[option[0]].name} => ${
+                    index[option[0]].params
+                  }</p><br>
+                  ${index[option[0]].intro}`;
+                }
+              }
+
+              if (index[subroutine].diagnostic) {
+                
+              }
+            }
+          }
+          methodContent += `</div>`;
         }
       }
       methodContent += `</div>`;
       content += methodContent;
-    } else if (chapter.name === "DETAILS") {
-      let detailsContent = `
-          <div class="docDiv">
-            <banner class="docChapter">DETAILS</banner>
-        `;
-
-      if (chapter.nest) {
-      }
-
-      detailsContent += `</div>`;
-      content += detailsContent;
     } else {
       content += `
         <div class="docDiv">
-          <banner class="docChapter">${chapter.name}</banner>
-          <p class="docText">${chapter.description}</p>
+          <banner class="docChapter">${index[chapter].name}</banner>
+          <p class="docText">${index[chapter].intro}</p>
         </div>
       `;
     }

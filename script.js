@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  const data = await fetch("a.json").then((response) => response.json());
+  window.data = await fetch("OODoc.json").then((response) => response.json());
+  console.log(data);
 
   const navSection = document.getElementById("navSection");
   const navListMainSelections = document.querySelectorAll(".mainSelection");
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         // Check to see what menu item is clicked and if its already open or not
-        if (fileName === "packages" && !expanded) {
+        if (fileName === "manuals" && !expanded) {
           mainSelection.dataset.expanded = "true";
 
           //#region sub-item generation
@@ -46,11 +47,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             navigationListElement.className = "navigationListElement";
             let navigationListElementText = document.createElement("span");
             navigationListElementText.className = "navigationListElementText";
-            navigationListElementText.innerText = data.manuals[manual].name;
+            navigationListElementText.innerText =
+              data.index[data.manuals[manual]].name;
 
             // Save the full name in case of overflow
             navigationListElementText.dataset.fullName =
-              data.manuals[manual].name;
+              data.index[data.manuals[manual]].name;
 
             navigationListElement.addEventListener("click", () => {
               contentDiv.innerHTML = generatePage(data.manuals[manual]).content;
@@ -121,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
           //#endregion sub-item generation
           // If already extended, collapse the navigation and clear the list
-        } else if (fileName === "packages" && expanded) {
+        } else if (fileName === "manuals" && expanded) {
           mainSelection.dataset.expanded = "false";
           listDiv.innerHTML = "";
           listDiv.style.display = "none";
@@ -139,6 +141,18 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     });
   });
+
+  //#region Search bar
+  navSearchBar.addEventListener("input", () => {
+    if (navSearchBar.value) {
+      for (let manual in data.manuals) {
+        if (data.manuals[manual].name.includes(navSearchBar.value)) {
+          console.log(data.manuals[manual].name);
+        }
+      }
+    }
+  });
+  //#endregion Search bar
 
   //#region functions
   // Check for overflow
