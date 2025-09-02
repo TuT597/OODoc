@@ -1,8 +1,5 @@
 function generatePage(manualID) {
-  console.log(manualID);
-  const index = window.data.index;
   const manual = window.data.index[manualID];
-  console.log(manual);
 
   let content = `
   <div class="docHead">
@@ -11,56 +8,89 @@ function generatePage(manualID) {
   </div>
   `;
 
+  // loop through chapters in manual
   for (let chapter of manual.chapters) {
-    if (index[chapter].path === "NAME") {
-      // placeholder
-    } else if (index[chapter].path === "METHODS") {
-      let methodContent = `
-        <div class="docDiv">
-          <banner class="docChapter">METHODS</banner>
-      `;
+    content += generateChapter(getObjectByID(chapter));
+  }
 
-      if (index[chapter].nest) {
-        for (let method of index[chapter].nest) {
-          methodContent += `
-          <div class="docMethod">
-              <h4 class="methodSection">${index[method].name}</h4>
-          `;
-          if (index[method].subroutines) {
-            for (let subroutine of index[method].subroutines) {
-              methodContent += `<p class="docText">${index[subroutine].name}</p><br>`;
+  return content;
+}
 
-              if (index[subroutine].options) {
-                for (let option of index[subroutine].options) {
-                  methodContent += `
-                  <p class="docText>${index[option[0]].name} => ${
-                    index[option[0]].params
-                  }</p><br>
-                  ${index[option[0]].intro}`;
-                }
-              }
+function getObjectByID(id) {
+  return window.data.index[id];
+}
 
-              if (index[subroutine].diagnostic) {
-                
-              }
-            }
-          }
-          methodContent += `</div>`;
-        }
-      }
-      methodContent += `</div>`;
-      content += methodContent;
-    } else {
-      content += `
-        <div class="docDiv">
-          <banner class="docChapter">${index[chapter].name}</banner>
-          <p class="docText">${index[chapter].intro}</p>
-        </div>
-      `;
+// generate chapter
+function generateChapter(chapter) {
+  if (
+    chapter.name === "NAME" ||
+    (chapter.name !== "METHODS" && !chapter.intro)
+  ) {
+    return ``;
+  }
+  content = `
+      <div class="docDiv">
+      <banner class="docChapter">${chapter.name}</banner>`;
+  content += chapter.intro || "";
+
+  // check for nest in case chapter has sections and loop through those
+  if (chapter.nest) {
+    for (let section in chapter.nest) {
+      content += generateSection(getObjectByID(chapter.nest[section]));
     }
   }
 
-  return {
-    content: content,
-  };
+  content += `</div>`;
+  return content;
+}
+
+// go through the same process for sections
+function generateSection(section) {
+  content = `
+    <div class="docDiv">
+    <h4 class="docSection">${section.name}</h4>`;
+
+  // check for subroutines
+  if (section.subroutines) {
+    for (let subroutine in section.subroutines) {
+      content += generateSubroutine(
+        getObjectByID(section.subroutines[subroutine])
+      );
+    }
+  }
+
+  content += `</div>`;
+  return content;
+}
+
+// and for subroutines
+function generateSubroutine(subroutine) {
+  content = `<div class="docSubroutine">`;
+  content += subroutine.call;
+
+  // check for options
+  if (subroutine.options) {
+    for (let i = 0; i < subroutine.options.length; i++) {
+      for (let j = 0; j < subroutine.options[i].length; j++) {
+        generateOption(getObjectByID(subroutine.options[i][j]));
+      }
+    }
+  }
+
+  // check for diagnostics
+
+  content += `</div>`;
+  return content;
+}
+
+// and for options
+function generateOption(option) {
+  if (option.type === "option") {
+    content += `<p>${option.name} => ${option.params}</p>`;
+    content += `<p>${option.intro || ""}</p><br>`;
+  } else {
+    content += `<p>${option.name} => ${option.value}</p>`;
+    content += `<p>${option.intro || ""}</p>`;
+  }
+  return content;
 }

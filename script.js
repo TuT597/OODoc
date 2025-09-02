@@ -54,8 +54,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             navigationListElementText.dataset.fullName =
               data.index[data.manuals[manual]].name;
 
+            // add click event to nav items to generate content on the page
             navigationListElement.addEventListener("click", () => {
-              contentDiv.innerHTML = generatePage(data.manuals[manual]).content;
+              contentDiv.innerHTML = generatePage(data.manuals[manual]);
               activateItem(navigationListElement);
             });
 

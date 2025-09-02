@@ -259,7 +259,27 @@ img {
   border-radius: 5px;
 }
 
+.docDiv pre {
+  align-self: center;
+  background-color: var(--DARKER);
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 98%;
+}
+
+.docDiv a {
+  color: var(--TEXT);
+  font-weight: bold;
+}
+
+.docDiv a:hover {
+  color: var(--DARKER);
+  background-color: var(--TEXT);
+}
+
 .docChapter {
+  align-self: center;
   margin-bottom: 10px;
   text-align: start;
   font-size: larger;
@@ -270,10 +290,16 @@ img {
   user-select: none;
 }
 
-.docMethod {
+.docSection {
+  margin-bottom: 5px;
+  text-align: start;
+  font-size: large;
+  font-weight: bold;
+  cursor: default;
+  user-select: none;
 }
 
-.methodSection {
+.docSubroutine {
 }
 
 .docText {
