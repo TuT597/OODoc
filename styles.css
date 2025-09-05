@@ -255,11 +255,10 @@ img {
   width: 100%;
   margin: 10px 0px;
   padding: 10px;
-  background-color: var(--LIGHT);
   border-radius: 5px;
 }
 
-.docDiv pre {
+pre {
   align-self: center;
   background-color: var(--DARKER);
   margin: 5px;
@@ -268,41 +267,103 @@ img {
   width: 98%;
 }
 
-.docDiv a {
+a {
   color: var(--TEXT);
   font-weight: bold;
 }
 
-.docDiv a:hover {
+a:hover {
   color: var(--DARKER);
   background-color: var(--TEXT);
 }
 
 .docChapter {
-  align-self: center;
+  align-self: start;
   margin-bottom: 10px;
   text-align: start;
-  font-size: larger;
+  font-size: 26px;
   font-weight: bold;
-  border-bottom: var(--DARKER) 2px solid;
-  width: 98%;
+  border-bottom: var(--DARKER) 5px solid;
   cursor: default;
   user-select: none;
 }
 
+.subDiv {
+  display: flex;
+  flex-flow: column wrap;
+  width: 100%;
+  margin-bottom: 35px;
+  border-radius: 5px;
+  
+}
+
 .docSection {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   text-align: start;
-  font-size: large;
+  font-size: 24px;
   font-weight: bold;
   cursor: default;
   user-select: none;
 }
 
 .docSubroutine {
+  margin-bottom: 10px;
+}
+
+.docOption {
+  margin-top: 15px;
+}
+
+.docCall {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .docText {
+  padding-bottom: 10px;
+}
+
+.subText {
+  margin-left: 1em;
+}
+
+.subText pre {
+  color: lightgoldenrodyellow;
+}
+
+.optionsTable {
+  background-color: var(--DARKER);
+  color: darkseagreen;
+  margin: 10px 0px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 98%;
+}
+
+th {
+  text-align: start;
+}
+
+th,
+td {
+  padding-right: 25px;
+}
+
+.docErrorsDiv {
+  margin-top: 20px;
+}
+
+.docErrors {
+  text-align: start;
+  font-size: 22px;
+  font-weight: bolder;
+  cursor: default;
+  user-select: none;
+}
+
+.docDiv ul {
+  margin-left: 1em;
+  list-style-position: inside;
 }
 
 /* ====RELATIONS SECTION==== */
