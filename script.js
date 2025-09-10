@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", async function () {
   window.data = await fetch("OODoc.json").then((response) => response.json());
   console.log(data);
+  window.indexLinks = mapIndexLinks(data);
+  console.log(window.indexLinks);
 
-  const navSection = document.getElementById("navSection");
   const navListMainSelections = document.querySelectorAll(".mainSelection");
-  const navSearchBar = document.getElementById("navSearchBar");
   let activeItem;
 
-  const contentDiv = document.getElementById("contentDiv");
+  const navSearchBar = document.getElementById("navSearchBar");
 
-  const relationsSection = document.getElementById("relationsSection");
+  const contentDiv = document.getElementById("contentDiv");
 
   // Select intro  and load its content when website is first loaded
   fetch("html files/introduction.html")
@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             // add click event to nav items to generate content on the page
             navigationListElement.addEventListener("click", () => {
               contentDiv.innerHTML = generatePage(data.manuals[manual]);
+              // Add functionality to the generated page
+              constructNavigation();
               activateItem(navigationListElement);
             });
 
@@ -156,6 +158,49 @@ document.addEventListener("DOMContentLoaded", async function () {
   //#endregion Search bar
 
   //#region functions
+  // Map out what index items are linked
+  function mapIndexLinks(index) {
+    let indexLinks = {};
+
+    for (chapter in data.manuals) {
+      let indexID = data.manuals[chapter];
+      indexLinks[chapter] = [indexID, [...crawlIndex(indexID)]];
+      indexLinks[chapter].sort();
+    }
+
+    return indexLinks;
+  }
+
+  // Crawl the index to get all id numbers attached to a manual
+  function crawlIndex(indexID) {
+    let indexArray = [];
+    const indexObj = getDocFrag(indexID);
+
+    // Loop through all the fields in the indexObject
+    for (let field in indexObj) {
+      // If the indexObject ID is found add it to the array
+      if (field === "id") {
+        indexArray.push(indexObj[field]);
+      }
+
+      // If a field that contains multiple items is found recursively call the method to crawl deeper
+      if (Array.isArray(indexObj[field])) {
+        for (let item of indexObj[field]) {
+          // Check to see if item is another Array
+          if (Array.isArray(item)) {
+            for (let subItem of item) {
+              indexArray.push(...crawlIndex(subItem));
+            }
+          } else {
+            indexArray.push(...crawlIndex(item));
+          }
+        }
+      }
+    }
+
+    return indexArray;
+  }
+
   // Check for overflow
   function isOverflown(element) {
     return element.scrollWidth > element.clientWidth;

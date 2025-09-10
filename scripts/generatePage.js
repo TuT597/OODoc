@@ -2,7 +2,7 @@ function generatePage(manualID) {
   const manual = window.data.index[manualID];
 
   let content = `
-  <div class="docHead">
+  <div id="${manual.id}" class="docHead">
   <h1 class="docName">${manual.name}</h1>
   <h3 class="docTitle">${manual.title}</h3>
   </div>
@@ -16,10 +16,6 @@ function generatePage(manualID) {
   return content;
 }
 
-function getDocFrag(id) {
-  return window.data.index[id];
-}
-
 // generate chapter
 function generateChapter(chapter) {
   if (
@@ -30,7 +26,7 @@ function generateChapter(chapter) {
   }
 
   content = `
-      <div class="docDiv">
+      <div id="${chapter.id}" class="docDiv">
       <banner class="docChapter">${chapter.name}</banner>`;
 
   if (chapter.intro) {
@@ -51,7 +47,7 @@ function generateChapter(chapter) {
 // generate sections
 function generateSection(section) {
   content = `
-    <div class="subDiv">
+    <div id="${section.id}" class="subDiv">
     <p class="docSection">${section.name}</p>`;
   if (section.intro) {
     content += `<div class="docText">${section.intro}</div>`;
@@ -69,7 +65,6 @@ function generateSection(section) {
   if (section.nest) {
     for (let subsection in section.nest) {
       content += generateSubroutine(getDocFrag(section.nest[subsection]));
-      console.log(getDocFrag(section.nest[subsection]));
     }
   }
 
@@ -79,7 +74,7 @@ function generateSection(section) {
 
 // generate subroutines
 function generateSubroutine(subroutine) {
-  content = `<div class="docSubroutine">`;
+  content = `<div id="${subroutine.id}" class="docSubroutine">`;
   if (subroutine.call) {
     content += `<div class="docCall">${subroutine.call}</div>`;
   } else if (subroutine.name) {
@@ -91,7 +86,7 @@ function generateSubroutine(subroutine) {
 
   // check for options
   if (subroutine.options) {
-    let optionsTable = `<table class="optionsTable">
+    let optionsTable = `<div id="optionsTableDiv"><table class="optionsTable">
         <tr>
           <th>Option</th>
           <th>Default</th>
@@ -99,15 +94,13 @@ function generateSubroutine(subroutine) {
     let optionContent = ``;
     for (let i = 0; i < subroutine.options.length; i++) {
       for (let j = 0; j < subroutine.options[i].length; j++) {
-        optionContent += generateOption(
-          getDocFrag(subroutine.options[i][j])
-        );
+        optionContent += generateOption(getDocFrag(subroutine.options[i][j]));
         optionsTable += generateOptionsTable(
           getDocFrag(subroutine.options[i][j])
         );
       }
     }
-    optionsTable += `</table>`;
+    optionsTable += `</table></div>`;
     content += optionsTable;
     content += optionContent;
   }
@@ -130,7 +123,7 @@ function generateSubroutine(subroutine) {
 function generateOption(option) {
   let optionContent = ``;
   if (option.type === "option") {
-    optionContent += `<div class="docOption"><p class="docCall">${option.name} => ${option.params}</p>`;
+    optionContent += `<div id="${option.id}" class="docOption"><p class="docCall">${option.name} => ${option.params}</p>`;
     option.intro
       ? (optionContent += `<div class="subText">${option.intro}</div></div>`)
       : (optionContent += `</div>`);
@@ -153,7 +146,7 @@ function generateOptionsTable(option) {
 
 // generate errors and faults
 function generateDiagnostic(diagnostic) {
-  let diagnosticContent = `<div class="docOption"><div class="docCall">ERROR: ${diagnostic.name}</div>`;
+  let diagnosticContent = `<div id="${diagnostic.id}" class="docOption"><div class="docCall">ERROR: ${diagnostic.name}</div>`;
   if (diagnostic.intro) {
     diagnosticContent += `<div class="subText">${diagnostic.intro}</div>`;
   }

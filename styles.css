@@ -256,6 +256,7 @@ img {
   margin: 10px 0px;
   padding: 10px;
   border-radius: 5px;
+  background-color: var(--LIGHT);
 }
 
 pre {
@@ -267,17 +268,18 @@ pre {
   width: 98%;
 }
 
-a {
+a[href]{
   color: var(--TEXT);
   font-weight: bold;
 }
 
-a:hover {
+a[href]:hover {
   color: var(--DARKER);
   background-color: var(--TEXT);
 }
 
 .docChapter {
+  width: 98%;
   align-self: start;
   margin-bottom: 10px;
   text-align: start;
@@ -332,12 +334,10 @@ a:hover {
 }
 
 .optionsTable {
-  background-color: var(--DARKER);
   color: darkseagreen;
   margin: 10px 0px;
   padding: 10px;
   border-radius: 5px;
-  width: 98%;
 }
 
 th {
@@ -346,7 +346,13 @@ th {
 
 th,
 td {
-  padding-right: 25px;
+  padding-right: 3em;
+}
+
+#optionsTableDiv {
+  width: 98%;
+  background-color: var(--DARKER);
+  border-radius: 5px;
 }
 
 .docErrorsDiv {
