@@ -4,6 +4,8 @@
   --LIGHTER: #484848;
   --LIGHT: #414141;
   --TEXT: #c2c2c2;
+  --TABLETEXT: darkseagreen;
+  --PRETEXT: lightblue;
 }
 
 * {
@@ -254,13 +256,14 @@ img {
   flex-flow: column wrap;
   width: 100%;
   margin: 10px 0px;
-  padding: 10px;
+  padding: 10px 15px;
   border-radius: 5px;
   background-color: var(--LIGHT);
 }
 
 pre {
   align-self: center;
+  color: var(--PRETEXT);
   background-color: var(--DARKER);
   margin: 5px;
   padding: 10px;
@@ -268,7 +271,20 @@ pre {
   width: 98%;
 }
 
-a[href]{
+pre::selection {
+  color: var(--DARKER);
+  background-color: var(--PRETEXT);
+}
+
+pre a[href] {
+  color: var(--PRETEXT);
+}
+
+pre a[href]:hover {
+  background-color: var(--PRETEXT);
+}
+
+a[href] {
   color: var(--TEXT);
   font-weight: bold;
 }
@@ -296,7 +312,10 @@ a[href]:hover {
   width: 100%;
   margin-bottom: 35px;
   border-radius: 5px;
-  
+}
+
+.subDiv:last-child {
+  margin-bottom: 0;
 }
 
 .docSection {
@@ -309,7 +328,7 @@ a[href]:hover {
 }
 
 .docSubroutine {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .docOption {
@@ -329,15 +348,24 @@ a[href]:hover {
   margin-left: 1em;
 }
 
-.subText pre {
-  color: lightgoldenrodyellow;
-}
-
 .optionsTable {
-  color: darkseagreen;
+  color: var(--TABLETEXT);
   margin: 10px 0px;
   padding: 10px;
   border-radius: 5px;
+}
+
+.optionsTable *::selection {
+  color: var(--DARKER);
+  background-color: var(--TABLETEXT);
+}
+
+.optionsTable a {
+  color: inherit;
+}
+
+.optionsTable a:hover {
+  background-color: var(--TABLETEXT);
 }
 
 th {
@@ -350,21 +378,29 @@ td {
 }
 
 #optionsTableDiv {
-  width: 98%;
+  width: 100%;
   background-color: var(--DARKER);
   border-radius: 5px;
 }
 
 .docErrorsDiv {
-  margin-top: 20px;
+  margin-top: 5px;
+  background-color: var(--DARK);
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .docErrors {
+  margin-top: 3px;
   text-align: start;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: bolder;
   cursor: default;
   user-select: none;
+}
+
+.docDiagnostic {
+  margin-top: 3px;
 }
 
 .docDiv ul {
@@ -372,9 +408,24 @@ td {
   list-style-position: inside;
 }
 
+.highlight {
+  background-color: var(--TEXT);
+  color: var(--DARKER);
+  border-radius: 5px;
+}
+
+.highlight a[href] {
+  color: var(--DARKER);
+}
+
+.highlight a[href]:hover {
+  color: var(--TEXT);
+  background-color: var(--DARKER);
+}
+
 /* ====RELATIONS SECTION==== */
 #relationsSection {
-  background-color: var(--LIGHT);
+  background-color: var(--DARK);
   grid-column: 3;
 }
 

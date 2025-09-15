@@ -5,22 +5,34 @@ function constructNavigation() {
   // Add click functionality to them
   hrefLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
+      const hrefValue = link.getAttribute("href");
       e.preventDefault();
-      const linkID = link.getAttribute("href");
-      const linkObj = getDocFrag(linkID);
-
-      // Make the link direct to the correct content and item
-      processLinkObj(linkObj);
+      if (hrefValue.startsWith("id")) {
+        const linkID = hrefValue;
+        const linkObj = getDocFrag(linkID);
+        if (!linkObj) {
+          console.log("ERROR: Can't find ID.");
+          return;
+        }
+        // Make the link direct to the correct content and item
+        processLinkObj(linkObj);
+      } else if (hrefValue.startsWith("https")) {
+        window.open(hrefValue, "_blank");
+      }
     });
   });
 }
 
 function processLinkObj(linkObj) {
+  // Check to see if link goes to a manual page
   if (!linkObj.type) {
     contentDiv.innerHTML = generatePage(linkObj.id);
-    // Add functionality to the generated page
+    contentDiv.scrollTop = 0;
+    // Reload links for new page
     constructNavigation();
   } else {
+    /* Look for the right manual page to load and generatePage with it, 
+    then move to and highlight the right item we are linking to */
     for (item in indexLinks) {
       if (indexLinks[item][1].includes(linkObj.id)) {
         contentDiv.innerHTML = generatePage(indexLinks[item][0]);
@@ -28,7 +40,7 @@ function processLinkObj(linkObj) {
 
         const targetElem = contentDiv.querySelector(`#${linkObj.id}`);
         if (targetElem) {
-          targetElem.style.background = "yellow";
+          targetElem.classList.add("highlight");
           targetElem.scrollIntoView({ block: "center" });
         }
 

@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  window.data = await fetch("OODoc.json").then((response) => response.json());
+  // New versions can be found at: https://perl.overmeer.net/oodoc/doctree/
+  window.data = await fetch("data/OODoc-3.05-website.json").then((response) =>
+    response.json()
+  );
   console.log(data);
   window.indexLinks = mapIndexLinks(data);
   console.log(window.indexLinks);
@@ -42,21 +45,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
           //#region sub-item generation
           // Generate navigation items
-          for (let manual in data.manuals) {
+          const sortedManuals = sortObjectByKey(data.manuals);
+          for (let manual in sortedManuals) {
             let navigationListElement = document.createElement("div");
             navigationListElement.className = "navigationListElement";
             let navigationListElementText = document.createElement("span");
             navigationListElementText.className = "navigationListElementText";
-            navigationListElementText.innerText =
-              data.index[data.manuals[manual]].name;
+            navigationListElementText.innerText = manual;
 
             // Save the full name in case of overflow
-            navigationListElementText.dataset.fullName =
-              data.index[data.manuals[manual]].name;
+            navigationListElementText.dataset.fullName = manual;
 
             // add click event to nav items to generate content on the page
             navigationListElement.addEventListener("click", () => {
-              contentDiv.innerHTML = generatePage(data.manuals[manual]);
+              contentDiv.innerHTML = generatePage(sortedManuals[manual]);
               // Add functionality to the generated page
               constructNavigation();
               activateItem(navigationListElement);
