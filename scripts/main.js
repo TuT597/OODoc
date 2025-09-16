@@ -35,10 +35,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   for (let manual in sortedManuals) {
     generateSubitem(manual);
   }
+  const defaultNavList = listDiv.innerHTML;
 
   navSearchBar.addEventListener("input", () => {
     let val = navSearchBar.value;
-    if (val) {
+    if (!val) {
+      listDiv.innerHTML = defaultNavList;
+    }
+    if (val.length > 2) {
       listDiv.innerHTML = ``;
       generateSearchList(val);
     }
@@ -273,7 +277,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
       }
     }
-    
+
     // Sort the results by manual name
     groupedResults.sort((a, b) => a.name.localeCompare(b.name));
 
