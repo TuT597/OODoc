@@ -1,4 +1,4 @@
-function generatePage(manualID) {
+function generateManualPage(manualID) {
   const manual = window.data.index[manualID];
 
   let content = `
@@ -136,7 +136,7 @@ function generateOption(option) {
 function generateOptionsTable(option) {
   if (option.type === "default") {
     return `
-    <tr>
+    <tr id="${option.id}">
       <td>${option.name}</td>
       <td>${option.value}</td>
     </tr>`;

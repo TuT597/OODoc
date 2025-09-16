@@ -63,11 +63,6 @@ img {
   margin-left: auto;
 }
 
-#navListDiv > img {
-  width: 80%;
-  margin-top: 10px;
-}
-
 #navList {
   width: 100%;
   max-height: 100%;
@@ -75,11 +70,7 @@ img {
   flex-flow: column nowrap;
   align-items: center;
   cursor: default;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   overflow-x: hidden;
-  border-top: black 2px solid;
 }
 
 #navList::-webkit-scrollbar {
@@ -129,6 +120,9 @@ img {
   position: relative;
   margin-left: 15px;
   width: 90%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .navigationListElement {
@@ -213,6 +207,7 @@ img {
   background-color: var(--LIGHTER);
   grid-column: 2;
   align-items: center;
+  box-shadow: inset 8px 0px 12px -8px black;
 }
 
 #contentDiv {
@@ -421,6 +416,10 @@ td {
 .highlight a[href]:hover {
   color: var(--TEXT);
   background-color: var(--DARKER);
+}
+
+.highlight tr {
+  background-color: var(--TABLETEXT);
 }
 
 /* ====RELATIONS SECTION==== */

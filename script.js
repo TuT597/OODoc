@@ -5,159 +5,43 @@ document.addEventListener("DOMContentLoaded", async function () {
   );
   console.log(data);
   window.indexLinks = mapIndexLinks(data);
-  console.log(window.indexLinks);
 
   const navListMainSelections = document.querySelectorAll(".mainSelection");
+  const listDiv = document.getElementById("manualsListDiv");
   let activeItem;
 
   const navSearchBar = document.getElementById("navSearchBar");
 
   const contentDiv = document.getElementById("contentDiv");
 
-  // Select intro  and load its content when website is first loaded
-  fetch("html files/introduction.html")
-    .then((response) => response.text())
-    .then((html) => {
-      contentDiv.innerHTML = html;
-    });
+  // Generate intro page.
+  generateIntroductionPage();
 
   // Loop over all the main options in the navList and add click functions to them
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
-      const fileName = mainSelection.textContent.trim().toLowerCase();
-
-      //#region dropdowns
-      // Check if menu option has dropdown icon so we know items have to be added when clicked
-      if (mainSelection.querySelector(".navListIcon i")) {
-        const icon = mainSelection.querySelector(".navListIcon i");
-        const listDiv = document.getElementById(fileName + "ListDiv");
-        listDiv.style.display = "flex";
-        let expanded = mainSelection.dataset.expanded === "true";
-
-        if (icon) {
-          icon.classList.toggle("fa-chevron-right");
-          icon.classList.toggle("fa-chevron-down");
-        }
-
-        // Check to see what menu item is clicked and if its already open or not
-        if (fileName === "manuals" && !expanded) {
-          mainSelection.dataset.expanded = "true";
-
-          //#region sub-item generation
-          // Generate navigation items
-          const sortedManuals = sortObjectByKey(data.manuals);
-          for (let manual in sortedManuals) {
-            let navigationListElement = document.createElement("div");
-            navigationListElement.className = "navigationListElement";
-            let navigationListElementText = document.createElement("span");
-            navigationListElementText.className = "navigationListElementText";
-            navigationListElementText.innerText = manual;
-
-            // Save the full name in case of overflow
-            navigationListElementText.dataset.fullName = manual;
-
-            // add click event to nav items to generate content on the page
-            navigationListElement.addEventListener("click", () => {
-              contentDiv.innerHTML = generatePage(sortedManuals[manual]);
-              // Add functionality to the generated page
-              constructNavigation();
-              activateItem(navigationListElement);
-            });
-
-            listDiv.appendChild(navigationListElement);
-            navigationListElement.appendChild(navigationListElementText);
-
-            //#region long-name items
-            // Check if the text inside overflows the container
-            if (isOverflown(navigationListElementText)) {
-              // Create new span element to hover over the element
-              let navigationListElementTextFull =
-                document.createElement("span");
-              navigationListElementTextFull.className =
-                "navigationListElementTextFull";
-              navigationListElementTextFull.innerText =
-                navigationListElementText.dataset.fullName;
-              navigationListElementTextFull.style.display = "none";
-
-              document
-                .getElementById("navFloatLayer")
-                .appendChild(navigationListElementTextFull);
-
-              // Generate shortened name
-              navigationListElementText.dataset.shortName = fixOverflownNavText(
-                navigationListElementText
-              );
-
-              navigationListElementText.innerText =
-                navigationListElementText.dataset.shortName;
-
-              navigationListElement.addEventListener("click", () => {
-                updateFloater(
-                  navigationListElement,
-                  navigationListElementTextFull
-                );
-              });
-
-              // Reveal full name while hovering
-              navigationListElement.addEventListener("mouseover", () => {
-                navigationListElementText.innerText =
-                  navigationListElementText.dataset.fullName;
-
-                // Generate new floater displayer on top of nav item with full name
-                const rect = navigationListElement.getBoundingClientRect();
-                navigationListElementTextFull.style.top = `${rect.top}px`;
-                navigationListElementTextFull.style.left = `${rect.left}px`;
-                navigationListElementTextFull.style.display = "block";
-
-                // Update the colors on the floater in case nav item is active
-                updateFloater(
-                  navigationListElement,
-                  navigationListElementTextFull
-                );
-              });
-
-              // Reduce name when no longer hovering
-              navigationListElement.addEventListener("mouseleave", () => {
-                navigationListElementText.innerText =
-                  navigationListElementText.dataset.shortName;
-
-                navigationListElementTextFull.style.display = "none";
-              });
-            }
-            //#endregion long-name items
-          }
-          //#endregion sub-item generation
-          // If already extended, collapse the navigation and clear the list
-        } else if (fileName === "manuals" && expanded) {
-          mainSelection.dataset.expanded = "false";
-          listDiv.innerHTML = "";
-          listDiv.style.display = "none";
-        }
-      }
-      //#endregion dropdowns
-
-      // If menu option is not a drop down then open related file in content section
-      else {
-        fetch("html files/" + fileName + ".html")
-          .then((response) => response.text())
-          .then((html) => {
-            contentDiv.innerHTML = html;
-          });
+      window[`generate${mainSelection.innerText}Page`]();
+      contentDiv.scrollTop = 0;
+      if (activeItem) {
+        activeItem.classList.toggle("active");
+        activeItem = null;
       }
     });
   });
 
-  //#region Search bar
+  // Generate navigation items
+  const sortedManuals = sortObjectByKey(data.manuals);
+  for (let manual in sortedManuals) {
+    generateSubitem(manual);
+  }
+
   navSearchBar.addEventListener("input", () => {
-    if (navSearchBar.value) {
-      for (let manual in data.manuals) {
-        if (data.manuals[manual].name.includes(navSearchBar.value)) {
-          console.log(data.manuals[manual].name);
-        }
-      }
+    let val = navSearchBar.value;
+    if (val) {
+      listDiv.innerHTML = ``;
+      generateSearchList(val);
     }
   });
-  //#endregion Search bar
 
   //#region functions
   // Map out what index items are linked
@@ -203,9 +87,103 @@ document.addEventListener("DOMContentLoaded", async function () {
     return indexArray;
   }
 
+  // #region subitem functions
+  function generateSubitem(obj) {
+    let navigationListElement = generateNavigationListElement();
+    let navigationListElementText = generateNavigationListElementText(obj);
+
+    // add click event to nav items to generate content on the page
+    navigationListElement.addEventListener("click", () => {
+      contentDiv.innerHTML = generateManualPage(sortedManuals[obj]);
+      // Add functionality to the generated page
+      constructNavigation();
+      activateItem(navigationListElement);
+    });
+
+    // Add the generated nav item to the list
+    listDiv.appendChild(navigationListElement);
+    navigationListElement.appendChild(navigationListElementText);
+
+    // Check if the text inside overflows the container
+    if (isOverflown(navigationListElementText)) {
+      handleNameOverflow(navigationListElement, navigationListElementText);
+    }
+  }
+
+  function generateNavigationListElement() {
+    let item = document.createElement("div");
+    item.className = "navigationListElement";
+    return item;
+  }
+
+  function generateNavigationListElementText(obj, type) {
+    let item = document.createElement("span");
+    item.className = "navigationListElementText";
+    if (!type) {
+      item.innerText = obj;
+    } else {
+      item.innerText = type + ": " + obj;
+    }
+
+    // Save the full name in case of overflow
+    item.dataset.fullName = obj;
+    return item;
+  }
+
   // Check for overflow
   function isOverflown(element) {
     return element.scrollWidth > element.clientWidth;
+  }
+
+  function handleNameOverflow(
+    navigationListElement,
+    navigationListElementText
+  ) {
+    // Create new span element to hover over the element
+    let navigationListElementTextFull = document.createElement("span");
+    navigationListElementTextFull.className = "navigationListElementTextFull";
+    navigationListElementTextFull.innerText =
+      navigationListElementText.dataset.fullName;
+    navigationListElementTextFull.style.display = "none";
+
+    document
+      .getElementById("navFloatLayer")
+      .appendChild(navigationListElementTextFull);
+
+    // Generate shortened name
+    navigationListElementText.dataset.shortName = fixOverflownNavText(
+      navigationListElementText
+    );
+
+    navigationListElementText.innerText =
+      navigationListElementText.dataset.shortName;
+
+    navigationListElement.addEventListener("click", () => {
+      updateFloater(navigationListElement, navigationListElementTextFull);
+    });
+
+    // Reveal full name while hovering
+    navigationListElement.addEventListener("mouseover", () => {
+      navigationListElementText.innerText =
+        navigationListElementText.dataset.fullName;
+
+      // Generate new floater displayer on top of nav item with full name
+      const rect = navigationListElement.getBoundingClientRect();
+      navigationListElementTextFull.style.top = `${rect.top}px`;
+      navigationListElementTextFull.style.left = `${rect.left}px`;
+      navigationListElementTextFull.style.display = "block";
+
+      // Update the colors on the floater in case nav item is active
+      updateFloater(navigationListElement, navigationListElementTextFull);
+    });
+
+    // Reduce name when no longer hovering
+    navigationListElement.addEventListener("mouseleave", () => {
+      navigationListElementText.innerText =
+        navigationListElementText.dataset.shortName;
+
+      navigationListElementTextFull.style.display = "none";
+    });
   }
 
   // Change innertext to fit in element
@@ -236,5 +214,59 @@ document.addEventListener("DOMContentLoaded", async function () {
       floater.style.backgroundColor = "var(--DARKER)";
     }
   }
+  //#endregion subitem functions
+
+  //#region search functions
+  function generateSearchList(val) {
+    let matchingObjects = [];
+    for (let key in data.index) {
+      let obj = data.index[key];
+      if (obj.name && obj.name.includes(val)) {
+        matchingObjects.push(obj);
+      }
+    }
+    console.log(matchingObjects);
+
+    // Sort by type then by name
+    matchingObjects.sort((a, b) => {
+      const typeA = a.type || "";
+      const typeB = b.type || "";
+      const typeCompare = typeA.localeCompare(typeB);
+      if (typeCompare !== 0) return typeCompare;
+
+      const nameA = a.name || "";
+      const nameB = b.name || "";
+      return nameA.localeCompare(nameB);
+    });
+
+    // Loop through the results and generate the navlist
+    for (object of matchingObjects) {
+      generateSearchItem(object);
+    }
+  }
+
+  // Create search compatible items
+  function generateSearchItem(obj) {
+    let navigationListElement = generateNavigationListElement();
+    let navigationListElementText = generateNavigationListElementText(
+      obj.name,
+      obj.type
+    );
+
+    // add click event to nav items to generate content on the page
+    navigationListElement.addEventListener("click", () => {
+      processLinkObj(obj);
+    });
+
+    // Add the generated nav item to the list
+    listDiv.appendChild(navigationListElement);
+    navigationListElement.appendChild(navigationListElementText);
+
+    // Check if the text inside overflows the container
+    if (isOverflown(navigationListElementText)) {
+      handleNameOverflow(navigationListElement, navigationListElementText);
+    }
+  }
+  //#endregion search functions
   //#endregion functions
 });
