@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   );
   console.log(data);
   window.indexLinks = mapIndexLinks(data);
+  const indexLinks = window.indexLinks;
 
   const navListMainSelections = document.querySelectorAll(".mainSelection");
   const listDiv = document.getElementById("manualsListDiv");
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   //#region functions
   // Map out what index items are linked
-  function mapIndexLinks(index) {
+  function mapIndexLinks(data) {
     let indexLinks = {};
 
     for (chapter in data.manuals) {
@@ -221,11 +222,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     let matchingObjects = [];
     for (let key in data.index) {
       let obj = data.index[key];
-      if (obj.name && obj.name.includes(val)) {
+      if (obj.name && obj.name.toLowerCase().includes(val.toLowerCase())) {
         matchingObjects.push(obj);
       }
     }
-    console.log(matchingObjects);
 
     // Sort by type then by name
     matchingObjects.sort((a, b) => {
@@ -239,19 +239,69 @@ document.addEventListener("DOMContentLoaded", async function () {
       return nameA.localeCompare(nameB);
     });
 
-    // Loop through the results and generate the navlist
-    for (object of matchingObjects) {
-      generateSearchItem(object);
+    // Group subitems by manual
+    let groupedResults = [];
+
+    // Sort items we have from the search result into a subitem map and manual set
+    let subitemMap = {};
+    let matchingManualsNames = new Set();
+    for (const obj of matchingObjects) {
+      if (obj.type) {
+        subitemMap[obj.id] = obj;
+      }
+      if (!obj.type) {
+        matchingManualsNames.add(obj.name);
+      }
+    }
+
+    // Now we check indexLinks for matches
+    for (const [manualName, [manualID, subitemIDs]] of Object.entries(
+      indexLinks
+    )) {
+      // Make new array by grabbing the objects from matchingObjects that are found within each manual
+      let matchedSubItems = subitemIDs
+        .map((id) => subitemMap[id])
+        .filter(Boolean);
+
+      // Check if the manual is in the search result or if we found any matches and push our group object
+      let isManualInSearch = matchingManualsNames.has(manualName);
+      if (isManualInSearch || matchedSubItems.length > 0) {
+        groupedResults.push({
+          name: manualName,
+          id: manualID,
+          subitems: matchedSubItems,
+        });
+      }
+    }
+    
+    // Sort the results by manual name
+    groupedResults.sort((a, b) => a.name.localeCompare(b.name));
+
+    for (const group in groupedResults) {
+      generateSearchItem(groupedResults[group], true);
+      if (groupedResults[group].subitems) {
+        for (const subItem in groupedResults[group].subitems) {
+          generateSearchItem(groupedResults[group].subitems[subItem]);
+        }
+      }
     }
   }
 
   // Create search compatible items
-  function generateSearchItem(obj) {
+  function generateSearchItem(obj, head) {
     let navigationListElement = generateNavigationListElement();
-    let navigationListElementText = generateNavigationListElementText(
-      obj.name,
-      obj.type
-    );
+    let navigationListElementText = "";
+    if (head) {
+      navigationListElementText = generateNavigationListElementText(obj.name);
+      navigationListElementText.classList.add("groupHead");
+    } else {
+      navigationListElementText = generateNavigationListElementText(
+        obj.name,
+        obj.type
+      );
+    }
+
+    navigationListElementText.classList.add("searchItem");
 
     // add click event to nav items to generate content on the page
     navigationListElement.addEventListener("click", () => {

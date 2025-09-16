@@ -165,6 +165,15 @@ img {
   border-radius: 2px;
 }
 
+.groupHead {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.searchItem {
+  white-space: wrap;
+}
+
 #nav-float-layer {
   position: fixed;
   top: 0;
