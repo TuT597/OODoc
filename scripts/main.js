@@ -35,12 +35,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   for (let manual in sortedManuals) {
     generateSubitem(manual);
   }
-  const defaultNavList = listDiv.innerHTML;
 
   navSearchBar.addEventListener("input", () => {
     let val = navSearchBar.value;
     if (!val) {
-      listDiv.innerHTML = defaultNavList;
+      listDiv.innerHTML = ``;
+      for (let manual in sortedManuals) {
+        generateSubitem(manual);
+      }
     }
     if (val.length > 2) {
       listDiv.innerHTML = ``;
