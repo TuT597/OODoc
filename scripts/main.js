@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     response.json()
   );
   console.log(data);
+
+  // Create variables needed
   window.indexLinks = mapIndexLinks(data);
   const indexLinks = window.indexLinks;
 
@@ -15,13 +17,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const contentDiv = document.getElementById("contentDiv");
 
-  // Generate intro page.
+  const relationsDiv = document.getElementById("relationsDiv");
+
+  // Load user settings
+  const savedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(savedTheme);
+
+  // Generate intro page and relations.
   generateIntroductionPage();
+  generateRelations();
 
   // Loop over all the main options in the navList and add click functions to them
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
-      window[`generate${mainSelection.innerText}Page`]();
+      window[`generate${mainSelection.innerText}Page`](indexLinks);
       contentDiv.scrollTop = 0;
       if (activeItem) {
         activeItem.classList.toggle("active");
@@ -36,6 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     generateSubitem(manual);
   }
 
+  // Make the searchbar generate results when you type in it
   navSearchBar.addEventListener("input", () => {
     let val = navSearchBar.value;
     if (!val) {
@@ -101,9 +111,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // add click event to nav items to generate content on the page
     navigationListElement.addEventListener("click", () => {
-      contentDiv.innerHTML = generateManualPage(sortedManuals[obj]);
-      // Add functionality to the generated page
-      constructNavigation();
+      processLinkObj(getDocFrag(sortedManuals[obj]));
       activateItem(navigationListElement);
     });
 

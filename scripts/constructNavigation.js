@@ -42,6 +42,9 @@ function processLinkObj(linkObj) {
         if (targetElem) {
           targetElem.classList.add("highlight");
           targetElem.scrollIntoView({ block: "center" });
+          setTimeout(() => {
+            targetElem.classList.remove("highlight");
+          }, 1000);
         }
 
         break;

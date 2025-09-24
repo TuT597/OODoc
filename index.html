@@ -11,8 +11,15 @@
   </head>
   <body>
     <section id="navSection">
+      <div id="navSearchDiv">
+        <input type="text" id="navSearchBar" placeholder="Search..." />
+      </div>
       <div id="navListDiv">
         <ul id="navList">
+          <div id="containerListDiv">
+            <div class="listElementDiv" id="manualsListDiv"></div>
+          </div>
+
           <span class="mainSelection">Introduction</span>
 
           <span class="mainSelection">Methods</span>
@@ -20,24 +27,20 @@
           <span class="mainSelection">Details</span>
 
           <span class="mainSelection">Diagnostics</span>
-
-          <div class="listElementDiv" id="manualsListDiv"></div>
         </ul>
-      </div>
-      <div id="navSearchDiv">
-        <input type="text" id="navSearchBar" placeholder="Search..." />
       </div>
     </section>
 
     <section id="contentSection"><div id="contentDiv"></div></section>
 
-    <section id="relationsSection"></section>
+    <section id="relationsSection"><div id="relationsDiv"></div></section>
 
     <!-- mouseover floater for the navigation menu -->
     <div id="navFloatLayer"></div>
 
     <script src="scripts/main.js"></script>
     <script src="scripts/utility.js"></script>
+    <script src="scripts/generateRelations.js"></script>
     <script src="scripts/constructNavigation.js"></script>
     <script src="scripts/generateManualPage.js"></script>
     <script src="scripts/generateIntroductionPage.js"></script>

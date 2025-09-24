@@ -26,7 +26,7 @@ function generateChapter(chapter) {
   }
 
   content = `
-      <div id="${chapter.id}" class="docDiv">
+      <div id="${chapter.id}" class="docDiv can-fade">
       <banner class="docChapter">${chapter.name}</banner>`;
 
   if (chapter.intro) {
@@ -47,7 +47,7 @@ function generateChapter(chapter) {
 // generate sections
 function generateSection(section) {
   content = `
-    <div id="${section.id}" class="subDiv">
+    <div id="${section.id}" class="subDiv can-fade">
     <p class="docSection">${section.name}</p>`;
   if (section.intro) {
     content += `<div class="docText">${section.intro}</div>`;
@@ -74,7 +74,7 @@ function generateSection(section) {
 
 // generate subroutines
 function generateSubroutine(subroutine) {
-  content = `<div id="${subroutine.id}" class="docSubroutine">`;
+  content = `<div id="${subroutine.id}" class="docSubroutine can-fade">`;
   if (subroutine.call) {
     content += `<div class="docCall">${subroutine.call}</div>`;
   } else if (subroutine.name) {
@@ -123,7 +123,7 @@ function generateSubroutine(subroutine) {
 function generateOption(option) {
   let optionContent = ``;
   if (option.type === "option") {
-    optionContent += `<div id="${option.id}" class="docOption"><p class="docCall">${option.name} => ${option.params}</p>`;
+    optionContent += `<div id="${option.id}" class="docOption can-fade"><p class="docCall">${option.name} => ${option.params}</p>`;
     option.intro
       ? (optionContent += `<div class="subText">${option.intro}</div></div>`)
       : (optionContent += `</div>`);
@@ -146,7 +146,7 @@ function generateOptionsTable(option) {
 
 // generate errors and faults
 function generateDiagnostic(diagnostic) {
-  let diagnosticContent = `<div id="${diagnostic.id}" class="docDiagnosticDiv"><div class="docDiagnostic">ERROR: ${diagnostic.name}</div>`;
+  let diagnosticContent = `<div id="${diagnostic.id}" class="docDiagnosticDiv can-fade"><div class="docDiagnostic">ERROR: ${diagnostic.name}</div>`;
   if (diagnostic.intro) {
     diagnosticContent += `<div class="subText">${diagnostic.intro}</div>`;
   }
