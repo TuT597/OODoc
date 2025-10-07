@@ -1,4 +1,4 @@
-function generateRelations(page) {
+function generateRelations() {
   let content = `
   <div class="settingsMenu">
   <label class="switch">
@@ -8,11 +8,7 @@ function generateRelations(page) {
   </div>
   `;
 
-  relationsDiv.innerHTML = content;
-  settingsFunctionality();
-}
-
-function settingsFunctionality() {
+  generalOptions.innerHTML = content;
   themeButton();
 }
 
@@ -28,3 +24,55 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
 }
+
+function updateRelations(pageType) {
+  pageOptions.innerHTML = ``;
+  switch (pageType) {
+    case "manual":
+      manualOptions();
+      break;
+
+    case "methods":
+      methodOptions();
+      break;
+  }
+}
+
+function introductionOptions() {}
+
+function manualOptions() {
+  let html = `
+  
+  `;
+  pageOptions.innerHTML = html;
+}
+
+function methodOptions() {
+  let html = `
+    <div class="settingsMenu">
+      
+        <input type="text" id="methodsSearchBar" class="searchBar" placeholder="Search Methods..." />
+     
+    </div>
+  `;
+
+  pageOptions.innerHTML = html;
+  const methodsSearchBar = document.getElementById("methodsSearchBar");
+  searchBar();
+}
+
+function searchBar() {
+  methodsSearchBar.addEventListener("input", () => {
+    let val = methodsSearchBar.value;
+    if (!val) {
+      populateMethods();
+    }
+    if (val.length > 2) {
+      populateMethods(val);
+    }
+  });
+}
+
+function detailOptions() {}
+
+function diagnosticOptions() {}

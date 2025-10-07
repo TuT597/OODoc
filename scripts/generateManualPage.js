@@ -13,6 +13,7 @@ function generateManualPage(manualID) {
     content += generateChapter(getDocFrag(chapter));
   }
 
+  updateRelations("manual");
   return content;
 }
 

@@ -12,7 +12,7 @@
   <body>
     <section id="navSection">
       <div id="navSearchDiv">
-        <input type="text" id="navSearchBar" placeholder="Search..." />
+        <input type="text" id="navSearchBar" class="searchBar" placeholder="Search..." />
       </div>
       <div id="navListDiv">
         <ul id="navList">
@@ -33,15 +33,20 @@
 
     <section id="contentSection"><div id="contentDiv"></div></section>
 
-    <section id="relationsSection"><div id="relationsDiv"></div></section>
+    <section id="relationsSection">
+      <div id="relationsDiv">
+        <div id="generalOptions"></div>
+        <div id="pageOptions"></div>
+      </div>
+    </section>
 
     <!-- mouseover floater for the navigation menu -->
     <div id="navFloatLayer"></div>
 
     <script src="scripts/main.js"></script>
     <script src="scripts/utility.js"></script>
-    <script src="scripts/generateRelations.js"></script>
     <script src="scripts/constructNavigation.js"></script>
+    <script src="scripts/generateRelations.js"></script>
     <script src="scripts/generateManualPage.js"></script>
     <script src="scripts/generateIntroductionPage.js"></script>
     <script src="scripts/generateMethodsPage.js"></script>

@@ -1,7 +1,5 @@
 function generateMethodsPage(indexLinks) {
-  let content = ``;
-
-  for (entry in indexLinks) {
+  /*for (entry in indexLinks) {
     let entryContent = `<div id="${indexLinks[entry].id}" class="docHeadMethod">
     <h1 class="docName">${entry}</h1>
     </div>
@@ -12,8 +10,72 @@ function generateMethodsPage(indexLinks) {
     const entryItems = indexLinks[entry][1];
     for (item in entryItems) {
       item = getDocFrag(entryItems[item]);
-      if (item.type && (item.type === "i_method" || item.type === "c_method")) {
+      if (item.type && (item.type.includes("method"))) {
         entryContent += `<a href="${item.id}">${item.name}</a>`;
+        counter++;
+      }
+    }
+    entryContent += `</div>`;
+
+    if (counter > 0) {
+      content += entryContent;
+    }
+  }*/
+
+  populateMethods();
+  updateRelations("methods");
+  constructNavigation();
+}
+
+function populateMethods(val) {
+  let content = ``;
+  // Create new array to alphabetically sort methods
+  let sortedMethods = [];
+
+  for (entry in indexLinks) {
+    const manual = entry;
+    const entryItems = indexLinks[entry][1];
+
+    for (const entryItem in entryItems) {
+      item = getDocFrag(entryItems[entryItem]);
+      if (item.type && item.type.includes("method")) {
+        if (val && !item.name.includes(val)) {
+          continue;
+        }
+        item.manualName = manual;
+        sortedMethods.push(item);
+      }
+    }
+  }
+
+  sortedMethods.sort((a, b) => {
+    const nameA = a.name || "";
+    const nameB = b.name || "";
+    return nameA.localeCompare(nameB);
+  });
+
+  // Remove duplicates
+  const seen = new Set();
+
+  sortedMethods = sortedMethods.filter((method) => {
+    const key = `${method.name}::${method.manualName}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  for (let i = 0; i < 26; i++) {
+    const letter = String.fromCharCode(65 + i);
+    let entryContent = `<div class="docHeadMethod">
+    <h1 class="docName">${letter}</h1>
+    </div>
+    <div class="subDiv methodPageSection">
+    `;
+
+    let counter = 0;
+    for (const method of sortedMethods) {
+      if (method.name[0]?.toUpperCase() === letter) {
+        entryContent += `<label><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
         counter++;
       }
     }
@@ -25,5 +87,4 @@ function generateMethodsPage(indexLinks) {
   }
 
   contentDiv.innerHTML = content;
-  constructNavigation();
 }

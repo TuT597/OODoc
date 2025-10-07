@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const contentDiv = document.getElementById("contentDiv");
 
   const relationsDiv = document.getElementById("relationsDiv");
+  const generalOptions = document.getElementById("generalOptions");
+  const pageOptions = document.getElementById("pageOptions");
 
   // Load user settings
   const savedTheme = localStorage.getItem("theme") || "light";
@@ -31,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
       window[`generate${mainSelection.innerText}Page`](indexLinks);
-      contentDiv.scrollTop = 0;
+      generateRelations(mainSelection.innerText);
       if (activeItem) {
         activeItem.classList.toggle("active");
         activeItem = null;

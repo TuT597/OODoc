@@ -3,6 +3,10 @@
   --DARK: #383838;
   --LIGHT: #414141;
   --LIGHTER: #484848;
+
+  --THEMESWITCH: #c2c2c2;
+  --THEMESWITCHBG: #323232;
+
   --TEXT: #c2c2c2;
   --PRETEXT: lightblue;
   --TABLETEXT: darkseagreen;
@@ -13,6 +17,10 @@
   --DARK: #ffffff;
   --LIGHT: #d6d6d6;
   --LIGHTER: #ffffff;
+
+  --THEMESWITCH: #Ffffff;
+  --THEMESWITCHBG: #c2c2c2;
+
   --TEXT: #000000;
   --PRETEXT: #000000;
   --TABLETEXT: #000000;
@@ -213,7 +221,7 @@ img {
   border-bottom: black 2px solid;
 }
 
-#navSearchBar {
+.searchBar {
   background-color: var(--LIGHTER);
   color: var(--TEXT);
   border: none;
@@ -224,7 +232,7 @@ img {
   font-size: 16px;
 }
 
-#navSearchBar:focus {
+.searchBar:focus {
   outline: none;
 }
 
@@ -467,6 +475,33 @@ td {
   width: 100%;
 }
 
+#relationsDiv {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+#generalOptions {
+  border: solid green 1px;
+  display: grid;
+  justify-items: end;
+  padding: 5px;
+  width: 100%;
+}
+
+#pageOptions {
+  border: solid yellow 1px;
+  display: grid;
+  justify-items: end;
+  padding: 5px;
+  width: 100%;
+}
+
+#pageOptions .searchBar {
+  width: 100%;
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -490,7 +525,7 @@ td {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--DARKER);
+  background-color: var(--THEMESWITCHBG);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -502,17 +537,13 @@ td {
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: var(--TEXT);
+  background-color: var(--THEMESWITCH);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: var(--LIGHTER);
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px var(--DARKER);
+  background-color: var(--THEMESWITCHBG);
 }
 
 input:checked + .slider:before {
