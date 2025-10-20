@@ -357,11 +357,11 @@ a[href]:hover {
 }
 
 .docSubroutine {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .docOption {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .docCall {
@@ -462,6 +462,31 @@ td {
 
 .can-fade tr {
   transition: background-color 1s ease;
+}
+
+/* ====DETAILS PAGE==== */
+#detailsListsDiv {
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  display: flex;
+  flex-flow: column wrap;
+  row-gap: 1em;
+  background-color: var(--LIGHT);
+  border-radius: 5px;
+}
+
+#detailsListsDiv div {
+  min-width: 50%;
+  max-height: fit-content;
+}
+
+.detailsList {
+  padding-left: 30px;
+}
+
+.detailsListItem a {
+  text-decoration: none;
 }
 
 /* ====RELATIONS SECTION==== */

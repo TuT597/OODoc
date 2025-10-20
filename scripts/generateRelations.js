@@ -38,6 +38,10 @@ function updateRelations(pageType) {
     case "methods":
       methodOptions();
       break;
+
+    case "details":
+      detailsOptions();
+      break;
   }
 }
 
@@ -103,6 +107,8 @@ function searchBar() {
   });
 }
 
-function detailOptions() {}
+function detailsOptions() {
+  pageOptions.style.display = "none";
+}
 
 function diagnosticOptions() {}
