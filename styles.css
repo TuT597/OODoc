@@ -18,7 +18,7 @@
   --LIGHT: #d6d6d6;
   --LIGHTER: #ffffff;
 
-  --THEMESWITCH: #Ffffff;
+  --THEMESWITCH: #ffffff;
   --THEMESWITCHBG: #c2c2c2;
 
   --TEXT: #000000;
@@ -241,7 +241,7 @@ img {
   background-color: var(--LIGHTER);
   grid-column: 2;
   align-items: center;
-  box-shadow: inset 8px 0px 12px -8px black;
+  box-shadow: inset 5px 0px 12px -8px black, inset -5px 0px 12px -8px black;
 }
 
 #contentDiv {
@@ -357,11 +357,11 @@ a[href]:hover {
 }
 
 .docSubroutine {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .docOption {
-  margin-top: 15px;
+  margin-bottom: 25px;
 }
 
 .docCall {
@@ -483,23 +483,77 @@ td {
 }
 
 #generalOptions {
-  border: solid green 1px;
+  /*border: solid green 1px;*/
   display: grid;
   justify-items: end;
-  padding: 5px;
+  padding: 10px;
   width: 100%;
 }
 
 #pageOptions {
-  border: solid yellow 1px;
+  /*border: solid yellow 1px;*/
   display: grid;
-  justify-items: end;
-  padding: 5px;
-  width: 100%;
+  justify-items: start;
+  padding: 15px;
+  margin: 5px 0px;
+  width: 95%;
+  background-color: var(--DARKER);
+  box-shadow: inset 0px 0px 3px 1px black;
 }
 
 #pageOptions .searchBar {
-  width: 100%;
+  justify-self: center;
+  width: 95%;
+}
+
+#pageOptions h3 {
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: underline;
+  padding-bottom: 10px;
+}
+
+#indexList {
+  justify-self: start;
+  padding-left: 13px;
+  font-size: 20px;
+}
+
+#indexList a {
+  text-decoration: none;
+}
+
+#indexList ::marker {
+  content: "- ";
+}
+
+#indexSubList {
+  font-size: 18px;
+  margin-left: 15px;
+}
+
+#indexSubList ::marker {
+  content: "- ";
+}
+
+#letterTabs {
+  list-style-type: none;
+  padding-top: 15px;
+  user-select: none;
+}
+
+.letterTabsItem {
+  display: inline;
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.letterTabsItem:last-of-type {
+  margin-right: 0px;
+}
+
+.letterTabsItem a {
+  text-decoration: none;
 }
 
 /* The switch - the box around the slider */

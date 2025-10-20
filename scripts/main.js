@@ -18,13 +18,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   const contentDiv = document.getElementById("contentDiv");
 
   const relationsDiv = document.getElementById("relationsDiv");
-  const generalOptions = document.getElementById("generalOptions");
   const pageOptions = document.getElementById("pageOptions");
-
+  pageOptions.style.display = "none";
+  const generalOptions = document.getElementById("generalOptions");
+  
   // Load user settings
   const savedTheme = localStorage.getItem("theme") || "light";
   applyTheme(savedTheme);
-
+  
   // Generate intro page and relations.
   generateIntroductionPage();
   generateRelations();

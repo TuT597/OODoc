@@ -1,27 +1,4 @@
 function generateMethodsPage(indexLinks) {
-  /*for (entry in indexLinks) {
-    let entryContent = `<div id="${indexLinks[entry].id}" class="docHeadMethod">
-    <h1 class="docName">${entry}</h1>
-    </div>
-    <div class="subDiv methodPageSection">
-    `;
-
-    let counter = 0;
-    const entryItems = indexLinks[entry][1];
-    for (item in entryItems) {
-      item = getDocFrag(entryItems[item]);
-      if (item.type && (item.type.includes("method"))) {
-        entryContent += `<a href="${item.id}">${item.name}</a>`;
-        counter++;
-      }
-    }
-    entryContent += `</div>`;
-
-    if (counter > 0) {
-      content += entryContent;
-    }
-  }*/
-
   populateMethods();
   updateRelations("methods");
   constructNavigation();
@@ -66,7 +43,7 @@ function populateMethods(val) {
 
   for (let i = 0; i < 26; i++) {
     const letter = String.fromCharCode(65 + i);
-    let entryContent = `<div class="docHeadMethod">
+    let entryContent = `<div class="docHeadMethod" id="letter${letter}">
     <h1 class="docName">${letter}</h1>
     </div>
     <div class="subDiv methodPageSection">
