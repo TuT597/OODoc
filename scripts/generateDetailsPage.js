@@ -23,8 +23,14 @@ function generateDetailsPage() {
     }
   }
 
-  html += `</div>`
+  html += `</div>`;
   contentDiv.innerHTML = html;
+
+  // Make it so you get 2 columns by dynamically culculating the required height
+  const detailsDiv = document.getElementById("detailsListsDiv");
+  const computedStyle = window.getComputedStyle(detailsDiv);
+  detailsDiv.style.height = parseFloat(computedStyle.height) / 1.9 + "px";
+
   constructNavigation();
   updateRelations("details");
 }
