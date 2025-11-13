@@ -147,7 +147,7 @@ function generateOptionsTable(option) {
 
 // generate errors and faults
 function generateDiagnostic(diagnostic) {
-  let diagnosticContent = `<div id="${diagnostic.id}" class="docDiagnosticDiv can-fade"><div class="docDiagnostic">ERROR: ${diagnostic.name}</div>`;
+  let diagnosticContent = `<div id="${diagnostic.id}" class="docDiagnosticsDiv can-fade"><div class="docDiagnostic">${diagnostic.type}: ${diagnostic.name}</div>`;
   if (diagnostic.intro) {
     diagnosticContent += `<div class="subText">${diagnostic.intro}</div>`;
   }

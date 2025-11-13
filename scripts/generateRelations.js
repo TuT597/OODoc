@@ -73,7 +73,55 @@ function manualOptions() {
       }
     }
     html += `</ul>`;
+
+    // Add section for user preferences
+    html += `<div class="pageOptionsPreferences">
+              <h3>Preferences:</h3>
+              <label>
+                Show diagnostics: 
+                <input type="checkbox" id="diagnosticsToggle">
+              </label>
+            </div>`;
     pageOptions.innerHTML = html;
+    // Add events to the check boxes
+    checkboxFunctionality();
+  });
+}
+
+function checkboxFunctionality() {
+  diagnosticsToggle();
+}
+
+// Function with animation for the showDiagnostics checkbox
+function diagnosticsToggle() {
+  const checkbox = document.getElementById("diagnosticsToggle");
+
+  checkbox.addEventListener("change", (e) => {
+    const show = e.target.checked;
+    const diagnostics = document.querySelectorAll(".docDiagnosticsDiv");
+
+    diagnostics.forEach((div) => {
+      if (show) {
+        // expand the diagnostics box
+        div.classList.add("diagnostics-visible");
+        div.style.maxHeight = div.scrollHeight + "px";
+
+        // When the transitioned is finished we remove maxHeight
+        div.addEventListener("transitionend", function handler() {
+          div.style.maxHeight = "none";
+          div.removeEventListener("transitionend", handler);
+        });
+      } else {
+        // collapse the diagnostics box
+        if (div.style.maxHeight === "none") {
+          div.style.maxHeight = div.scrollHeight + "px";
+          div.offsetHeight;
+        }
+
+        div.style.maxHeight = "0px";
+        div.classList.remove("diagnostics-visible");
+      }
+    });
   });
 }
 

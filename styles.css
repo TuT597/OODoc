@@ -121,16 +121,6 @@ img {
   margin-bottom: 5px;
 }
 
-.navListIcon {
-  margin-right: 5px;
-  width: 15px;
-  height: 15px;
-  padding-top: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .listElementDiv {
   display: flex;
   flex-flow: column nowrap;
@@ -147,7 +137,7 @@ img {
   margin: 10px 0px;
   width: 95%;
   max-height: 78%;
-  padding: 10px;
+  padding: 5px 10px;
   background-color: var(--DARKER);
   box-shadow: inset 0px 0px 3px 1px black;
 }
@@ -432,6 +422,13 @@ td {
   margin-top: 3px;
 }
 
+/* Collapsed */
+.docDiagnosticsDiv {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 1s ease !important;
+}
+
 .docDiv ul {
   margin-left: 1em;
   list-style-position: inside;
@@ -509,7 +506,7 @@ td {
   border: black solid 1px;
   background-color: var(--DARK);
   border-radius: 5px;
-  padding: 10px
+  padding: 10px;
 }
 
 .detailsList {
@@ -557,6 +554,16 @@ td {
   box-shadow: inset 0px 0px 3px 1px black;
 }
 
+.pageOptionsPreferences {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  width: 100%;
+  justify-content: start;
+  align-content: center;
+}
+
 #pageOptions .searchBar {
   justify-self: center;
   width: 95%;
@@ -565,7 +572,6 @@ td {
 #pageOptions h3 {
   font-weight: bold;
   font-size: 20px;
-  text-decoration: underline;
   padding-bottom: 10px;
 }
 
