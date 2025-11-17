@@ -108,7 +108,11 @@ function generateSubroutine(subroutine) {
 
   // check for diagnostics
   if (subroutine.diagnostics) {
-    content += `<div class="docErrorsDiv"><p class="docErrors">Diagnostics</p>`;
+    content += `<div id="${subroutine.id}" class="docErrorsDiv">
+                  <div class="docDiagLabel">
+                    <p class="docErrors">Diagnostics (${subroutine.diagnostics.length})</p>
+                    <button class="docDiagButton"><i class="fa-solid fa-chevron-left"></i></button>
+                  </div>`;
     for (diagnostic in subroutine.diagnostics) {
       content += generateDiagnostic(
         getDocFrag(subroutine.diagnostics[diagnostic])

@@ -1,4 +1,4 @@
-function generateMethodsPage(indexLinks) {
+function generateMethodsPage() {
   populateMethods();
   updateRelations("methods");
   constructNavigation();

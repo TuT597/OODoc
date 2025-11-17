@@ -42,12 +42,20 @@ function updateRelations(pageType) {
     case "details":
       detailsOptions();
       break;
+
+    case "diagnostics":
+      diagnosticsOptions();
+      break;
   }
 }
 
 function introductionOptions() {}
 
 function manualOptions() {
+  const diagnosticsEnabled = localStorage.getItem(
+    "diagnosticsEnabled".toString()
+  );
+  console.log(diagnosticsEnabled);
   // Delay the DOM queries until the next frame so the page switch can complete
   requestAnimationFrame(() => {
     // Grab all the main divs making up the manual
@@ -79,55 +87,62 @@ function manualOptions() {
               <h3>Preferences:</h3>
               <label>
                 Show diagnostics: 
-                <input type="checkbox" id="diagnosticsToggle">
+                <input type="checkbox" id="diagnosticsToggle" ${
+                  diagnosticsEnabled === "true" ? "checked" : ""
+                }>
               </label>
             </div>`;
     pageOptions.innerHTML = html;
-    // Add events to the check boxes
-    checkboxFunctionality();
+    // Add events to the check boxes and check what settings should be applied
+    diagnosticsToggle(diagnosticsEnabled);
+    updateDiagDivs(diagnosticsEnabled);
   });
 }
 
-function checkboxFunctionality() {
-  diagnosticsToggle();
-}
-
-// Function with animation for the showDiagnostics checkbox
-function diagnosticsToggle() {
+// Add listener to checkbox and update variable in localStorage
+function diagnosticsToggle(enabled) {
   const checkbox = document.getElementById("diagnosticsToggle");
 
   checkbox.addEventListener("change", (e) => {
     const show = e.target.checked;
-    const diagnostics = document.querySelectorAll(".docDiagnosticsDiv");
+    updateDiagDivs(show.toString());
+    localStorage.setItem("diagnosticsEnabled", show.toString());
+  });
+}
 
-    diagnostics.forEach((div) => {
-      if (show) {
-        // expand the diagnostics box
-        div.classList.add("diagnostics-visible");
+// Collapse or expand diagnostics divs depending on user preference
+function updateDiagDivs(enabled, id) {
+  console.log(enabled);
+  let diagnostics;
+  id ? diagnostics = document.getElementById(id) : diagnostics = document.querySelectorAll(".docDiagnosticsDiv");
+
+  diagnostics.forEach((div) => {
+    if (enabled === "true") {
+      // expand the diagnostics box
+      div.classList.add("diagnostics-visible");
+      div.style.maxHeight = div.scrollHeight + "px";
+
+      // When the transitioned is finished we remove maxHeight
+      div.addEventListener("transitionend", function handler() {
+        div.style.maxHeight = "none";
+        div.removeEventListener("transitionend", handler);
+      });
+    } else {
+      // collapse the diagnostics box
+      if (div.style.maxHeight === "none") {
         div.style.maxHeight = div.scrollHeight + "px";
-
-        // When the transitioned is finished we remove maxHeight
-        div.addEventListener("transitionend", function handler() {
-          div.style.maxHeight = "none";
-          div.removeEventListener("transitionend", handler);
-        });
-      } else {
-        // collapse the diagnostics box
-        if (div.style.maxHeight === "none") {
-          div.style.maxHeight = div.scrollHeight + "px";
-          div.offsetHeight;
-        }
-
-        div.style.maxHeight = "0px";
-        div.classList.remove("diagnostics-visible");
+        div.offsetHeight;
       }
-    });
+
+      div.style.maxHeight = "0px";
+      div.classList.remove("diagnostics-visible");
+    }
   });
 }
 
 function methodOptions() {
   let html = `   
-        <input type="text" id="methodsSearchBar" class="searchBar" placeholder="Search Methods..." />
+    <input type="text" id="searchBar" class="searchBar" placeholder="Search Methods..." />
   `;
 
   html += `<ul id="letterTabs">`;
@@ -139,24 +154,30 @@ function methodOptions() {
   html += `</ul>`;
 
   pageOptions.innerHTML = html;
-  const methodsSearchBar = document.getElementById("methodsSearchBar");
-  searchBar();
-}
-
-function searchBar() {
-  methodsSearchBar.addEventListener("input", () => {
-    let val = methodsSearchBar.value;
-    if (!val) {
-      populateMethods();
-    }
-    if (val.length > 2) {
-      populateMethods(val);
-    }
-  });
+  const searchBar = document.getElementById("searchBar");
+  searchBarFunctionality("Methods");
 }
 
 function detailsOptions() {
   pageOptions.style.display = "none";
 }
 
-function diagnosticOptions() {}
+function diagnosticsOptions() {
+  pageOptions.innerHTML = `   
+    <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
+  `;
+  const searchBar = document.getElementById("searchBar");
+  searchBarFunctionality("Diagnostics");
+}
+
+function searchBarFunctionality(type) {
+  searchBar.addEventListener("input", () => {
+    let val = searchBar.value;
+    if (!val) {
+      window[`populate${type}`]();
+    }
+    if (val.length > 2) {
+      window[`populate${type}`](val);
+    }
+  });
+}

@@ -1,6 +1,5 @@
 function generateDetailsPage() {
   let html = `<div id="detailsListsDiv">`;
-  console.log(indexLinks);
 
   for (entry in indexLinks) {
     const manual = entry;

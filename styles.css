@@ -59,6 +59,31 @@ img {
   color: var(--DARKER);
 }
 
+input[type="checkbox"] {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: var(--LIGHT);
+  border: 2px solid var(--DARKER);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle; /* Vertically center in label */
+  box-shadow: inset 0px 0px 2px 1px black;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--TEXT);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
 /* ====NAV SECTION==== */
 #navSection {
   background-color: var(--DARK);
@@ -122,6 +147,7 @@ img {
 }
 
 .listElementDiv {
+  padding: 5px 10px;
   display: flex;
   flex-flow: column nowrap;
   overflow-y: scroll;
@@ -137,7 +163,7 @@ img {
   margin: 10px 0px;
   width: 95%;
   max-height: 78%;
-  padding: 5px 10px;
+  min-height: 750px;
   background-color: var(--DARKER);
   box-shadow: inset 0px 0px 3px 1px black;
 }
@@ -200,15 +226,13 @@ img {
 }
 
 #navSearchDiv {
-  background-color: var(--DARKER);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-left: auto;
   height: 50px;
   min-height: 50px;
-  border-bottom: black 2px solid;
+  border-bottom: black solid 2px;
 }
 
 .searchBar {
@@ -367,6 +391,14 @@ a[href]:hover {
   margin-left: 1em;
 }
 
+.subText p:not(:first-child) {
+  margin-top: 10px;
+}
+
+.subText .parameter {
+  color: rgb(235, 233, 118);
+}
+
 .optionsTable {
   color: var(--TABLETEXT);
   margin: 10px 0px;
@@ -403,10 +435,23 @@ td {
 }
 
 .docErrorsDiv {
+  display: flex;
+  flex-direction: column;
   margin-top: 5px;
   background-color: var(--DARK);
   padding: 5px;
   border-radius: 5px;
+}
+
+.docDiagLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content:  space-between;
+}
+
+.docDiagButton {
+  all: unset;
+  color: var(--TEXT);
 }
 
 .docErrors {
@@ -422,7 +467,6 @@ td {
   margin-top: 3px;
 }
 
-/* Collapsed */
 .docDiagnosticsDiv {
   overflow: hidden;
   max-height: 0;
@@ -461,7 +505,7 @@ td {
   transition: background-color 1s ease;
 }
 
-/* ====METHODS PAGE==== */
+/* ====METHODS/DIAGNOSTICS PAGE==== */
 .docHeadMethod {
   width: 100%;
   text-align: start;
@@ -474,6 +518,21 @@ td {
 .methodPageSection {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-left: black 1px solid;
+  border-right: black 1px solid;
+  border-bottom: black 1px solid;
+  border-radius: 0px 0px 5px 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  background-color: var(--LIGHT);
+}
+
+.diagnosticsPageSection {
+  display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 10px;
   border-left: black 1px solid;
@@ -680,10 +739,6 @@ input:checked + .slider:before {
 /* ====ULTRAWIDE==== */
 @media only screen and (min-width: 1200px) {
   #navListDiv {
-    border-left: black 2px solid;
-  }
-
-  #navSearchDiv {
     border-left: black 2px solid;
   }
 }

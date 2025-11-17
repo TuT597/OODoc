@@ -28,6 +28,7 @@ function processLinkObj(linkObj) {
   if (!linkObj.type) {
     contentDiv.innerHTML = generateManualPage(linkObj.id);
     contentDiv.scrollTop = 0;
+    attachDiagnosticButtons();
     // Reload links for new page
     constructNavigation();
   } else {
@@ -36,6 +37,7 @@ function processLinkObj(linkObj) {
     for (item in indexLinks) {
       if (indexLinks[item][1].includes(linkObj.id)) {
         contentDiv.innerHTML = generateManualPage(indexLinks[item][0]);
+        attachDiagnosticButtons();
         constructNavigation();
 
         const targetElem = contentDiv.querySelector(`#${linkObj.id}`);
@@ -51,4 +53,24 @@ function processLinkObj(linkObj) {
       }
     }
   }
+}
+
+function attachDiagnosticButtons() {
+  const buttons = document.querySelectorAll(".docDiagButton");
+  const checked = document.getElementById("diagnosticsToggle").checked;
+
+  buttons.forEach((btn) => {
+    let angle;
+    checked ? (angle = 45) : (angle = 0);
+
+    btn.addEventListener("click", () => {
+      angle = angle === 0 ? -45 : 0;
+      btn.style.transform = `rotate(${angle}deg)`;
+
+      const subroutineDiv = btn.closest(".docErrorsDiv");
+      const subroutineID = subroutineDiv.id;
+
+      updateDiagDivs(checked.toString(), subroutineID);
+    });
+  });
 }

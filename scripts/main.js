@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
   // New versions can be found at: https://perl.overmeer.net/oodoc/doctree/
-  window.data = await fetch("data/OODoc-3.05-website.json").then((response) =>
-    response.json()
+  window.data = await fetch("data/Mail-Box-3.012-website.json").then(
+    (response) => response.json()
   );
   console.log(data);
 
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Loop over all the main options in the navList and add click functions to them
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
-      window[`generate${mainSelection.innerText}Page`](indexLinks);
+      window[`generate${mainSelection.innerText}Page`]();
       generateRelations(mainSelection.innerText);
       if (activeItem) {
         activeItem.classList.toggle("active");
