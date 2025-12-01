@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
   // New versions can be found at: https://perl.overmeer.net/oodoc/doctree/
-  window.data = await fetch("data/Mail-Box-3.012-website.json").then(
+  window.data = await fetch("data/Mail-Box-4.000-website.json").then(
     (response) => response.json()
   );
   console.log(data);

@@ -19,10 +19,7 @@ function generateManualPage(manualID) {
 
 // generate chapter
 function generateChapter(chapter) {
-  if (
-    chapter.name === "NAME" ||
-    (chapter.name !== "METHODS" && !chapter.intro)
-  ) {
+  if (chapter.name === "NAME") {
     return ``;
   }
 

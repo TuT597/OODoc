@@ -2,8 +2,17 @@ function generateRelations() {
   let content = `
   <div class="settingsMenu">
   <label class="switch">
-    <input type="checkbox" id="themeSwitch">
-    <span class="slider round"></span>
+    <input type="checkbox" id="themeSwitch"`;
+
+  localStorage.getItem("theme") === "light"
+    ? (content += `checked>
+    <span class="slider round">
+    <i id="themeIcon" class="fa-solid fa-sun"></i>`)
+    : (content += `>
+    <span class="slider round">
+    <i id="themeIcon" class="fa-solid fa-moon"></i>`);
+
+  content += `</span>
   </label>
   </div>
   `;
@@ -17,6 +26,15 @@ function themeButton() {
     const current = document.documentElement.getAttribute("data-theme");
     const next = current === "light" ? "dark" : "light";
     applyTheme(next);
+
+    const icon = document.getElementById("themeIcon");
+    if (icon.classList.contains("fa-sun")) {
+      icon.classList.remove("fa-sun");
+      icon.classList.add("fa-moon");
+    } else {
+      icon.classList.remove("fa-moon");
+      icon.classList.add("fa-sun");
+    }
   });
 }
 
@@ -55,13 +73,24 @@ function manualOptions() {
   const diagnosticsEnabled = localStorage.getItem(
     "diagnosticsEnabled".toString()
   );
-  console.log(diagnosticsEnabled);
   // Delay the DOM queries until the next frame so the page switch can complete
   requestAnimationFrame(() => {
+    // Add section for user preferences
+    let html = `
+    <div class="pageOptionsPreferences">
+      <h3>Preferences:</h3>
+      <label>
+        Show diagnostics: 
+        <input type="checkbox" id="diagnosticsToggle" ${
+          diagnosticsEnabled === "true" ? "checked" : ""
+        }>
+      </label>
+    </div>`;
+
     // Grab all the main divs making up the manual
     const docDivs = contentDiv.querySelectorAll(".docDiv");
-    let html = `
-    <h3>Contents</h3>
+    html += `
+    <h3>Contents:</h3>
     <ul id="indexList">`;
     // Loop through them and look for all the Chapters then put them in the list
     for (const docDiv of docDivs) {
@@ -82,16 +111,36 @@ function manualOptions() {
     }
     html += `</ul>`;
 
-    // Add section for user preferences
-    html += `<div class="pageOptionsPreferences">
-              <h3>Preferences:</h3>
-              <label>
-                Show diagnostics: 
-                <input type="checkbox" id="diagnosticsToggle" ${
-                  diagnosticsEnabled === "true" ? "checked" : ""
-                }>
-              </label>
-            </div>`;
+    // Add section for methods
+    const currentManual = Object.entries(indexLinks).find(
+      ([key, valueArray]) =>
+        valueArray[0] === document.querySelector(".docHead").id
+    );
+
+    let currentMethods;
+    for (const id of currentManual[1][1]) {
+      item = getDocFrag(id);
+      console.log(item);
+      if (item.type && item.type.includes("method")) {
+        currentMethods.push(item);
+      }
+    }
+
+    html += `
+    <div id="pageOptionsMethods">
+      <h3>Methods:</h3>
+      <div id="pageOptionsMethodsList">`;
+
+    for (const id of currentManual[1][1]) {
+      item = getDocFrag(id);
+      console.log(item);
+      if (item.type && item.type.includes("method")) {
+        html += `<label><a href="${item.id}">${item.name}</a></label>`;
+      }
+    }
+
+    html += `</div></div>`;
+
     pageOptions.innerHTML = html;
     // Add events to the check boxes and check what settings should be applied
     diagnosticsToggle(diagnosticsEnabled);
@@ -112,21 +161,26 @@ function diagnosticsToggle(enabled) {
 
 // Collapse or expand diagnostics divs depending on user preference
 function updateDiagDivs(enabled, id) {
-  console.log(enabled);
-  let diagnostics;
-  id ? diagnostics = document.getElementById(id) : diagnostics = document.querySelectorAll(".docDiagnosticsDiv");
+  let diagnostics = [];
+  id
+    ? (diagnostics = document
+        .getElementById(id)
+        .querySelectorAll(".docDiagnosticsDiv"))
+    : (diagnostics = document.querySelectorAll(".docDiagnosticsDiv"));
 
   diagnostics.forEach((div) => {
     if (enabled === "true") {
       // expand the diagnostics box
-      div.classList.add("diagnostics-visible");
-      div.style.maxHeight = div.scrollHeight + "px";
+      if (!div.classList.contains("diagnostics-visible")) {
+        div.classList.add("diagnostics-visible");
+        div.style.maxHeight = div.scrollHeight + "px";
 
-      // When the transitioned is finished we remove maxHeight
-      div.addEventListener("transitionend", function handler() {
-        div.style.maxHeight = "none";
-        div.removeEventListener("transitionend", handler);
-      });
+        // When the transitioned is finished we remove maxHeight
+        div.addEventListener("transitionend", function handler() {
+          div.style.maxHeight = "none";
+          div.removeEventListener("transitionend", handler);
+        });
+      }
     } else {
       // collapse the diagnostics box
       if (div.style.maxHeight === "none") {

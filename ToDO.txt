@@ -1,0 +1,3 @@
+Diagnost box buttons still not working properly with checkbox
+
+Finish method generation on relations section

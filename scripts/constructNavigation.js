@@ -28,17 +28,21 @@ function processLinkObj(linkObj) {
   if (!linkObj.type) {
     contentDiv.innerHTML = generateManualPage(linkObj.id);
     contentDiv.scrollTop = 0;
-    attachDiagnosticButtons();
     // Reload links for new page
-    constructNavigation();
+    requestAnimationFrame(() => {
+      attachDiagnosticButtons();
+      constructNavigation();
+    });
   } else {
     /* Look for the right manual page to load and generateManualPage with it, 
     then move to and highlight the right item we are linking to */
     for (item in indexLinks) {
       if (indexLinks[item][1].includes(linkObj.id)) {
         contentDiv.innerHTML = generateManualPage(indexLinks[item][0]);
-        attachDiagnosticButtons();
-        constructNavigation();
+        requestAnimationFrame(() => {
+          attachDiagnosticButtons();
+          constructNavigation();
+        });
 
         const targetElem = contentDiv.querySelector(`#${linkObj.id}`);
         if (targetElem) {
@@ -56,21 +60,30 @@ function processLinkObj(linkObj) {
 }
 
 function attachDiagnosticButtons() {
-  const buttons = document.querySelectorAll(".docDiagButton");
-  const checked = document.getElementById("diagnosticsToggle").checked;
+  document.querySelectorAll(".docDiagButton").forEach((btn) => {
+    const errorDiv = btn.parentElement.parentElement;
 
-  buttons.forEach((btn) => {
-    let angle;
-    checked ? (angle = 45) : (angle = 0);
+    // check if diagnostics are currently displayed
+    const displayed = Array.from(
+      errorDiv.querySelectorAll(".docDiagnosticsDiv")
+    ).some((div) => div.classList.contains("diagnostics-visible"));
+
+    // set initial rotation
+    btn.style.transform = displayed ? "rotate(-45deg)" : "rotate(0deg)";
 
     btn.addEventListener("click", () => {
-      angle = angle === 0 ? -45 : 0;
-      btn.style.transform = `rotate(${angle}deg)`;
+      const subroutineID = errorDiv.id;
 
-      const subroutineDiv = btn.closest(".docErrorsDiv");
-      const subroutineID = subroutineDiv.id;
+      // determine current state
+      const currentlyDisplayed = Array.from(
+        errorDiv.querySelectorAll(".docDiagnosticsDiv")
+      ).some((div) => div.classList.contains("diagnostics-visible"));
 
-      updateDiagDivs(checked.toString(), subroutineID);
+      btn.style.transform = currentlyDisplayed
+        ? "rotate(0deg)"
+        : "rotate(-45deg)";
+
+      updateDiagDivs(currentlyDisplayed ? "false" : "true", subroutineID);
     });
   });
 }

@@ -7,7 +7,7 @@ function generateDetailsPage() {
 
     for (const entryItem in entryItems) {
       item = getDocFrag(entryItems[entryItem]);
-      if (item.name && item.name == "DETAILS") {
+      if (item.nest && item.name && item.name === "DETAILS") {
         item.manualName = manual;
         html += `
           <div>
