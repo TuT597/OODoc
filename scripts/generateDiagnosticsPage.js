@@ -25,7 +25,11 @@ function populateDiagnostics(val) {
           diagnostic.manualName = manual;
           diagnostic.manualID = manualID;
           diagnostic.methodName = item.name;
-          sortedDiagnostics.push(diagnostic);
+
+          // filter out all inherited/extended items
+          if (!diagnostic.extends) {
+            sortedDiagnostics.push(diagnostic);
+          }
         }
       }
     }

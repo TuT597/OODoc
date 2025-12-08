@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         activeItem.classList.toggle("active");
         activeItem = null;
       }
+      contentDiv.scrollTop = 0;
     });
   });
 

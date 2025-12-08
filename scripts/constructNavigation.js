@@ -1,6 +1,9 @@
 function constructNavigation() {
   // Select all href links on the generated page
-  let hrefLinks = contentDiv.querySelectorAll("a[href]");
+  let links1 = contentDiv.querySelectorAll("a[href]");
+  let links2 = relationsDiv.querySelectorAll("a[href]");
+
+  let hrefLinks = [...links1, ...links2];
 
   // Add click functionality to them
   hrefLinks.forEach((link) => {
@@ -40,7 +43,6 @@ function processLinkObj(linkObj) {
       if (indexLinks[item][1].includes(linkObj.id)) {
         contentDiv.innerHTML = generateManualPage(indexLinks[item][0]);
         requestAnimationFrame(() => {
-          attachDiagnosticButtons();
           constructNavigation();
         });
 
@@ -53,6 +55,7 @@ function processLinkObj(linkObj) {
           }, 1000);
         }
 
+        attachDiagnosticButtons();
         break;
       }
     }
@@ -62,11 +65,8 @@ function processLinkObj(linkObj) {
 function attachDiagnosticButtons() {
   document.querySelectorAll(".docDiagButton").forEach((btn) => {
     const errorDiv = btn.parentElement.parentElement;
-
     // check if diagnostics are currently displayed
-    const displayed = Array.from(
-      errorDiv.querySelectorAll(".docDiagnosticsDiv")
-    ).some((div) => div.classList.contains("diagnostics-visible"));
+    const displayed = checkDiagnosticsDisplayStatus(errorDiv);
 
     // set initial rotation
     btn.style.transform = displayed ? "rotate(-45deg)" : "rotate(0deg)";
@@ -86,4 +86,13 @@ function attachDiagnosticButtons() {
       updateDiagDivs(currentlyDisplayed ? "false" : "true", subroutineID);
     });
   });
+}
+
+function checkDiagnosticsDisplayStatus(div) {
+  // check if diagnostics are currently displayed
+  const displayed = Array.from(
+    div.querySelectorAll(".docDiagnosticsDiv")
+  ).some((div) => div.classList.contains("diagnostics-visible"));
+
+  return displayed;
 }

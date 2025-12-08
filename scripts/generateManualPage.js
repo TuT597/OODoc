@@ -19,7 +19,7 @@ function generateManualPage(manualID) {
 
 // generate chapter
 function generateChapter(chapter) {
-  if (chapter.name === "NAME") {
+  if (chapter.name === "NAME" || (!chapter.intro && !chapter.nest)) {
     return ``;
   }
 
@@ -125,7 +125,7 @@ function generateSubroutine(subroutine) {
 function generateOption(option) {
   let optionContent = ``;
   if (option.type === "option") {
-    optionContent += `<div id="${option.id}" class="docOption can-fade"><p class="docCall">${option.name} => ${option.params}</p>`;
+    optionContent += `<div class="docOption can-fade"><p class="docCall">${option.name} => ${option.params}</p>`;
     option.intro
       ? (optionContent += `<div class="subText">${option.intro}</div></div>`)
       : (optionContent += `</div>`);

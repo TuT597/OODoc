@@ -52,7 +52,7 @@ function populateMethods(val) {
     let counter = 0;
     for (const method of sortedMethods) {
       if (method.name[0]?.toUpperCase() === letter) {
-        entryContent += `<label><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
+        entryContent += `<label class="methodPageLabel"><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
         counter++;
       }
     }

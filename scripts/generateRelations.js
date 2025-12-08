@@ -96,14 +96,14 @@ function manualOptions() {
     for (const docDiv of docDivs) {
       const docChapters = docDiv.querySelectorAll(".docChapter");
       for (const chapter of docChapters) {
-        html += `<li><a href="#${docDiv.attributes[0].nodeValue}">${chapter.textContent}</a></li>`;
+        html += `<li><a class="jump" href="${docDiv.attributes[0].nodeValue}">${chapter.textContent}</a></li>`;
         // Grab all the sections inside the current main div and if they exist generate a second nested list for these
         const sections = docDiv.querySelectorAll(".docSection");
         if (sections.length) {
           html += `<ul id="indexSubList">`;
           for (const section of sections) {
             const subDiv = section.parentElement;
-            html += `<li><a href="#${subDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
+            html += `<li><a href="${subDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
           }
           html += `</ul>`;
         }
@@ -117,10 +117,9 @@ function manualOptions() {
         valueArray[0] === document.querySelector(".docHead").id
     );
 
-    let currentMethods;
+    let currentMethods = [];
     for (const id of currentManual[1][1]) {
       item = getDocFrag(id);
-      console.log(item);
       if (item.type && item.type.includes("method")) {
         currentMethods.push(item);
       }
@@ -133,9 +132,9 @@ function manualOptions() {
 
     for (const id of currentManual[1][1]) {
       item = getDocFrag(id);
-      console.log(item);
       if (item.type && item.type.includes("method")) {
         html += `<label><a href="${item.id}">${item.name}</a></label>`;
+        console.log(item);
       }
     }
 
@@ -145,6 +144,7 @@ function manualOptions() {
     // Add events to the check boxes and check what settings should be applied
     diagnosticsToggle(diagnosticsEnabled);
     updateDiagDivs(diagnosticsEnabled);
+    constructNavigation();
   });
 }
 
@@ -156,6 +156,19 @@ function diagnosticsToggle(enabled) {
     const show = e.target.checked;
     updateDiagDivs(show.toString());
     localStorage.setItem("diagnosticsEnabled", show.toString());
+
+    // Add button behaviour to be in sync with checkbox
+    document.querySelectorAll(".docDiagButton").forEach((btn) => {
+      const errorDiv = btn.parentElement.parentElement;
+
+      const displayed = checkDiagnosticsDisplayStatus(errorDiv);
+
+      if (displayed && show) {
+        btn.style.transform = "rotate(-45deg)";
+      } else if (!displayed && !show) {
+        btn.style.transform = "rotate(0deg)";
+      }
+    });
   });
 }
 
@@ -174,12 +187,6 @@ function updateDiagDivs(enabled, id) {
       if (!div.classList.contains("diagnostics-visible")) {
         div.classList.add("diagnostics-visible");
         div.style.maxHeight = div.scrollHeight + "px";
-
-        // When the transitioned is finished we remove maxHeight
-        div.addEventListener("transitionend", function handler() {
-          div.style.maxHeight = "none";
-          div.removeEventListener("transitionend", handler);
-        });
       }
     } else {
       // collapse the diagnostics box
@@ -208,7 +215,6 @@ function methodOptions() {
   html += `</ul>`;
 
   pageOptions.innerHTML = html;
-  const searchBar = document.getElementById("searchBar");
   searchBarFunctionality("Methods");
 }
 
@@ -220,11 +226,11 @@ function diagnosticsOptions() {
   pageOptions.innerHTML = `   
     <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
   `;
-  const searchBar = document.getElementById("searchBar");
   searchBarFunctionality("Diagnostics");
 }
 
 function searchBarFunctionality(type) {
+  const searchBar = document.getElementById("searchBar");
   searchBar.addEventListener("input", () => {
     let val = searchBar.value;
     if (!val) {
