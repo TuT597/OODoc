@@ -12,8 +12,16 @@ Search bar for Details
 Diagnostics need to open when jumped to with a HREF link -> check diagnostic visible class
 on target element in construct nav function that highlights target.
 
-QOL options?
+QOL options - font size
 
 Highlight correct manual in Navlist when clicking links
 
 diagnostic div can still fade
+
+
+manual/distro clarity
+
+method options unclear
+
+remove default/options froms search
+
