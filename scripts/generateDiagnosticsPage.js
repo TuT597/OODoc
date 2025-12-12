@@ -35,11 +35,7 @@ function populateDiagnostics(val) {
     }
   }
 
-  sortedDiagnostics.sort((a, b) => {
-    const nameA = a.name || "";
-    const nameB = b.name || "";
-    return nameA.localeCompare(nameB);
-  });
+  sortMethods(sortedDiagnostics);
 
   // Remove duplicates
   const seen = new Set();

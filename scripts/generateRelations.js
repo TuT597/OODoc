@@ -69,6 +69,7 @@ function updateRelations(pageType) {
 
 function introductionOptions() {}
 
+// #region Manual
 function manualOptions() {
   const diagnosticsEnabled = localStorage.getItem(
     "diagnosticsEnabled".toString()
@@ -85,7 +86,7 @@ function manualOptions() {
           diagnosticsEnabled === "true" ? "checked" : ""
         }>
       </label>
-    </div>`;
+    </div><hr class="relationsDivider">`;
 
     // Grab all the main divs making up the manual
     const docDivs = contentDiv.querySelectorAll(".docDiv");
@@ -109,7 +110,7 @@ function manualOptions() {
         }
       }
     }
-    html += `</ul>`;
+    html += `</ul><hr class="relationsDivider">`;
 
     // Add section for methods
     const currentManual = Object.entries(indexLinks).find(
@@ -125,17 +126,15 @@ function manualOptions() {
       }
     }
 
+    sortMethods(currentMethods);
+
     html += `
     <div id="pageOptionsMethods">
       <h3>Methods:</h3>
       <div id="pageOptionsMethodsList">`;
 
-    for (const id of currentManual[1][1]) {
-      item = getDocFrag(id);
-      if (item.type && item.type.includes("method")) {
-        html += `<label><a href="${item.id}">${item.name}</a></label>`;
-        console.log(item);
-      }
+    for (const method of currentMethods) {
+      html += `<label><a href="#${method.id}">${method.name}</a></label>`;
     }
 
     html += `</div></div>`;
@@ -200,35 +199,93 @@ function updateDiagDivs(enabled, id) {
     }
   });
 }
+// #endregion Manual
 
+// #region Methods
 function methodOptions() {
   let html = `   
     <input type="text" id="searchBar" class="searchBar" placeholder="Search Methods..." />
+  <label class="methodsSwitch">
+    <input id="methodsSortingSwitch" type="checkbox">
+    <span class="methodsSlider"></span>
+    <span id="methodSliderText">
+      <span id="methodSliderText1">By Letter</span>
+      <span id="methodSliderText2">By Manual</span>
+    </span>
+  </label>
   `;
 
-  html += `<ul id="letterTabs">`;
+  let htmlLetterTabs = `<ul id="letterTabs">`;
   for (let i = 0; i < 26; i++) {
     const letter = String.fromCharCode(65 + i);
     const separator = i < 25 ? " /" : "";
-    html += `<li class="letterTabsItem"><a href="#letter${letter}">${letter}</a>${separator}</li>`;
+    htmlLetterTabs += `<li class="letterTabsItem"><a href="#letter${letter}">${letter}</a>${separator}</li>`;
   }
-  html += `</ul>`;
+  htmlLetterTabs += `</ul>`;
+
+  html += htmlLetterTabs;
 
   pageOptions.innerHTML = html;
+
+  const methodsSwitch = document.getElementById("methodsSortingSwitch");
+
+  methodsSwitch.addEventListener("change", () => {
+    if (!methodsSwitch.checked) {
+      populateMethods("", "letter");
+      document.querySelectorAll("#methodsManualList").forEach((tab) => tab.remove());
+
+      // Append new letterTabs as DOM node
+      const temp = document.createElement("div");
+      temp.innerHTML = htmlLetterTabs;
+      const newTabs = temp.firstElementChild;
+      pageOptions.appendChild(newTabs);
+
+      // Reattach navigation JS if needed
+      constructNavigation();
+    }
+
+    if (methodsSwitch.checked) {
+      populateMethods("", "manual");
+      document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
+
+      const temp = document.createElement("div");
+      let html = `<div id="methodsManualListDiv"><ul id="methodsManualList">`;
+
+      const manuals = getUniqueManuals();
+      for (const manual of manuals) {
+        html += `<li class="methodsManualListItem"><a href="#${manual}">${manual}</a></li>`;
+      }
+
+      html += `</ul></div>`;
+
+      temp.innerHTML = html;
+      const manualList = temp.firstElementChild;
+      pageOptions.appendChild(manualList);
+
+      constructNavigation();
+    }
+  });
+
   searchBarFunctionality("Methods");
 }
+// #endregion Methods
 
+// #region Details
 function detailsOptions() {
   pageOptions.style.display = "none";
 }
+// #endregion Details
 
+// #region Diagnostics
 function diagnosticsOptions() {
   pageOptions.innerHTML = `   
     <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
   `;
   searchBarFunctionality("Diagnostics");
 }
+// #endregion Diagnostics
 
+// #region Utility
 function searchBarFunctionality(type) {
   const searchBar = document.getElementById("searchBar");
   searchBar.addEventListener("input", () => {
@@ -241,3 +298,4 @@ function searchBarFunctionality(type) {
     }
   });
 }
+// #endregion Utility

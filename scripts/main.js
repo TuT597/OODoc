@@ -4,10 +4,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     (response) => response.json()
   );
   console.log(data);
-
+  
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);
   const indexLinks = window.indexLinks;
+  console.log(indexLinks);
 
   const navListMainSelections = document.querySelectorAll(".mainSelection");
   const listDiv = document.getElementById("manualsListDiv");

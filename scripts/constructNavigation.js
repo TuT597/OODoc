@@ -1,29 +1,49 @@
 function constructNavigation() {
-  // Select all href links on the generated page
+  // Select all href links on the generated page and reset listeners
   let links1 = contentDiv.querySelectorAll("a[href]");
   let links2 = relationsDiv.querySelectorAll("a[href]");
-
   let hrefLinks = [...links1, ...links2];
-
-  // Add click functionality to them
   hrefLinks.forEach((link) => {
-    link.addEventListener("click", function (e) {
-      const hrefValue = link.getAttribute("href");
-      e.preventDefault();
-      if (hrefValue.startsWith("id")) {
-        const linkID = hrefValue;
-        const linkObj = getDocFrag(linkID);
-        if (!linkObj) {
-          console.log("ERROR: Can't find ID.");
-          return;
-        }
-        // Make the link direct to the correct content and item
-        processLinkObj(linkObj);
-      } else if (hrefValue.startsWith("https")) {
-        window.open(hrefValue, "_blank");
-      }
-    });
+    link.replaceWith(link.cloneNode(true));
   });
+
+  // Select new links
+  let updatedLinks1 = contentDiv.querySelectorAll("a[href]");
+  let updatedLinks2 = relationsDiv.querySelectorAll("a[href]");
+  let updatedHrefLinks = [...updatedLinks1, ...updatedLinks2];
+
+  updatedHrefLinks.forEach((link) => {
+    link.addEventListener("click", handleLinkClick);
+  });
+}
+
+// Add click functionality to them
+function handleLinkClick(e) {
+  e.preventDefault();
+  const hrefValue = this.getAttribute("href");
+
+  if (hrefValue.startsWith("#")) {
+    const targetElem = contentDiv.querySelector(`${hrefValue}`);
+    targetElem.classList.add("highlight");
+    targetElem.scrollIntoView({ block: "center" });
+    setTimeout(() => {
+      targetElem.classList.remove("highlight");
+    }, 1000);
+    return;
+  }
+
+  if (hrefValue.startsWith("id")) {
+    const linkID = hrefValue;
+    const linkObj = getDocFrag(linkID);
+    if (!linkObj) {
+      console.log("ERROR: Can't find ID.");
+      return;
+    }
+    // Make the link direct to the correct content and item
+    processLinkObj(linkObj);
+  } else if (hrefValue.startsWith("https")) {
+    window.open(hrefValue, "_blank");
+  }
 }
 
 function processLinkObj(linkObj) {
@@ -90,9 +110,9 @@ function attachDiagnosticButtons() {
 
 function checkDiagnosticsDisplayStatus(div) {
   // check if diagnostics are currently displayed
-  const displayed = Array.from(
-    div.querySelectorAll(".docDiagnosticsDiv")
-  ).some((div) => div.classList.contains("diagnostics-visible"));
+  const displayed = Array.from(div.querySelectorAll(".docDiagnosticsDiv")).some(
+    (div) => div.classList.contains("diagnostics-visible")
+  );
 
   return displayed;
 }

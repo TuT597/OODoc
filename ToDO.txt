@@ -1,11 +1,19 @@
 FIXED - Diagnostics box buttons still not working properly with checkbox
 
-50% - Finish method generation on relations section
+75% - Methods on manualpage's relation section now alphabetically sorted but still 
+      needs sort by section
 
 Ugly highlighting on table options
 
-More sorting and searching options for methods and diagnostics
+100% More sorting and searching options for methods and diagnostics
 
 Search bar for Details
 
+Diagnostics need to open when jumped to with a HREF link -> check diagnostic visible class
+on target element in construct nav function that highlights target.
+
 QOL options?
+
+Highlight correct manual in Navlist when clicking links
+
+diagnostic div can still fade
