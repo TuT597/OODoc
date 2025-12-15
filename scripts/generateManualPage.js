@@ -13,7 +13,7 @@ function generateManualPage(manualID) {
     content += generateChapter(getDocFrag(chapter));
   }
 
-  updateRelations("manual");
+  updateRelations("manual", manual.id);
   return content;
 }
 
@@ -125,7 +125,7 @@ function generateSubroutine(subroutine) {
 function generateOption(option) {
   let optionContent = ``;
   if (option.type === "option") {
-    optionContent += `<div class="docOption can-fade"><p class="docCall">${option.name} => ${option.params}</p>`;
+    optionContent += `<div class="docOption can-fade"><p class="optionCall">${option.name} => ${option.params}</p>`;
     option.intro
       ? (optionContent += `<div class="subText">${option.intro}</div></div>`)
       : (optionContent += `</div>`);

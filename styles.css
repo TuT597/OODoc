@@ -5,7 +5,7 @@
   --LIGHTER: #484848;
 
   --THEMESWITCH: #c2c2c2;
-  --THEMESWITCHBG: #323232;
+  --THEMESWITCHBG: #414141;
 
   --TEXT: #c2c2c2;
   --PRETEXT: lightblue;
@@ -152,6 +152,14 @@ input[type="checkbox"]:checked::after {
   padding: 5px 10px;
   display: flex;
   flex-flow: column nowrap;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+#manualsListDivScroll {
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: none;
@@ -380,14 +388,18 @@ a[href]:hover {
 
 .docSubroutine {
   margin-bottom: 15px;
+  padding: 5px;
+  border: var(--DARKER) 2px solid;
+  border-radius: 5px;
 }
 
 .docOption {
+  margin-left: 1em;
   margin-bottom: 15px;
 }
 
 .docCall {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -403,16 +415,17 @@ a[href]:hover {
   list-style: none;
 }
 
-.subText {
-  margin-left: 1em;
-}
-
 .subText p:not(:first-child) {
   margin-top: 10px;
 }
 
 .subText .parameter {
   color: rgb(235, 233, 118);
+}
+
+.optionCall {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .optionsTable {
@@ -447,6 +460,7 @@ td {
 #optionsTableDiv {
   width: fit-content;
   background-color: var(--DARKER);
+  margin-left: 1em;
   border-radius: 5px;
 }
 
@@ -626,27 +640,49 @@ td {
 }
 
 #generalOptions {
-  /*border: solid green 1px;*/
   display: grid;
-  justify-items: end;
-  padding: 10px;
-  width: 100%;
+  justify-items: start;
+  gap: 20px;
+  padding: 15px;
+  margin: 10px 0px;
+  width: 95%;
+  background-color: var(--DARKER);
+  box-shadow: inset 0px 0px 3px 1px black;
 }
 
 #pageOptions {
   /*border: solid yellow 1px;*/
   display: grid;
   justify-items: start;
+  gap: 20px;
   padding: 15px;
   margin: 10px 0px;
   width: 95%;
   background-color: var(--DARKER);
   box-shadow: inset 0px 0px 3px 1px black;
   z-index: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+#currentPageDisplay {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+#currentPageManual {
+  font-size: 18px;
+}
+
+#currentPageDistro {
+  font-size: 16px;
 }
 
 .pageOptionsPreferences {
-  margin-top: 15px;
   display: flex;
   flex-direction: column;
   font-size: large;
@@ -679,7 +715,7 @@ td {
 #pageOptions h3 {
   font-weight: bold;
   font-size: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 #indexList {
@@ -746,9 +782,6 @@ td {
   scrollbar-width: none;
   scroll-behavior: smooth;
   -ms-overflow-style: none;
-}
-
-.methodsManualListItem {
 }
 
 .methodsManualListItem a {

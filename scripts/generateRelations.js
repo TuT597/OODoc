@@ -43,14 +43,14 @@ function applyTheme(theme) {
   localStorage.setItem("theme", theme);
 }
 
-function updateRelations(pageType) {
+function updateRelations(pageType, parameter) {
   if (pageOptions.style.display == "none") {
     pageOptions.style.display = "grid";
   }
   pageOptions.innerHTML = ``;
   switch (pageType) {
     case "manual":
-      manualOptions();
+      manualOptions(parameter);
       break;
 
     case "methods":
@@ -70,7 +70,10 @@ function updateRelations(pageType) {
 function introductionOptions() {}
 
 // #region Manual
-function manualOptions() {
+function manualOptions(manualID) {
+  const currentManual = getDocFrag(manualID);
+  const manualName = currentManual.name;
+  const manualDistribution = currentManual.distribution;
   const diagnosticsEnabled = localStorage.getItem(
     "diagnosticsEnabled".toString()
   );
@@ -79,6 +82,11 @@ function manualOptions() {
     // Add section for user preferences
     let html = `
     <div class="pageOptionsPreferences">
+      <span id="currentPageDisplay">
+        <h4>Current manual:</h4>
+        <label id="currentPageManual">${manualName}</label>
+        <label id="currentPageDistro">${manualDistribution}</label>
+      </span>
       <h3>Preferences:</h3>
       <label>
         Show diagnostics: 
@@ -86,11 +94,12 @@ function manualOptions() {
           diagnosticsEnabled === "true" ? "checked" : ""
         }>
       </label>
-    </div><hr class="relationsDivider">`;
+    </div>`;
 
     // Grab all the main divs making up the manual
     const docDivs = contentDiv.querySelectorAll(".docDiv");
     html += `
+    <div id="manualContentTree">
     <h3>Contents:</h3>
     <ul id="indexList">`;
     // Loop through them and look for all the Chapters then put them in the list
@@ -110,7 +119,7 @@ function manualOptions() {
         }
       }
     }
-    html += `</ul><hr class="relationsDivider">`;
+    html += `</ul></div>`;
 
     // Add section for methods
     const currentManual = Object.entries(indexLinks).find(

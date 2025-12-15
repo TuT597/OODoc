@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const fetchTarget = document.getElementById("config").dataset.fetchTarget;
-  console.log(fetchTarget);
   window.data = await fetch(fetchTarget).then((response) => response.json());
+  console.log(data);
 
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);
   const indexLinks = window.indexLinks;
 
   const navListMainSelections = document.querySelectorAll(".mainSelection");
-  const listDiv = document.getElementById("manualsListDiv");
+  const listDiv = document.getElementById("manualsListDivScroll");
   let activeItem;
 
   const navSearchBar = document.getElementById("navSearchBar");
