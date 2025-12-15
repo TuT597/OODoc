@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let matchingObjects = [];
     for (let key in data.index) {
       let obj = data.index[key];
-      if (obj.name && obj.name.toLowerCase().includes(val.toLowerCase())) {
+      if (obj.name && obj.name.toLowerCase().includes(val.toLowerCase()) && obj.type !== "default" && obj.type !== "option") {
         matchingObjects.push(obj);
       }
     }
@@ -257,6 +257,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const nameB = b.name || "";
       return nameA.localeCompare(nameB);
     });
+
+    console.log(matchingObjects);
 
     // Group subitems by manual
     let groupedResults = [];

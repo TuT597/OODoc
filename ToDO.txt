@@ -5,7 +5,7 @@ FIXED - Diagnostics box buttons still not working properly with checkbox
 
 Ugly highlighting on table options
 
-100% More sorting and searching options for methods and diagnostics
+60% - More sorting and searching options for methods and diagnostics
 
 Search bar for Details
 
@@ -18,10 +18,9 @@ Highlight correct manual in Navlist when clicking links
 
 diagnostic div can still fade
 
-
 manual/distro clarity
 
 method options unclear
 
-remove default/options froms search
+FIXED - remove default/options froms search
 
