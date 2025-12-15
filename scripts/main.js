@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  // New versions can be found at: https://perl.overmeer.net/oodoc/doctree/
-  window.data = await fetch("data/Mail-Box-4.000-website.json").then(
-    (response) => response.json()
-  );
+  const fetchTarget = document.getElementById("config").dataset.fetchTarget;
+  console.log(fetchTarget);
+  window.data = await fetch(fetchTarget).then((response) => response.json());
 
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);
