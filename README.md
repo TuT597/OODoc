@@ -71,3 +71,9 @@ parser and me a front-end framework to plug it's output into.
 As this was my first project in a while, I just started working to see
 where I would end-up and face challenges as they came. This is the result
 of that endaevor.
+
+-Tuyan Tatliparmak [linkedIn](https://www.linkedin.com/in/tuyan-tatliparmak-7545a6267/)
+
+## Copyright and License
+
+This project is free software; you can redistribute it and/or modify it under the same terms as Perl itself. See http://dev.perl.org/licenses/
