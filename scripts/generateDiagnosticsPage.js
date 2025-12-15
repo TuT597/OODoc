@@ -4,7 +4,7 @@ function generateDiagnosticsPage() {
   constructNavigation();
 }
 
-function populateDiagnostics(val) {
+function populateDiagnostics(val, sortMethod) {
   let content = ``;
   // Create new array to alphabetically sort diagnostics
   let sortedDiagnostics = [];

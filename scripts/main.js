@@ -3,12 +3,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   window.data = await fetch("data/Mail-Box-4.000-website.json").then(
     (response) => response.json()
   );
-  console.log(data);
-  
+
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);
   const indexLinks = window.indexLinks;
-  console.log(indexLinks);
 
   const navListMainSelections = document.querySelectorAll(".mainSelection");
   const listDiv = document.getElementById("manualsListDiv");
@@ -241,7 +239,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     let matchingObjects = [];
     for (let key in data.index) {
       let obj = data.index[key];
-      if (obj.name && obj.name.toLowerCase().includes(val.toLowerCase()) && obj.type !== "default" && obj.type !== "option") {
+      if (
+        obj.name &&
+        obj.name.toLowerCase().includes(val.toLowerCase()) &&
+        obj.type !== "default" &&
+        obj.type !== "option"
+      ) {
         matchingObjects.push(obj);
       }
     }

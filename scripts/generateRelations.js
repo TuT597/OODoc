@@ -209,8 +209,8 @@ function methodOptions() {
     <input id="methodsSortingSwitch" type="checkbox">
     <span class="methodsSlider"></span>
     <span id="methodSliderText">
-      <span id="methodSliderText1">By Letter</span>
-      <span id="methodSliderText2">By Manual</span>
+      <span>By Letter</span>
+      <span>By Manual</span>
     </span>
   </label>
   `;
@@ -227,26 +227,78 @@ function methodOptions() {
 
   pageOptions.innerHTML = html;
 
+  sortingFunctionality("Methods", htmlLetterTabs);
+  searchBarFunctionality("Methods");
+}
+// #endregion Methods
+
+// #region Details
+function detailsOptions() {
+  pageOptions.style.display = "none";
+}
+// #endregion Details
+
+// #region Diagnostics
+function diagnosticsOptions() {
+  pageOptions.innerHTML = `   
+    <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
+    <label class="methodsSwitch">
+      <input id="methodsSortingSwitch" type="checkbox">
+      <span class="methodsSlider"></span>
+      <span id="methodSliderText">
+        <span>By Type</span>
+        <span>By Manual</span>
+      </span>
+    </label>
+  `;
+
+  sortingFunctionality("Diagnostics");
+  searchBarFunctionality("Diagnostics");
+}
+// #endregion Diagnostics
+
+// #region Utility
+function searchBarFunctionality(type) {
+  const searchBar = document.getElementById("searchBar");
+  searchBar.addEventListener("input", () => {
+    let val = searchBar.value;
+    if (!val) {
+      window[`populate${type}`]();
+    }
+    if (val.length > 2) {
+      window[`populate${type}`](val);
+    }
+  });
+}
+
+function sortingFunctionality(pageType, html) {
+  console.log("n");
   const methodsSwitch = document.getElementById("methodsSortingSwitch");
 
   methodsSwitch.addEventListener("change", () => {
     if (!methodsSwitch.checked) {
-      populateMethods("", "letter");
-      document.querySelectorAll("#methodsManualList").forEach((tab) => tab.remove());
+      window[`populate${pageType}`]("", "letter");
+      document
+        .querySelectorAll("#methodsManualListDiv")
+        .forEach((tab) => tab.remove());
 
-      // Append new letterTabs as DOM node
-      const temp = document.createElement("div");
-      temp.innerHTML = htmlLetterTabs;
-      const newTabs = temp.firstElementChild;
-      pageOptions.appendChild(newTabs);
+      if (pageType === "methods") {
+        // Append new letterTabs as DOM node
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        const newTabs = temp.firstElementChild;
+        pageOptions.appendChild(newTabs);
+      }
 
       // Reattach navigation JS if needed
       constructNavigation();
     }
 
     if (methodsSwitch.checked) {
-      populateMethods("", "manual");
-      document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
+      window[`populate${pageType}`]("", "manual");
+      if (pageType === "methods") {
+        document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
+      }
 
       const temp = document.createElement("div");
       let html = `<div id="methodsManualListDiv"><ul id="methodsManualList">`;
@@ -265,37 +317,6 @@ function methodOptions() {
       constructNavigation();
     }
   });
-
-  searchBarFunctionality("Methods");
 }
-// #endregion Methods
 
-// #region Details
-function detailsOptions() {
-  pageOptions.style.display = "none";
-}
-// #endregion Details
-
-// #region Diagnostics
-function diagnosticsOptions() {
-  pageOptions.innerHTML = `   
-    <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
-  `;
-  searchBarFunctionality("Diagnostics");
-}
-// #endregion Diagnostics
-
-// #region Utility
-function searchBarFunctionality(type) {
-  const searchBar = document.getElementById("searchBar");
-  searchBar.addEventListener("input", () => {
-    let val = searchBar.value;
-    if (!val) {
-      window[`populate${type}`]();
-    }
-    if (val.length > 2) {
-      window[`populate${type}`](val);
-    }
-  });
-}
 // #endregion Utility
