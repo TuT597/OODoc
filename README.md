@@ -1,4 +1,5 @@
 # OODoc - Documentation visualizer
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 OODoc is a documentation system for the Perl programming language, which
 extends the standard `perldoc` system with object oriented features.
@@ -71,3 +72,10 @@ parser and me a front-end framework to plug it's output into.
 As this was my first project in a while, I just started working to see
 where I would end-up and face challenges as they came. This is the result
 of that endaevor.
+
+-Tuyan Tatliparmak [linkedIn](https://www.linkedin.com/in/tuyan-tatliparmak-7545a6267/)
+
+## Copyright and License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE) - see the [LICENSE](LICENSE) file for details.
+
