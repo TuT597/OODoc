@@ -31,18 +31,20 @@ function populateMethods(val, sortMethod) {
         content += entryContent;
       }
     }
-  } else if (sortMethod === "manual") {
+  } 
+  // Instead of sorting methods by alphebet we group them by manual instead
+  else if (sortMethod === "manual") {
     let manuals = getUniqueManuals(sortedMethods);
 
     for (const manual of manuals) {
       content += `<div class="docHeadMethod">
-        <h1 id="${manual}" class="docName can-fade">${manual}</h1>
+        <h1 id="${manual[1]}" class="docName can-fade">${manual[0]}</h1>
         </div>
         <div class="subDiv methodPageSection">
       `;
 
       for (const method of sortedMethods) {
-        if (method.manualName === manual) {
+        if (method.manualName === manual[0]) {
           content += `<label class="methodPageLabel"><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
         }
       }
@@ -75,6 +77,7 @@ function getSortedMethods(val) {
           continue;
         }
         item.manualName = manual;
+        item.manualID = indexLinks[entry][0];
         sortedMethods.push(item);
       }
     }
@@ -94,12 +97,11 @@ function getSortedMethods(val) {
   return sortedMethods;
 }
 
-function getUniqueManuals() {
-  const sortedMethods = getSortedMethods();
+function getUniqueManuals(items) {
   let manuals = [];
-  for (const method of sortedMethods) {
-    if (!manuals.includes(method.manualName) && method.manualName) {
-      manuals.push(method.manualName);
+  for (const item of items) {
+    if (!manuals.some(manual => manual[0] === item.manualName) && item.manualName) {
+      manuals.push([item.manualName, item.manualID]);
     }
   }
   return manuals.sort();

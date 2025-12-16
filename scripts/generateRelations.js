@@ -212,16 +212,17 @@ function updateDiagDivs(enabled, id) {
 
 // #region Methods
 function methodOptions() {
-  let html = `   
+  let html = `
+    <h2>Diagnostics</h2>
     <input type="text" id="searchBar" class="searchBar" placeholder="Search Methods..." />
-  <label class="methodsSwitch">
-    <input id="methodsSortingSwitch" type="checkbox">
-    <span class="methodsSlider"></span>
-    <span id="methodSliderText">
-      <span>By Letter</span>
-      <span>By Manual</span>
-    </span>
-  </label>
+    <label class="methodsSwitch">
+      <input id="methodsSortingSwitch" type="checkbox">
+      <span class="methodsSlider"></span>
+      <span id="methodSliderText">
+        <span>By Letter</span>
+        <span>By Manual</span>
+      </span>
+    </label>
   `;
 
   let htmlLetterTabs = `<ul id="letterTabs">`;
@@ -236,7 +237,10 @@ function methodOptions() {
 
   pageOptions.innerHTML = html;
 
-  sortingFunctionality("Methods", htmlLetterTabs);
+  const methodsSwitch = document.getElementById("methodsSortingSwitch");
+  methodsSwitch.addEventListener("change", () => {
+    sortingFunctionality("Methods", methodsSwitch.checked, htmlLetterTabs);
+  });
   searchBarFunctionality("Methods");
 }
 // #endregion Methods
@@ -249,7 +253,8 @@ function detailsOptions() {
 
 // #region Diagnostics
 function diagnosticsOptions() {
-  pageOptions.innerHTML = `   
+  let html = `
+    <h2>Diagnostics</h2>
     <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
     <label class="methodsSwitch">
       <input id="methodsSortingSwitch" type="checkbox">
@@ -261,71 +266,96 @@ function diagnosticsOptions() {
     </label>
   `;
 
-  sortingFunctionality("Diagnostics");
+  const diagnosticTypes = getDiagnosticTypes(getSortedDiagnostics()).sort();
+  let htmlTypeTabs = `<ul id="typeTabs">`;
+  for (const type of diagnosticTypes) {
+    htmlTypeTabs += `<li><a href="#${type}">${type.toUpperCase()}</a></li>`;
+  }
+  htmlTypeTabs += `</ul>`;
+
+  html += htmlTypeTabs;
+
+  pageOptions.innerHTML = html;
+
+  const methodsSwitch = document.getElementById("methodsSortingSwitch");
+  methodsSwitch.addEventListener("change", () => {
+    sortingFunctionality("Diagnostics", methodsSwitch.checked, htmlTypeTabs);
+  });
   searchBarFunctionality("Diagnostics");
 }
 // #endregion Diagnostics
 
 // #region Utility
 function searchBarFunctionality(type) {
+  const methodSwitch = document.getElementById("methodsSortingSwitch");
   const searchBar = document.getElementById("searchBar");
   searchBar.addEventListener("input", () => {
+    let sortMethod = methodSwitch.checked ? "manual" : "letter";
     let val = searchBar.value;
     if (!val) {
-      window[`populate${type}`]();
+      window[`populate${type}`]("", sortMethod);
     }
     if (val.length > 2) {
-      window[`populate${type}`](val);
+      window[`populate${type}`](val, sortMethod);
     }
   });
 }
 
-function sortingFunctionality(pageType, html) {
-  console.log("n");
-  const methodsSwitch = document.getElementById("methodsSortingSwitch");
+function sortingFunctionality(pageType, checked, html) {
+  if (!checked) {
+    window[`populate${pageType}`]("", "letter");
+    document
+      .querySelectorAll("#methodsManualListDiv")
+      .forEach((tab) => tab.remove());
 
-  methodsSwitch.addEventListener("change", () => {
-    if (!methodsSwitch.checked) {
-      window[`populate${pageType}`]("", "letter");
-      document
-        .querySelectorAll("#methodsManualListDiv")
-        .forEach((tab) => tab.remove());
-
-      if (pageType === "methods") {
-        // Append new letterTabs as DOM node
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        const newTabs = temp.firstElementChild;
-        pageOptions.appendChild(newTabs);
-      }
-
-      // Reattach navigation JS if needed
-      constructNavigation();
-    }
-
-    if (methodsSwitch.checked) {
-      window[`populate${pageType}`]("", "manual");
-      if (pageType === "methods") {
-        document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
-      }
-
+    if (pageType === "Methods") {
+      // create new lettertabs
       const temp = document.createElement("div");
-      let html = `<div id="methodsManualListDiv"><ul id="methodsManualList">`;
-
-      const manuals = getUniqueManuals();
-      for (const manual of manuals) {
-        html += `<li class="methodsManualListItem"><a href="#${manual}">${manual}</a></li>`;
-      }
-
-      html += `</ul></div>`;
-
       temp.innerHTML = html;
-      const manualList = temp.firstElementChild;
-      pageOptions.appendChild(manualList);
-
-      constructNavigation();
+      const newLetterTabs = temp.firstElementChild;
+      pageOptions.appendChild(newLetterTabs);
     }
-  });
+
+    if (pageType === "Diagnostics") {
+      // create new type tabs
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+      const newTypeTabs = temp.firstElementChild;
+      pageOptions.appendChild(newTypeTabs);
+    }
+
+    // Reattach navigation
+    constructNavigation();
+  }
+
+  if (checked) {
+    window[`populate${pageType}`]("", "manual");
+    if (pageType === "Methods") {
+      document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
+    }
+
+    if (pageType === "Details") {
+      // remove type tabs here
+    }
+
+    // Create the manual list
+    const temp = document.createElement("div");
+    let html = `<div id="methodsManualListDiv"><ul id="methodsManualList">`;
+
+    const items = window[`getSorted${pageType}`]();
+    const manuals = getUniqueManuals(items);
+    for (const manual of manuals) {
+      html += `<li class="methodsManualListItem"><a href="#${manual[1]}">${manual[0]}</a></li>`;
+    }
+
+    html += `</ul></div>`;
+
+    temp.innerHTML = html;
+    const manualList = temp.firstElementChild;
+    pageOptions.appendChild(manualList);
+
+    constructNavigation();
+  }
 }
 
 // #endregion Utility

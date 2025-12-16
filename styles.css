@@ -314,6 +314,19 @@ input[type="checkbox"]:checked::after {
   background-color: var(--LIGHT);
 }
 
+.docDiv ul {
+  margin-left: 1em;
+  list-style-position: inside;
+}
+
+.docDiv p {
+  margin-bottom: 10px;
+}
+
+.docDiv p:last-of-type {
+  margin-bottom: 0;
+}
+
 pre {
   align-self: center;
   color: var(--PRETEXT);
@@ -503,11 +516,6 @@ td {
   transition: max-height 1s ease !important;
 }
 
-.docDiv ul {
-  margin-left: 1em;
-  list-style-position: inside;
-}
-
 .highlight {
   background-color: var(--TEXT);
   color: var(--DARKER);
@@ -639,6 +647,10 @@ td {
   -ms-overflow-style: none;
 }
 
+#relationsDiv a {
+  text-decoration: none;
+}
+
 #generalOptions {
   display: grid;
   justify-items: start;
@@ -707,6 +719,10 @@ td {
   font-size: medium;
 }
 
+#pageOptionsMethodsList label::after {
+  content: ",";
+}
+
 #pageOptions .searchBar {
   justify-self: center;
   width: 95%;
@@ -742,13 +758,15 @@ td {
 }
 
 #letterTabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   list-style-type: none;
-  padding-top: 15px;
   user-select: none;
 }
 
 .letterTabsItem {
-  display: inline;
   margin-right: 5px;
   font-size: 20px;
 }
@@ -761,11 +779,25 @@ td {
   text-decoration: none;
 }
 
+#typeTabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  list-style-type: none;
+  user-select: none;
+  font-size: 20px;
+  gap: 15px;
+}
+
+#typeTabs li {
+  
+}
+
 #methodsManualListDiv {
   display: flex;
   flex-direction: column;
-  height: 78vh;
-  margin-top: 15px;
+  height: 100%;
   padding: 10px 15px;
   overflow-y: hidden;
   width: 100%;
@@ -871,7 +903,6 @@ input:checked + .slider:before {
 
 /* The switch - the box around the slider */
 .methodsSwitch {
-  margin-top: 15px;
   justify-self: center;
   position: relative;
   display: inline-block;

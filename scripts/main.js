@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const generalOptions = document.getElementById("generalOptions");
 
   // Load user settings
-  const savedTheme = localStorage.getItem("theme") || "light";
+  const savedTheme = localStorage.getItem("theme") || "dark";
   applyTheme(savedTheme);
 
   // Generate intro page and relations.
