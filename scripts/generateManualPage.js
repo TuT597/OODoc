@@ -60,6 +60,21 @@ function generateSection(section) {
     }
   }
 
+  // check for examples
+  if (section.examples) {
+    content += `<div id="${section.id}" class="docErrorsDiv">
+                  <div class="docDiagLabel">
+                    <p class="docErrors">Examples (${section.examples.length})</p>
+                    <button class="docDiagButton"><i class="fa-solid fa-chevron-left"></i></button>
+                  </div>`;
+    for (example in section.examples) {
+      content += generateExample(
+        getDocFrag(section.examples[example])
+      );
+    }
+    content += `</div>`;
+  }
+
   if (section.nest) {
     for (let subsection in section.nest) {
       content += generateSection(getDocFrag(section.nest[subsection]));
@@ -101,6 +116,21 @@ function generateSubroutine(subroutine) {
     optionsTable += `</table></div>`;
     content += optionsTable;
     content += optionContent;
+  }
+
+  // check for examples
+  if (subroutine.examples) {
+    content += `<div id="${subroutine.id}" class="docErrorsDiv">
+                  <div class="docDiagLabel">
+                    <p class="docErrors">Examples (${subroutine.examples.length})</p>
+                    <button class="docDiagButton"><i class="fa-solid fa-chevron-left"></i></button>
+                  </div>`;
+    for (example in subroutine.examples) {
+      content += generateExample(
+        getDocFrag(subroutine.examples[example])
+      );
+    }
+    content += `</div>`;
   }
 
   // check for diagnostics
@@ -154,4 +184,14 @@ function generateDiagnostic(diagnostic) {
   }
   diagnosticContent += `</div>`;
   return diagnosticContent;
+}
+
+// generate example
+function generateExample(example) {
+  let exampleContent = `<div id="${example.id}" class="docExamplesDiv"><div class="docExample">${example.type}: ${example.name}</div>`;
+  if (example.intro) {
+    exampleContent += `<div class="subText">${example.intro}</div>`;
+  }
+  exampleContent += `</div>`;
+  return exampleContent;
 }
