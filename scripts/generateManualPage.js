@@ -62,7 +62,7 @@ function generateSection(section) {
 
   if (section.nest) {
     for (let subsection in section.nest) {
-      content += generateSubroutine(getDocFrag(section.nest[subsection]));
+      content += generateSection(getDocFrag(section.nest[subsection]));
     }
   }
 
