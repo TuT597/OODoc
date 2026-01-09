@@ -10,92 +10,95 @@ function generateManualPage(manualID) {
 
   // loop through chapters in manual
   for (let chapter of manual.chapters) {
-    content += generateChapter(getDocFrag(chapter));
+    content += generateBlock(getDocFrag(chapter));
   }
 
   updateRelations("manual", manual.id);
   return content;
 }
 
-// generate chapter
-function generateChapter(chapter) {
-  if (chapter.name === "NAME" || (!chapter.intro && !chapter.nest)) {
+function generateBlock(docFrag) {
+  if (
+    docFrag.name === "NAME" ||
+    (!docFrag.intro && !docFrag.nest && !docFrag.subroutines)
+  ) {
     return ``;
   }
 
-  content = `
-      <div id="${chapter.id}" class="docDiv can-fade">
-      <banner class="docChapter">${chapter.name}</banner>`;
+  docFrag.type === "chapter"
+    ? (content = `
+      <div id="${docFrag.id}" class="docDiv can-fade">
+      <banner class="docChapter">${docFrag.name}</banner>`)
+    : (content = `
+    <div id="${docFrag.id}" class="subDiv can-fade">
+    <p class="docSection">${docFrag.name}</p>`);
 
-  if (chapter.intro) {
-    content += `<div class=docText>${chapter.intro}</div>`;
+  if (docFrag.intro) {
+    content += `<div class="docText">${docFrag.intro}</div>`;
   }
 
-  // check for nest in case chapter has sections and loop through those
-  if (chapter.nest) {
-    for (let section in chapter.nest) {
-      content += generateSection(getDocFrag(chapter.nest[section]));
+  // check for nest
+  if (docFrag.nest) {
+    for (let section in docFrag.nest) {
+      const frag = getDocFrag(docFrag.nest[section]);
+      if (frag.level && frag.level > 2) {
+        content += generateSubBlock(frag);
+      } else {
+        content += generateBlock(frag);
+      }
     }
-  }
-
-  content += `</div>`;
-  return content;
-}
-
-// generate sections
-function generateSection(section) {
-  content = `
-    <div id="${section.id}" class="subDiv can-fade">
-    <p class="docSection">${section.name}</p>`;
-  if (section.intro) {
-    content += `<div class="docText">${section.intro}</div>`;
   }
 
   // check for subroutines
-  if (section.subroutines) {
-    for (let subroutine in section.subroutines) {
-      content += generateSubroutine(
-        getDocFrag(section.subroutines[subroutine])
-      );
+  if (docFrag.subroutines) {
+    for (let subroutine in docFrag.subroutines) {
+      content += generateSubBlock(getDocFrag(docFrag.subroutines[subroutine]));
     }
   }
 
-  if (section.nest) {
-    for (let subsection in section.nest) {
-      content += generateSubroutine(getDocFrag(section.nest[subsection]));
-    }
+  if (docFrag.type === "section") {
+    content += `</div><hr class="MethodsDivider">`;
+  } else {
+    content += `</div>`;
   }
-
-  content += `</div><hr class="MethodsDivider">`;
   return content;
 }
 
-// generate subroutines
-function generateSubroutine(subroutine) {
-  content = `<div id="${subroutine.id}" class="docSubroutine can-fade">`;
-  if (subroutine.call) {
-    content += `<div class="docCall">${subroutine.call}</div>`;
-  } else if (subroutine.name) {
-    content += `<div class="docCall">${subroutine.name}</div>`;
-  }
-  if (subroutine.intro) {
-    content += `<div class="subText">${subroutine.intro}</div>`;
+function generateSubBlock(docFrag) {
+  if (docFrag.level) {
+    content = `<div id="${docFrag.id}" class="subDiv can-fade">`;
+    if (docFrag.level === 3)
+      content += `<p class="docSubSection">${docFrag.name}</p>`;
+    else if (docFrag.level === 4)
+      content += `<p class="docSubSubSection">${docFrag.name}</p>`;
+    else content += `<p class="docSection">${docFrag.name}</p>`;
+    content += `<div class="docSubroutine can-fade">
+      <div class="docText">${docFrag.intro}</div>
+    `;
+  } else {
+    content = `<div id="${docFrag.id}" class="docSubroutine can-fade">`;
+    if (docFrag.call) {
+      content += `<div class="docCall">${docFrag.call}</div>`;
+    } else if (docFrag.name) {
+      content += `<div class="docCall">${docFrag.name}</div>`;
+    }
+    if (docFrag.intro) {
+      content += `<div class="subText">${docFrag.intro}</div>`;
+    }
   }
 
   // check for options
-  if (subroutine.options) {
+  if (docFrag.options) {
     let optionsTable = `<div id="optionsTableDiv"><table class="optionsTable">
         <tr>
           <th>Option</th>
           <th>Default</th>
         </tr>`;
     let optionContent = ``;
-    for (let i = 0; i < subroutine.options.length; i++) {
-      for (let j = 0; j < subroutine.options[i].length; j++) {
-        optionContent += generateOption(getDocFrag(subroutine.options[i][j]));
-        optionsTable += generateOptionsTable(
-          getDocFrag(subroutine.options[i][j])
-        );
+    for (let i = 0; i < docFrag.options.length; i++) {
+      for (let j = 0; j < docFrag.options[i].length; j++) {
+        optionContent += generateOption(getDocFrag(docFrag.options[i][j]));
+        optionsTable += generateOptionsTable(getDocFrag(docFrag.options[i][j]));
       }
     }
     optionsTable += `</table></div>`;
@@ -104,20 +107,31 @@ function generateSubroutine(subroutine) {
   }
 
   // check for diagnostics
-  if (subroutine.diagnostics) {
-    content += `<div id="${subroutine.id}" class="docErrorsDiv">
+  if (docFrag.diagnostics) {
+    content += `<div id="${docFrag.id}" class="docErrorsDiv">
                   <div class="docDiagLabel">
-                    <p class="docErrors">Diagnostics (${subroutine.diagnostics.length})</p>
+                    <p class="docErrors">Diagnostics (${docFrag.diagnostics.length})</p>
                     <button class="docDiagButton"><i class="fa-solid fa-chevron-left"></i></button>
                   </div>`;
-    for (diagnostic in subroutine.diagnostics) {
+    for (diagnostic in docFrag.diagnostics) {
       content += generateDiagnostic(
-        getDocFrag(subroutine.diagnostics[diagnostic])
+        getDocFrag(docFrag.diagnostics[diagnostic])
       );
     }
     content += `</div>`;
   }
-  content += `</div>`;
+
+  if (docFrag.nest) {
+    for (let subsection in docFrag.nest) {
+      content += generateSubBlock(getDocFrag(docFrag.nest[subsection]));
+    }
+  }
+
+  if (docFrag.level) {
+    content += `</div></div>`;
+  } else {
+    content += `</div>`;
+  }
   return content;
 }
 

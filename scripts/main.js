@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const fetchTarget = document.getElementById("config").dataset.fetchTarget;
-  window.data = await fetch(fetchTarget).then((response) => response.json());
+  window.data = await fetch("data/datatree.json").then((response) =>
+    response.json()
+  );
   console.log(data);
 
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);
   const indexLinks = window.indexLinks;
+  console.log(indexLinks);
 
   const navListMainSelections = document.querySelectorAll(".mainSelection");
   const listDiv = document.getElementById("manualsListDivScroll");

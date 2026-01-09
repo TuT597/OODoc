@@ -323,8 +323,8 @@ input[type="checkbox"]:checked::after {
   margin-bottom: 10px;
 }
 
-.docDiv p:last-of-type {
-  margin-bottom: 0;
+.docDiv hr:last-child {
+  display: none;
 }
 
 pre {
@@ -384,9 +384,27 @@ a[href]:hover {
 }
 
 .docSection {
-  margin-bottom: 10px;
+  margin-bottom: 5px !important;
   text-align: start;
   font-size: 24px;
+  font-weight: bold;
+  cursor: default;
+  user-select: none;
+}
+
+.docSubSection {
+  margin-bottom: 5px !important;
+  text-align: start;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: default;
+  user-select: none;
+}
+
+.docSubSubSection {
+  margin-bottom: 5px !important;
+  text-align: start;
+  font-size: 18px;
   font-weight: bold;
   cursor: default;
   user-select: none;
@@ -420,12 +438,28 @@ a[href]:hover {
   padding-bottom: 10px;
 }
 
+.docText p {
+  margin-bottom: 5px;
+}
+
 .docText > ol {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
   gap: 15px;
   list-style: none;
+}
+
+.docText > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.docText > ul:last-child {
+  margin-bottom: 0px;
 }
 
 .subText p:not(:first-child) {
@@ -788,10 +822,6 @@ td {
   user-select: none;
   font-size: 20px;
   gap: 15px;
-}
-
-#typeTabs li {
-  
 }
 
 #methodsManualListDiv {
