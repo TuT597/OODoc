@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       generateSearchList(val);
     }
   });
-
   //#region functions
   // Map out what index items are linked
   function mapIndexLinks(data) {
@@ -117,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // add click event to nav items to generate content on the page
     navigationListElement.addEventListener("click", () => {
       processLinkObj(getDocFrag(sortedManuals[obj]));
-      activateItem(navigationListElement);
+    
     });
 
     // Add the generated nav item to the list
@@ -223,6 +222,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (activeItem) element.classList.toggle("active");
     activeItem = element;
   }
+
+  // Needed in other script so make it usable outside of the main domcontentloaded scope
+  window.activateNavElement = function (element) {
+    activateItem(element);
+  };
 
   // Update colours on the floating mouseover element
   function updateFloater(element, floater) {

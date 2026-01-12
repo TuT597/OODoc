@@ -51,6 +51,7 @@ function processLinkObj(linkObj) {
   if (!linkObj.type) {
     contentDiv.innerHTML = generateManualPage(linkObj.id);
     contentDiv.scrollTop = 0;
+    activateNavList(linkObj.name);
     // Reload links for new page
     requestAnimationFrame(() => {
       attachDiagnosticButtons();
@@ -80,6 +81,16 @@ function processLinkObj(linkObj) {
       }
     }
   }
+}
+
+function activateNavList(name) {
+  const listDiv = document.getElementById("manualsListDivScroll");
+  let navItems = listDiv.querySelectorAll(".navigationListElement");
+  let targetItem = Array.from(navItems).find((item) => {
+    let span = item.querySelector("span");
+    return span && span.textContent === name;
+  });
+  window.activateNavElement(targetItem);
 }
 
 function attachDiagnosticButtons() {
