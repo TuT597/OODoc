@@ -58,7 +58,7 @@ function processLinkObj(linkObj) {
     });
   } else {
     /* Look for the right manual page to load and generateManualPage with it, 
-    then move to and highlight the right item we are linking to */
+    then move to and highlight the right item you are linking to */
     for (item in indexLinks) {
       if (indexLinks[item][1].includes(linkObj.id)) {
         contentDiv.innerHTML = generateManualPage(indexLinks[item][0]);
@@ -83,7 +83,7 @@ function processLinkObj(linkObj) {
 }
 
 function attachDiagnosticButtons() {
-  document.querySelectorAll(".docDiagButton").forEach((btn) => {
+  document.querySelectorAll(".manualDiagButton").forEach((btn) => {
     const errorDiv = btn.parentElement.parentElement;
     // check if diagnostics are currently displayed
     const displayed = checkDiagnosticsDisplayStatus(errorDiv);
@@ -96,7 +96,7 @@ function attachDiagnosticButtons() {
 
       // determine current state
       const currentlyDisplayed = Array.from(
-        errorDiv.querySelectorAll(".docDiagnosticsDiv")
+        errorDiv.querySelectorAll(".manualDiagnosticsDiv")
       ).some((div) => div.classList.contains("diagnostics-visible"));
 
       btn.style.transform = currentlyDisplayed
@@ -110,9 +110,9 @@ function attachDiagnosticButtons() {
 
 function checkDiagnosticsDisplayStatus(div) {
   // check if diagnostics are currently displayed
-  const displayed = Array.from(div.querySelectorAll(".docDiagnosticsDiv")).some(
-    (div) => div.classList.contains("diagnostics-visible")
-  );
+  const displayed = Array.from(
+    div.querySelectorAll(".manualDiagnosticsDiv")
+  ).some((div) => div.classList.contains("diagnostics-visible"));
 
   return displayed;
 }

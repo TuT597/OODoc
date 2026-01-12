@@ -19,129 +19,141 @@ function generateManualPage(manualID) {
 
 function generateBlock(docFrag) {
   if (
+    !docFrag ||
     docFrag.name === "NAME" ||
-    (!docFrag.intro && !docFrag.nest && !docFrag.subroutines)
+    (!docFrag.intro &&
+      !docFrag.nest &&
+      !docFrag.subroutines &&
+      !docFrag.examples)
   ) {
     return ``;
   }
 
-  docFrag.type === "chapter"
-    ? (content = `
-      <div id="${docFrag.id}" class="docDiv can-fade">
-      <banner class="docChapter">${docFrag.name}</banner>`)
-    : (content = `
-    <div id="${docFrag.id}" class="subDiv can-fade">
-    <p class="docSection">${docFrag.name}</p>`);
+  let content = `
+  <div id="${docFrag.id}" class="manualDiv ${docFrag.type}Div can-fade">
+    <h class="manualHeader ${docFrag.type}Header">${docFrag.name}</h>
+  `;
 
-  if (docFrag.intro) {
-    content += `<div class="docText">${docFrag.intro}</div>`;
-  }
+  content +=
+    generateIntro(docFrag.intro, docFrag.type) +
+    generateExamples(docFrag.examples, docFrag.id) +
+    generateSubroutines(docFrag.subroutines);
 
-  // check for nest
   if (docFrag.nest) {
-    for (let section in docFrag.nest) {
-      const frag = getDocFrag(docFrag.nest[section]);
-      if (frag.level && frag.level > 2) {
-        content += generateSubBlock(frag);
-      } else {
-        content += generateBlock(frag);
-      }
+    for (const item of docFrag.nest || []) {
+      content += generateBlock(getDocFrag(item));
     }
   }
 
-  // check for subroutines
-  if (docFrag.subroutines) {
-    for (let subroutine in docFrag.subroutines) {
-      content += generateSubBlock(getDocFrag(docFrag.subroutines[subroutine]));
-    }
-  }
-
-  if (docFrag.type === "section") {
-    content += `</div><hr class="MethodsDivider">`;
-  } else {
-    content += `</div>`;
-  }
+  content += `</div>`;
   return content;
 }
 
-function generateSubBlock(docFrag) {
-  if (docFrag.level) {
-    content = `<div id="${docFrag.id}" class="subDiv can-fade">`;
-    if (docFrag.level === 3)
-      content += `<p class="docSubSection">${docFrag.name}</p>`;
-    else if (docFrag.level === 4)
-      content += `<p class="docSubSubSection">${docFrag.name}</p>`;
-    else content += `<p class="docSection">${docFrag.name}</p>`;
-    content += `<div class="docSubroutine can-fade">
-      <div class="docText">${docFrag.intro}</div>
-    `;
-  } else {
-    content = `<div id="${docFrag.id}" class="docSubroutine can-fade">`;
-    if (docFrag.call) {
-      content += `<div class="docCall">${docFrag.call}</div>`;
-    } else if (docFrag.name) {
-      content += `<div class="docCall">${docFrag.name}</div>`;
-    }
+function generateIntro(intro, type) {
+  if (!intro) return ``;
+
+  return `
+    <div class="manualText ${type}Text">
+      ${intro}
+    </div>
+  `;
+}
+
+function generateExamples(examples, id) {
+  //same structure as diags
+  if (!examples) return ``;
+  let fullContent = `
+    <div id="${id}" class="manualExamplesDiv foldoutDiv">
+      <div class="foldoutLabel">
+        <p class="foldoutData">Examples (${examples.length})</p>
+        <button class="manualExamplesButton foldoutButton"><i class="fa-solid fa-chevron-left"></i></button>
+      </div>`;
+
+  for (const example of examples) {
+    const docFrag = getDocFrag(example);
+
+    let content = `
+    <div id="${docFrag.id}" class="manualExampleDiv">
+      <div class="manualExample">Example: ${docFrag.name}</div>`;
     if (docFrag.intro) {
-      content += `<div class="subText">${docFrag.intro}</div>`;
+      content += `<div class="manualSubText">${docFrag.intro}</div>`;
     }
+    content += `</div>`;
+
+    fullContent += content;
   }
 
-  // check for options
-  if (docFrag.options) {
-    let optionsTable = `<div id="optionsTableDiv"><table class="optionsTable">
+  fullContent += `</div>`;
+
+  return fullContent;
+}
+
+function generateSubroutines(subroutines) {
+  if (!subroutines) return ``;
+  let fullContent = ``;
+  for (const subroutine of subroutines) {
+    const docFrag = getDocFrag(subroutine);
+
+    let content = `<div id="${docFrag.id}" class="manualDiv ${docFrag.type}Div can-fade">`;
+    if (docFrag.call) {
+      content += `<div class="manualCall">${docFrag.call}</div>`;
+    } else if (docFrag.name) {
+      content += `<div class="manualCall">${docFrag.name}</div>`;
+    }
+    if (docFrag.intro) {
+      content += `<div class="manualSubText">${docFrag.intro}</div>`;
+    }
+
+    // check for options
+    if (docFrag.options) {
+      let optionsTable = `<div id="optionsTableDiv"><table class="optionsTable">
         <tr>
           <th>Option</th>
           <th>Default</th>
         </tr>`;
-    let optionContent = ``;
-    for (let i = 0; i < docFrag.options.length; i++) {
-      for (let j = 0; j < docFrag.options[i].length; j++) {
-        optionContent += generateOption(getDocFrag(docFrag.options[i][j]));
-        optionsTable += generateOptionsTable(getDocFrag(docFrag.options[i][j]));
+      let optionContent = ``;
+      for (let i = 0; i < docFrag.options.length; i++) {
+        for (let j = 0; j < docFrag.options[i].length; j++) {
+          optionContent += generateOption(getDocFrag(docFrag.options[i][j]));
+          optionsTable += generateOptionsTable(
+            getDocFrag(docFrag.options[i][j])
+          );
+        }
       }
+      optionsTable += `</table></div>`;
+      content += optionsTable;
+      content += optionContent;
     }
-    optionsTable += `</table></div>`;
-    content += optionsTable;
-    content += optionContent;
-  }
 
-  // check for diagnostics
-  if (docFrag.diagnostics) {
-    content += `<div id="${docFrag.id}" class="docErrorsDiv">
-                  <div class="docDiagLabel">
-                    <p class="docErrors">Diagnostics (${docFrag.diagnostics.length})</p>
-                    <button class="docDiagButton"><i class="fa-solid fa-chevron-left"></i></button>
+    // check for diagnostics
+    if (docFrag.diagnostics) {
+      content += `<div id="${docFrag.id}" class="manualErrorsDiv foldoutDiv">
+                  <div class="foldoutLabel">
+                    <p class="foldoutData">Diagnostics (${docFrag.diagnostics.length})</p>
+                    <button class="manualDiagButton foldoutButton"><i class="fa-solid fa-chevron-left"></i></button>
                   </div>`;
-    for (diagnostic in docFrag.diagnostics) {
-      content += generateDiagnostic(
-        getDocFrag(docFrag.diagnostics[diagnostic])
-      );
+      for (diagnostic in docFrag.diagnostics) {
+        content += generateDiagnostic(
+          getDocFrag(docFrag.diagnostics[diagnostic])
+        );
+      }
+      content += `</div>`;
     }
-    content += `</div>`;
-  }
 
-  if (docFrag.nest) {
-    for (let subsection in docFrag.nest) {
-      content += generateSubBlock(getDocFrag(docFrag.nest[subsection]));
-    }
-  }
-
-  if (docFrag.level) {
-    content += `</div></div>`;
-  } else {
     content += `</div>`;
+
+    fullContent += content;
   }
-  return content;
+  return fullContent;
 }
 
 // generate options
 function generateOption(option) {
   let optionContent = ``;
   if (option.type === "option") {
-    optionContent += `<div class="docOption can-fade"><p class="optionCall">${option.name} => ${option.params}</p>`;
+    optionContent += `<div class="manualOption can-fade"><p class="optionCall">${option.name} => ${option.params}</p>`;
     option.intro
-      ? (optionContent += `<div class="subText">${option.intro}</div></div>`)
+      ? (optionContent += `<div class="optionText">${option.intro}</div></div>`)
       : (optionContent += `</div>`);
     return optionContent;
   }
@@ -162,9 +174,10 @@ function generateOptionsTable(option) {
 
 // generate errors and faults
 function generateDiagnostic(diagnostic) {
-  let diagnosticContent = `<div id="${diagnostic.id}" class="docDiagnosticsDiv"><div class="docDiagnostic">${diagnostic.type}: ${diagnostic.name}</div>`;
+  let diagnosticContent = `<div id="${diagnostic.id}" class="manualDiagnosticsDiv">
+  <div class="manualDiagnostic">${diagnostic.type}: ${diagnostic.name}</div>`;
   if (diagnostic.intro) {
-    diagnosticContent += `<div class="subText">${diagnostic.intro}</div>`;
+    diagnosticContent += `<div class="manualSubText">${diagnostic.intro}</div>`;
   }
   diagnosticContent += `</div>`;
   return diagnosticContent;

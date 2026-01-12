@@ -97,23 +97,23 @@ function manualOptions(manualID) {
     </div>`;
 
     // Grab all the main divs making up the manual
-    const docDivs = contentDiv.querySelectorAll(".docDiv");
+    const chapterDivs = contentDiv.querySelectorAll(".chapterDiv");
     html += `
     <div id="manualContentTree">
     <h3>Contents:</h3>
     <ul id="indexList">`;
     // Loop through them and look for all the Chapters then put them in the list
-    for (const docDiv of docDivs) {
-      const docChapters = docDiv.querySelectorAll(".docChapter");
-      for (const chapter of docChapters) {
-        html += `<li><a class="jump" href="${docDiv.attributes[0].nodeValue}">${chapter.textContent}</a></li>`;
+    for (const chapterDiv of chapterDivs) {
+      const chapterHeaders = chapterDiv.querySelectorAll(".chapterHeader");
+      for (const chapter of chapterHeaders) {
+        html += `<li><a class="jump" href="${chapterDiv.attributes[0].nodeValue}">${chapter.textContent}</a></li>`;
         // Grab all the sections inside the current main div and if they exist generate a second nested list for these
-        const sections = docDiv.querySelectorAll(".docSection");
+        const sections = chapterDiv.querySelectorAll(".sectionHeader");
         if (sections.length) {
           html += `<ul id="indexSubList">`;
           for (const section of sections) {
-            const subDiv = section.parentElement;
-            html += `<li><a href="${subDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
+            const sectionDiv = section.parentElement;
+            html += `<li><a href="${sectionDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
           }
           html += `</ul>`;
         }
@@ -166,7 +166,7 @@ function diagnosticsToggle(enabled) {
     localStorage.setItem("diagnosticsEnabled", show.toString());
 
     // Add button behaviour to be in sync with checkbox
-    document.querySelectorAll(".docDiagButton").forEach((btn) => {
+    document.querySelectorAll(".manualDiagButton").forEach((btn) => {
       const errorDiv = btn.parentElement.parentElement;
 
       const displayed = checkDiagnosticsDisplayStatus(errorDiv);
@@ -186,8 +186,8 @@ function updateDiagDivs(enabled, id) {
   id
     ? (diagnostics = document
         .getElementById(id)
-        .querySelectorAll(".docDiagnosticsDiv"))
-    : (diagnostics = document.querySelectorAll(".docDiagnosticsDiv"));
+        .querySelectorAll(".manualDiagnosticsDiv"))
+    : (diagnostics = document.querySelectorAll(".manualDiagnosticsDiv"));
 
   diagnostics.forEach((div) => {
     if (enabled === "true") {

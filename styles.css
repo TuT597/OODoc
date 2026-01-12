@@ -55,6 +55,39 @@ img {
   user-select: none;
 }
 
+pre {
+  align-self: center;
+  color: var(--PRETEXT);
+  background-color: var(--DARKER);
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 98%;
+}
+
+pre::selection {
+  color: var(--DARKER);
+  background-color: var(--PRETEXT);
+}
+
+pre a[href] {
+  color: var(--PRETEXT);
+}
+
+pre a[href]:hover {
+  background-color: var(--PRETEXT);
+}
+
+a[href] {
+  color: var(--TEXT);
+  font-weight: bold;
+}
+
+a[href]:hover {
+  color: var(--DARKER);
+  background-color: var(--TEXT);
+}
+
 ::selection {
   background: var(--TEXT);
   color: var(--DARKER);
@@ -304,64 +337,77 @@ input[type="checkbox"]:checked::after {
   border-radius: 0px 0px 5px 5px;
 }
 
-.docDiv {
+.manualDiv {
   display: flex;
   flex-flow: column wrap;
-  width: 100%;
-  margin: 10px 0px;
-  padding: 10px 15px;
   border-radius: 5px;
   background-color: var(--LIGHT);
 }
 
-.docDiv ul {
+.manualDiv ul {
   margin-left: 1em;
   list-style-position: inside;
 }
 
-.docDiv p {
-  margin-bottom: 10px;
-}
-
-.docDiv hr:last-child {
+.manualDiv hr:last-child {
   display: none;
 }
 
-pre {
-  align-self: center;
-  color: var(--PRETEXT);
-  background-color: var(--DARKER);
-  margin: 5px;
-  padding: 10px;
+.chapterDiv {
+  width: 100%;
+  margin: 10px 0px;
+  padding: 10px 15px;
+  border: 2px solid var(--DARKER);
+}
+
+.overloadDiv {
+  margin-left: 3px;
+}
+
+.overloadDiv:not:last-child {
+  margin-bottom: 10px;
+}
+
+.sectionDiv {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 15px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  padding-bottom: 15px;
+}
+
+.sectionDiv:last-child {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.sectionDiv div {
+  margin-left: 3px;
+}
+
+.subsectionDiv {
+  margin: 0px;
+  padding-bottom: 0px;
+}
+
+.subsubsectionDiv {
+  margin: 0px;
+  padding-bottom: 0px;
+}
+
+.exampleDiv {
+}
+
+.subroutineDiv {
+  margin-bottom: 15px;
+  padding: 5px;
+  border: var(--DARKER) 2px solid;
   border-radius: 5px;
-  width: 98%;
 }
 
-pre::selection {
-  color: var(--DARKER);
-  background-color: var(--PRETEXT);
-}
-
-pre a[href] {
-  color: var(--PRETEXT);
-}
-
-pre a[href]:hover {
-  background-color: var(--PRETEXT);
-}
-
-a[href] {
-  color: var(--TEXT);
-  font-weight: bold;
-}
-
-a[href]:hover {
-  color: var(--DARKER);
-  background-color: var(--TEXT);
-}
-
-.docChapter {
-  width: 98%;
+.manualHeader {
+  width: 100%;
   align-self: start;
   margin-bottom: 10px;
   text-align: start;
@@ -369,80 +415,26 @@ a[href]:hover {
   font-weight: bold;
   border-bottom: var(--DARKER) 5px solid;
   cursor: default;
-  user-select: none;
 }
 
-.subDiv {
-  display: flex;
-  flex-flow: column wrap;
-  width: 100%;
-  border-radius: 5px;
-}
-
-.subDiv:last-child {
-  margin-bottom: 0;
-}
-
-.docSection {
-  margin-bottom: 5px !important;
-  text-align: start;
+.sectionHeader {
   font-size: 24px;
-  font-weight: bold;
-  cursor: default;
-  user-select: none;
+  margin-bottom: 0px;
 }
 
-.docSubSection {
-  margin-bottom: 5px !important;
-  text-align: start;
+.subsectionHeader {
   font-size: 20px;
-  font-weight: bold;
-  cursor: default;
-  user-select: none;
 }
 
-.docSubSubSection {
-  margin-bottom: 5px !important;
-  text-align: start;
+.subsubsectionHeader {
   font-size: 18px;
-  font-weight: bold;
-  cursor: default;
-  user-select: none;
 }
 
-.MethodsDivider {
-  width: 95%;
-  margin-top: 5px;
-  margin-bottom: 35px;
-  align-self: center;
-}
-
-.docSubroutine {
-  margin-bottom: 15px;
-  padding: 5px;
-  border: var(--DARKER) 2px solid;
-  border-radius: 5px;
-}
-
-.docOption {
-  margin-left: 1em;
-  margin-bottom: 15px;
-}
-
-.docCall {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.docText {
-  padding-bottom: 10px;
-}
-
-.docText p {
+.manualText p {
   margin-bottom: 5px;
 }
 
-.docText > ol {
+.manualText ol {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -450,24 +442,58 @@ a[href]:hover {
   list-style: none;
 }
 
-.docText > ul {
+.manualText ul {
   display: flex;
   flex-direction: column;
   gap: 5px;
   list-style: none;
-  margin-bottom: 10px;
+  margin: 10px 1em;
 }
 
-.docText > ul:last-child {
+.manualText ul:last-child {
   margin-bottom: 0px;
 }
 
-.subText p:not(:first-child) {
-  margin-top: 10px;
+.chapterText {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
 }
 
-.subText .parameter {
+.chapterText p {
+  width: 100%;
+  align-self: center;
+}
+
+.sectionText {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.sectionText p {
+  width: 100%;
+}
+.manualCall {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.manualSubText {
+  margin-top: 5px;
+}
+
+.manualSubText .parameter {
   color: rgb(235, 233, 118);
+}
+
+.manualOption {
+  margin-left: 1em !important;
+  margin-bottom: 10px;
+}
+
+.manualOption:last-child {
+  margin-bottom: 0px;
 }
 
 .optionCall {
@@ -475,10 +501,18 @@ a[href]:hover {
   font-weight: bold;
 }
 
+#optionsTableDiv {
+  width: fit-content;
+  background-color: var(--DARKER);
+  margin-left: 1em;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .optionsTable {
   color: var(--TABLETEXT);
-  margin: 10px 0px;
-  padding: 10px;
+  padding: 10px 10px;
   border-radius: 5px;
 }
 
@@ -504,14 +538,7 @@ td {
   padding-right: 3em;
 }
 
-#optionsTableDiv {
-  width: fit-content;
-  background-color: var(--DARKER);
-  margin-left: 1em;
-  border-radius: 5px;
-}
-
-.docErrorsDiv {
+.foldoutDiv {
   display: flex;
   flex-direction: column;
   margin-top: 5px;
@@ -520,18 +547,7 @@ td {
   border-radius: 5px;
 }
 
-.docDiagLabel {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.docDiagButton {
-  all: unset;
-  color: var(--TEXT);
-}
-
-.docErrors {
+.foldoutData {
   margin-top: 3px;
   text-align: start;
   font-size: 16px;
@@ -540,14 +556,26 @@ td {
   user-select: none;
 }
 
-.docDiagnostic {
-  margin-top: 3px;
+.foldoutLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.docDiagnosticsDiv {
+.foldoutButton {
+  all: unset;
+  color: var(--TEXT);
+}
+
+.manualDiagnosticsDiv {
   overflow: hidden;
   max-height: 0;
   transition: max-height 1s ease !important;
+}
+
+.manualDiagnostic {
+  color: rgb(255, 59, 59);
+  margin-top: 3px;
 }
 
 .highlight {
