@@ -127,6 +127,9 @@ input[type="checkbox"]:checked::after {
   flex-wrap: nowrap;
   align-items: center;
   width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 #navListDiv {
@@ -134,20 +137,23 @@ input[type="checkbox"]:checked::after {
   flex-flow: column nowrap;
   align-items: center;
   max-height: 100vh;
+  height: 100%;
   min-height: 0;
   width: 100%;
   margin-left: auto;
-  margin-top: 10px;
 }
 
 #navList {
-  width: 100%;
-  max-height: 100%;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  width: 100%;
+  flex: 1 1 auto;
+  max-height: 100%;
+  min-height: 0;
   cursor: default;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #navList::-webkit-scrollbar {
@@ -205,8 +211,8 @@ input[type="checkbox"]:checked::after {
   flex-flow: column nowrap;
   margin: 10px 0px;
   width: 95%;
-  max-height: 78%;
-
+  flex: 1 1 auto;
+  min-height: 0;
   background-color: var(--DARKER);
   box-shadow: inset 0px 0px 3px 1px black;
 }
@@ -1017,7 +1023,4 @@ input:checked + .methodsSlider:before {
 
 /* ====ULTRAWIDE==== */
 @media only screen and (min-width: 1200px) {
-  #navListDiv {
-    border-left: black 2px solid;
-  }
 }
