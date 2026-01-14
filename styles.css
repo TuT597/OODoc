@@ -402,9 +402,6 @@ input[type="checkbox"]:checked::after {
   padding-bottom: 0px;
 }
 
-.exampleDiv {
-}
-
 .subroutineDiv {
   margin-bottom: 15px;
   padding: 5px;
@@ -430,6 +427,7 @@ input[type="checkbox"]:checked::after {
 
 .subsectionHeader {
   font-size: 20px;
+  border: none;
 }
 
 .subsubsectionHeader {
@@ -573,7 +571,7 @@ td {
   color: var(--TEXT);
 }
 
-.manualDiagnosticsDiv {
+.foldoutSubDiv {
   overflow: hidden;
   max-height: 0;
   transition: max-height 1s ease !important;
@@ -769,6 +767,11 @@ td {
   width: 100%;
   justify-content: start;
   align-content: center;
+}
+
+#preferencesDiv {
+  display: flex;
+  flex-direction: column;
 }
 
 #pageOptionsMethods {

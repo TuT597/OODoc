@@ -54,7 +54,6 @@ function processLinkObj(linkObj) {
     activateNavList(linkObj.name);
     // Reload links for new page
     requestAnimationFrame(() => {
-      attachDiagnosticButtons();
       constructNavigation();
     });
   } else {
@@ -76,7 +75,6 @@ function processLinkObj(linkObj) {
           }, 1000);
         }
 
-        attachDiagnosticButtons();
         break;
       }
     }
@@ -93,37 +91,39 @@ function activateNavList(name) {
   window.activateNavElement(targetItem);
 }
 
-function attachDiagnosticButtons() {
-  document.querySelectorAll(".manualDiagButton").forEach((btn) => {
-    const errorDiv = btn.parentElement.parentElement;
-    // check if diagnostics are currently displayed
-    const displayed = checkDiagnosticsDisplayStatus(errorDiv);
-
-    // set initial rotation
+function attachFoldoutButtons(type) {
+  document.querySelectorAll(`.${type}Button`).forEach((btn) => {
+    const foldoutDiv = btn.parentElement.parentElement;
+    const displayed = checkFoldoutStatus(foldoutDiv, type);
     btn.style.transform = displayed ? "rotate(-45deg)" : "rotate(0deg)";
 
     btn.addEventListener("click", () => {
-      const subroutineID = errorDiv.id;
-
-      // determine current state
+      const subroutineID = foldoutDiv.id;
       const currentlyDisplayed = Array.from(
-        errorDiv.querySelectorAll(".manualDiagnosticsDiv")
-      ).some((div) => div.classList.contains("diagnostics-visible"));
+        foldoutDiv.querySelectorAll(
+          `.manual${
+            type.charAt(0).toUpperCase() + type.slice(1, type.length - 1)
+          }Div`
+        )
+      ).some((div) => div.classList.contains("visible"));
 
       btn.style.transform = currentlyDisplayed
         ? "rotate(0deg)"
         : "rotate(-45deg)";
 
-      updateDiagDivs(currentlyDisplayed ? "false" : "true", subroutineID);
+      updateFoldouts(currentlyDisplayed ? "false" : "true", subroutineID, type);
     });
   });
 }
 
-function checkDiagnosticsDisplayStatus(div) {
-  // check if diagnostics are currently displayed
+function checkFoldoutStatus(div, type) {
   const displayed = Array.from(
-    div.querySelectorAll(".manualDiagnosticsDiv")
-  ).some((div) => div.classList.contains("diagnostics-visible"));
+    div.querySelectorAll(
+      `.manual${
+        type.charAt(0).toUpperCase() + type.slice(1, type.length - 1)
+      }Div`
+    )
+  ).some((div) => div.classList.contains("visible"));
 
   return displayed;
 }

@@ -41,6 +41,7 @@ function generateBlock(docFrag) {
 
   if (docFrag.nest) {
     for (const item of docFrag.nest || []) {
+      console.log(item);
       content += generateBlock(getDocFrag(item));
     }
   }
@@ -63,18 +64,18 @@ function generateExamples(examples, id) {
   //same structure as diags
   if (!examples) return ``;
   let fullContent = `
-    <div id="${id}" class="manualExamplesDiv foldoutDiv">
-      <div class="foldoutLabel">
-        <p class="foldoutData">Examples (${examples.length})</p>
-        <button class="manualExamplesButton foldoutButton"><i class="fa-solid fa-chevron-left"></i></button>
-      </div>`;
+  <div id="${id}" class="manualExamplesDiv foldoutDiv">
+  <div class="foldoutLabel">
+  <p class="foldoutData">Examples (${examples.length})</p>
+  <button class="examplesButton foldoutButton"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>`;
 
   for (const example of examples) {
     const docFrag = getDocFrag(example);
 
     let content = `
-    <div id="${docFrag.id}" class="manualExampleDiv">
-      <div class="manualExample">Example: ${docFrag.name}</div>`;
+    <div id="${docFrag.id}" class="manualExampleDiv foldoutSubDiv">
+      <div class="manualExample">Example: ${docFrag.name || ""}</div>`;
     if (docFrag.intro) {
       content += `<div class="manualSubText">${docFrag.intro}</div>`;
     }
@@ -127,12 +128,12 @@ function generateSubroutines(subroutines) {
 
     // check for diagnostics
     if (docFrag.diagnostics) {
-      content += `<div id="${docFrag.id}" class="manualErrorsDiv foldoutDiv">
+      content += `<div id="${docFrag.id}" class="manualDiagnosticsDiv foldoutDiv">
                   <div class="foldoutLabel">
                     <p class="foldoutData">Diagnostics (${docFrag.diagnostics.length})</p>
-                    <button class="manualDiagButton foldoutButton"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="diagnosticsButton foldoutButton"><i class="fa-solid fa-chevron-left"></i></button>
                   </div>`;
-      for (diagnostic in docFrag.diagnostics) {
+      for (const diagnostic in docFrag.diagnostics) {
         content += generateDiagnostic(
           getDocFrag(docFrag.diagnostics[diagnostic])
         );
@@ -174,7 +175,7 @@ function generateOptionsTable(option) {
 
 // generate errors and faults
 function generateDiagnostic(diagnostic) {
-  let diagnosticContent = `<div id="${diagnostic.id}" class="manualDiagnosticsDiv">
+  let diagnosticContent = `<div id="${diagnostic.id}" class="manualDiagnosticDiv foldoutSubDiv">
   <div class="manualDiagnostic">${diagnostic.type}: ${diagnostic.name}</div>`;
   if (diagnostic.intro) {
     diagnosticContent += `<div class="manualSubText">${diagnostic.intro}</div>`;

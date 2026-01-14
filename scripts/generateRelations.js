@@ -74,9 +74,12 @@ function manualOptions(manualID) {
   const currentManual = getDocFrag(manualID);
   const manualName = currentManual.name;
   const manualDistribution = currentManual.distribution;
-  const diagnosticsEnabled = localStorage.getItem(
-    "diagnosticsEnabled".toString()
-  );
+
+  const enabledState = {
+    diagnostics: localStorage.getItem("diagnosticsEnabled"),
+    examples: localStorage.getItem("examplesEnabled"),
+  };
+
   // Delay the DOM queries until the next frame so the page switch can complete
   requestAnimationFrame(() => {
     // Add section for user preferences
@@ -87,13 +90,21 @@ function manualOptions(manualID) {
         <label id="currentPageManual">${manualName}</label>
         <label id="currentPageDistro">${manualDistribution}</label>
       </span>
-      <h3>Preferences:</h3>
-      <label>
-        Show diagnostics: 
-        <input type="checkbox" id="diagnosticsToggle" ${
-          diagnosticsEnabled === "true" ? "checked" : ""
+      <div id="preferencesDiv">
+        <h3>Preferences:</h3>
+        <label>
+        <input type="checkbox" id="diagnosticsToggle" class="toggleButton" data-toggle-type="diagnostics" ${
+          enabledState["diagnostics"] === "true" ? "checked" : ""
         }>
-      </label>
+          Show diagnostics
+        </label>
+        <label>
+        <input type="checkbox" id="examplesToggle" class="toggleButton" data-toggle-type="examples" ${
+          enabledState["examples"] === "true" ? "checked" : ""
+        }>
+          Show examples
+        </label>
+      </div>
     </div>`;
 
     // Grab all the main divs making up the manual
@@ -149,27 +160,36 @@ function manualOptions(manualID) {
     html += `</div></div>`;
 
     pageOptions.innerHTML = html;
-    // Add events to the check boxes and check what settings should be applied
-    diagnosticsToggle(diagnosticsEnabled);
-    updateDiagDivs(diagnosticsEnabled);
+
+    foldoutFunctionality();
     constructNavigation();
   });
 }
 
-// Add listener to checkbox and update variable in localStorage
-function diagnosticsToggle(enabled) {
-  const checkbox = document.getElementById("diagnosticsToggle");
+// No longer need to hard code the function calls. If you add more toggles in the future they will be automatically made functional.
+function foldoutFunctionality() {
+  const togglesDiv = document.getElementById("preferencesDiv");
+  const toggleButtons = togglesDiv.querySelectorAll(".toggleButton");
+
+  toggleButtons.forEach((btn) => {
+    const type = `${btn.getAttribute("data-toggle-type")}`;
+    foldoutToggle(type);
+    updateFoldouts(localStorage.getItem(`${type}Enabled`), "", type);
+    attachFoldoutButtons(type);
+  });
+}
+
+function foldoutToggle(type) {
+  const checkbox = document.getElementById(`${type}Toggle`);
 
   checkbox.addEventListener("change", (e) => {
     const show = e.target.checked;
-    updateDiagDivs(show.toString());
-    localStorage.setItem("diagnosticsEnabled", show.toString());
+    updateFoldouts(show.toString(), "", type);
+    localStorage.setItem(`${type}Enabled`, show.toString());
 
-    // Add button behaviour to be in sync with checkbox
-    document.querySelectorAll(".manualDiagButton").forEach((btn) => {
-      const errorDiv = btn.parentElement.parentElement;
-
-      const displayed = checkDiagnosticsDisplayStatus(errorDiv);
+    document.querySelectorAll(`.${type}Button`).forEach((btn) => {
+      const foldoutDiv = btn.parentElement.parentElement;
+      const displayed = checkFoldoutStatus(foldoutDiv, type);
 
       if (displayed && show) {
         btn.style.transform = "rotate(-45deg)";
@@ -181,19 +201,27 @@ function diagnosticsToggle(enabled) {
 }
 
 // Collapse or expand diagnostics divs depending on user preference
-function updateDiagDivs(enabled, id) {
-  let diagnostics = [];
+function updateFoldouts(enabled, id, type) {
+  let foldouts = [];
   id
-    ? (diagnostics = document
+    ? (foldouts = document
         .getElementById(id)
-        .querySelectorAll(".manualDiagnosticsDiv"))
-    : (diagnostics = document.querySelectorAll(".manualDiagnosticsDiv"));
+        .querySelectorAll(
+          `.manual${
+            type.charAt(0).toUpperCase() + type.slice(1, type.length - 1)
+          }Div`
+        ))
+    : (foldouts = document.querySelectorAll(
+        `.manual${
+          type.charAt(0).toUpperCase() + type.slice(1, type.length - 1)
+        }Div`
+      ));
 
-  diagnostics.forEach((div) => {
+  foldouts.forEach((div) => {
     if (enabled === "true") {
       // expand the diagnostics box
-      if (!div.classList.contains("diagnostics-visible")) {
-        div.classList.add("diagnostics-visible");
+      if (!div.classList.contains("visible")) {
+        div.classList.add("visible");
         div.style.maxHeight = div.scrollHeight + "px";
       }
     } else {
@@ -204,7 +232,7 @@ function updateDiagDivs(enabled, id) {
       }
 
       div.style.maxHeight = "0px";
-      div.classList.remove("diagnostics-visible");
+      div.classList.remove("visible");
     }
   });
 }
