@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       generateSearchList(val);
     }
   });
+
   //#region functions
   // Map out what index items are linked
   function mapIndexLinks(data) {
@@ -116,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     // add click event to nav items to generate content on the page
     navigationListElement.addEventListener("click", () => {
       processLinkObj(getDocFrag(sortedManuals[obj]));
-    
     });
 
     // Add the generated nav item to the list
@@ -347,4 +347,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   //#endregion search functions
   //#endregion functions
+  // Load main page set in the provided meta data
+  const main = data.meta.main_manual;
+  if (main && indexLinks[main]) {
+    contentDiv.innerHTML = generateManualPage(indexLinks[main][0]);
+  }
 });
