@@ -41,7 +41,6 @@ function generateBlock(docFrag) {
 
   if (docFrag.nest) {
     for (const item of docFrag.nest || []) {
-      console.log(item);
       content += generateBlock(getDocFrag(item));
     }
   }

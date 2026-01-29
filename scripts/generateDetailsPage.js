@@ -1,5 +1,5 @@
 function generateDetailsPage() {
-  let html = `<div id="detailsListsDiv">`;
+  let html = `<div id="detailsListDiv">`;
 
   for (entry in indexLinks) {
     const manual = entry;
@@ -10,7 +10,7 @@ function generateDetailsPage() {
       if (item.nest && item.name && item.name === "DETAILS") {
         item.manualName = manual;
         html += `
-          <div>
+          <div class="detailDiv">
           <h3>Details in <a href="${item.id}">${manual}</a></h3> 
           <ul class="detailsList">`;
         for (const frag of item.nest) {
@@ -24,11 +24,6 @@ function generateDetailsPage() {
 
   html += `</div>`;
   contentDiv.innerHTML = html;
-
-  // Make it so you get 2 columns by dynamically culculating the required height
-  const detailsDiv = document.getElementById("detailsListsDiv");
-  const computedStyle = window.getComputedStyle(detailsDiv);
-  detailsDiv.style.height = parseFloat(computedStyle.height) / 1.9 + "px";
 
   constructNavigation();
   updateRelations("details");

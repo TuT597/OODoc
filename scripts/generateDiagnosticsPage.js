@@ -31,7 +31,7 @@ function populateDiagnostics(val, sortMethod) {
       <div class="docHeadMethod">
       <h1 id="${type}" class="docName can-fade">${type.toUpperCase()}</h1>
       </div>
-      <div class="subDiv diagnosticsPageSection">
+      <div class="subDiv pageSection diagnosticsPageSection">
     `;
 
       let counter = 0;
@@ -62,7 +62,7 @@ function populateDiagnostics(val, sortMethod) {
       <div class="docHeadMethod">
         <h1 id="${manual[1]}" class="docName can-fade">${manual[0]}</h1>
       </div>
-      <div class="subDiv methodPageSection">
+      <div class="subDiv pageSection methodPageSection">
       `;
 
       let counter = 0;

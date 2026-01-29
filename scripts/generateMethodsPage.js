@@ -15,7 +15,7 @@ function populateMethods(val, sortMethod) {
       let entryContent = `<div class="docHeadMethod">
     <h1 id="letter${letter}" class="docName can-fade">${letter}</h1>
     </div>
-    <div class="subDiv methodPageSection">
+    <div class="subDiv pageSection methodPageSection">
     `;
 
       let counter = 0;
@@ -31,7 +31,7 @@ function populateMethods(val, sortMethod) {
         content += entryContent;
       }
     }
-  } 
+  }
   // Instead of sorting methods by alphebet we group them by manual instead
   else if (sortMethod === "manual") {
     let manuals = getUniqueManuals(sortedMethods);
@@ -40,7 +40,7 @@ function populateMethods(val, sortMethod) {
       content += `<div class="docHeadMethod">
         <h1 id="${manual[1]}" class="docName can-fade">${manual[0]}</h1>
         </div>
-        <div class="subDiv methodPageSection">
+        <div class="subDiv pageSection methodPageSection">
       `;
 
       for (const method of sortedMethods) {
@@ -100,7 +100,10 @@ function getSortedMethods(val) {
 function getUniqueManuals(items) {
   let manuals = [];
   for (const item of items) {
-    if (!manuals.some(manual => manual[0] === item.manualName) && item.manualName) {
+    if (
+      !manuals.some((manual) => manual[0] === item.manualName) &&
+      item.manualName
+    ) {
       manuals.push([item.manualName, item.manualID]);
     }
   }

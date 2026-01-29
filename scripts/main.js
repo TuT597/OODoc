@@ -267,8 +267,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       return nameA.localeCompare(nameB);
     });
 
-    console.log(matchingObjects);
-
     // Group subitems by manual
     let groupedResults = [];
 
