@@ -588,6 +588,16 @@ td {
   border-radius: 5px;
 }
 
+.highlight .manualDiv {
+  background-color: var(--TEXT);
+  color: var(--DARKER);
+  border-radius: 5px;
+}
+
+.highlight .foldoutDiv {
+  color: var(--TEXT);
+}
+
 .highlight a[href] {
   color: var(--DARKER);
 }
@@ -598,7 +608,7 @@ td {
 }
 
 .highlight tr {
-  background-color: var(--TABLETEXT);
+  background-color: var(--DARKER);
 }
 
 .can-fade {

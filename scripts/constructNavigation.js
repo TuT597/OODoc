@@ -24,23 +24,7 @@ function handleLinkClick(e) {
 
   if (hrefValue.startsWith("#")) {
     const targetElem = contentDiv.querySelector(`${hrefValue}`);
-    targetElem.classList.add("highlight");
-
-    const rect = targetElem.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const fitsOnScreen = rect.height <= viewportHeight;
-    const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
-
-    if (!isFullyVisible) {
-      targetElem.scrollIntoView({
-        behavior: "smooth",
-        block: fitsOnScreen ? "center" : "start",
-      });
-    }
-
-    setTimeout(() => {
-      targetElem.classList.remove("highlight");
-    }, 1000);
+    scrollAndHighlight(targetElem);
     return;
   }
 
@@ -80,23 +64,7 @@ function processLinkObj(linkObj) {
 
         const targetElem = contentDiv.querySelector(`#${linkObj.id}`);
         if (targetElem) {
-          targetElem.classList.add("highlight");
-
-          const rect = targetElem.getBoundingClientRect();
-          const viewportHeight = window.innerHeight;
-          const fitsOnScreen = rect.height <= viewportHeight;
-          const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
-
-          if (!isFullyVisible) {
-            targetElem.scrollIntoView({
-              behavior: "smooth",
-              block: fitsOnScreen ? "center" : "start",
-            });
-          }
-
-          setTimeout(() => {
-            targetElem.classList.remove("highlight");
-          }, 1000);
+          scrollAndHighlight(targetElem);
         }
 
         break;
@@ -150,4 +118,37 @@ function checkFoldoutStatus(div, type) {
   ).some((div) => div.classList.contains("visible"));
 
   return displayed;
+}
+
+function scrollAndHighlight(targetElem) {
+  targetElem.querySelectorAll("a").forEach((el) => {
+    el.classList.add("can-fade");
+  });
+  targetElem.classList.add("highlight");
+
+  const rect = targetElem.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const fitsOnScreen = rect.height <= viewportHeight;
+  const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+
+  if (!isFullyVisible) {
+    targetElem.scrollIntoView({
+      behavior: "smooth",
+      block: fitsOnScreen ? "center" : "start",
+    });
+  }
+
+  setTimeout(() => {
+    targetElem.classList.remove("highlight");
+  }, 1000);
+
+  targetElem.querySelectorAll("a").forEach((el) => {
+    el.classList.remove("can-fade");
+  });
+}
+
+function addClassToChildren(container, className) {
+  container.querySelectorAll("*").forEach((el) => {
+    el.classList.add(className);
+  });
 }
