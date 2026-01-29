@@ -51,10 +51,6 @@ section {
   flex-wrap: wrap;
 }
 
-img {
-  user-select: none;
-}
-
 pre {
   align-self: center;
   color: var(--PRETEXT);
@@ -156,10 +152,6 @@ input[type="checkbox"]:checked::after {
   overflow-y: auto;
 }
 
-#navList::-webkit-scrollbar {
-  display: none;
-}
-
 #packagesListDiv {
   display: none;
   margin: 5px 0px;
@@ -193,16 +185,15 @@ input[type="checkbox"]:checked::after {
   flex-flow: column nowrap;
   overflow-y: hidden;
   overflow-x: hidden;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
   -ms-overflow-style: none;
 }
 
 #manualsListDivScroll {
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;
+  scrollbar-width: thin;
   scroll-behavior: smooth;
+  scrollbar-color: var(--LIGHT) var(--DARKER);
   -ms-overflow-style: none;
 }
 
@@ -872,11 +863,11 @@ td {
 #methodsManualList {
   height: 100%;
   list-style-type: none;
-  user-select: none;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;
+  scrollbar-width: thin;
   scroll-behavior: smooth;
+  scrollbar-color: var(--LIGHT) var(--DARKER);
   -ms-overflow-style: none;
 }
 
