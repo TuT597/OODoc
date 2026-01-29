@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const relationsDiv = document.getElementById("relationsDiv");
   const pageOptions = document.getElementById("pageOptions");
-  pageOptions.style.display = "none";
+  pageOptions.style.display = "none"
   const generalOptions = document.getElementById("generalOptions");
 
   // Load user settings

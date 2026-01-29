@@ -25,7 +25,19 @@ function handleLinkClick(e) {
   if (hrefValue.startsWith("#")) {
     const targetElem = contentDiv.querySelector(`${hrefValue}`);
     targetElem.classList.add("highlight");
-    targetElem.scrollIntoView({ block: "center" });
+
+    const rect = targetElem.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const fitsOnScreen = rect.height <= viewportHeight;
+    const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+
+    if (!isFullyVisible) {
+      targetElem.scrollIntoView({
+        behavior: "smooth",
+        block: fitsOnScreen ? "center" : "start",
+      });
+    }
+
     setTimeout(() => {
       targetElem.classList.remove("highlight");
     }, 1000);
@@ -69,7 +81,19 @@ function processLinkObj(linkObj) {
         const targetElem = contentDiv.querySelector(`#${linkObj.id}`);
         if (targetElem) {
           targetElem.classList.add("highlight");
-          targetElem.scrollIntoView({ block: "center" });
+
+          const rect = targetElem.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          const fitsOnScreen = rect.height <= viewportHeight;
+          const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+
+          if (!isFullyVisible) {
+            targetElem.scrollIntoView({
+              behavior: "smooth",
+              block: fitsOnScreen ? "center" : "start",
+            });
+          }
+
           setTimeout(() => {
             targetElem.classList.remove("highlight");
           }, 1000);
