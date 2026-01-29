@@ -542,6 +542,10 @@ td {
   border-radius: 5px;
 }
 
+.foldoutDiv pre {
+  color: var(--TEXT);
+}
+
 .foldoutData {
   margin-top: 3px;
   text-align: start;
@@ -569,7 +573,12 @@ td {
 }
 
 .manualDiagnostic {
-  color: rgb(255, 59, 59);
+  color: rgb(226, 85, 85);
+  margin-top: 3px;
+}
+
+.manualExample {
+  color: rgb(196, 218, 117);
   margin-top: 3px;
 }
 
