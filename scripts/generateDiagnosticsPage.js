@@ -1,6 +1,5 @@
 let usedDiagnosticManuals = [];
 
-
 function generateDiagnosticsPage() {
   populateDiagnostics();
   updateRelations("diagnostics");
@@ -11,7 +10,7 @@ function populateDiagnostics(val, sortMethod) {
   let content = ``;
   let sortedDiagnostics = getSortedDiagnostics(val);
   sortMethods(sortedDiagnostics);
-  
+
   // Remove duplicates
   const seen = new Set();
 

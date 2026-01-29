@@ -53,7 +53,6 @@ section {
 
 pre {
   align-self: center;
-  color: var(--PRETEXT);
   background-color: var(--DARKER);
   margin: 5px;
   padding: 10px;
@@ -63,14 +62,6 @@ pre {
 
 pre::selection {
   color: var(--DARKER);
-  background-color: var(--PRETEXT);
-}
-
-pre a[href] {
-  color: var(--PRETEXT);
-}
-
-pre a[href]:hover {
   background-color: var(--PRETEXT);
 }
 
