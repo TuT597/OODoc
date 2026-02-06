@@ -789,10 +789,19 @@ td {
 
 #indexSubList {
   font-size: 18px;
-  margin-left: 15px;
+  margin-left: 0.5em;
 }
 
 #indexSubList ::marker {
+  content: "- ";
+}
+
+#indexSubSubList {
+  font-size: 16px;
+  margin-left: 1em;
+}
+
+#indexSubSubList ::marker {
   content: "- ";
 }
 

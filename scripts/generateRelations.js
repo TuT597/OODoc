@@ -125,6 +125,16 @@ function manualOptions(manualID) {
           for (const section of sections) {
             const sectionDiv = section.parentElement;
             html += `<li><a href="${sectionDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
+            const subSections =
+              sectionDiv.querySelectorAll(".subsectionHeader");
+            if (subSections.length) {
+              html += `<ul id="indexSubSubList">`;
+              for (const subSection of subSections) {
+                const subSectionDiv = section.parentElement;
+                html += `<li><a href="${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></li>`;
+              }
+              html += `</ul>`;
+            }
           }
           html += `</ul>`;
         }
@@ -343,7 +353,7 @@ function sortingFunctionality(pageType, checked, html) {
       pageOptions.appendChild(newLetterTabs);
     }
 
-    if (pageType === "Diagnostics") { 
+    if (pageType === "Diagnostics") {
       // create new type tabs
       const temp = document.createElement("div");
       temp.innerHTML = html;
