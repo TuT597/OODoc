@@ -1030,6 +1030,10 @@ input:checked + .methodsSlider:before {
   --PARAMETER: rgb(0, 0, 0);
 }
 
+:root[data-theme="light"] #manualsListDivScroll {
+  scrollbar-color: var(--DARKER) var(--LIGHT);
+}
+
 :root[data-theme="light"] pre {
   background-color: var(--LIGHT);
 }
