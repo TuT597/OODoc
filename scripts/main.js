@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const fetchTarget = document.getElementById("config").dataset.fetchTarget;
-  window.data = await fetch("data/datatree.json").then((response) =>
+  window.data = await fetch(fetchTarget).then((response) =>
     response.json()
   );
   console.log(data);
