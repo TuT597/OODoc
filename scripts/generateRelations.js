@@ -335,7 +335,6 @@ function sortingFunctionality(pageType, checked, html) {
     document
       .querySelectorAll("#methodsManualListDiv")
       .forEach((tab) => tab.remove());
-
     if (pageType === "Methods") {
       // create new lettertabs
       const temp = document.createElement("div");
@@ -344,7 +343,7 @@ function sortingFunctionality(pageType, checked, html) {
       pageOptions.appendChild(newLetterTabs);
     }
 
-    if (pageType === "Diagnostics") {
+    if (pageType === "Diagnostics") { 
       // create new type tabs
       const temp = document.createElement("div");
       temp.innerHTML = html;
@@ -362,8 +361,8 @@ function sortingFunctionality(pageType, checked, html) {
       document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
     }
 
-    if (pageType === "Details") {
-      // remove type tabs here
+    if (pageType === "Diagnostics") {
+      document.querySelectorAll("#typeTabs").forEach((tab) => tab.remove());
     }
 
     // Create the manual list

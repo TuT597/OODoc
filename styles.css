@@ -7,6 +7,8 @@
   --THEMESWITCH: #c2c2c2;
   --THEMESWITCHBG: #414141;
 
+  --HIGHLIGHT: #ffffff;
+
   --TEXT: #c2c2c2;
   --PRETEXT: lightblue;
   --TABLETEXT: darkseagreen;
@@ -316,7 +318,7 @@ input[type="checkbox"]:checked::after {
 .manualDiv {
   display: flex;
   flex-flow: column wrap;
-  border-radius: 5px;
+ 
   background-color: var(--LIGHT);
 }
 
@@ -334,6 +336,7 @@ input[type="checkbox"]:checked::after {
   margin: 10px 0px;
   padding: 10px 15px;
   border: 2px solid var(--DARKER);
+  border-radius: 5px;
 }
 
 .overloadDiv {
@@ -565,37 +568,8 @@ td {
   margin-top: 3px;
 }
 
-.highlight {
-  background-color: var(--TEXT);
-  color: var(--DARKER);
-  border-radius: 5px;
-}
-
-.highlight .manualDiv {
-  background-color: var(--TEXT);
-  color: var(--DARKER);
-  border-radius: 5px;
-}
-
-.highlight .foldoutDiv {
-  color: var(--TEXT);
-}
-
-.highlight a[href] {
-  color: var(--DARKER);
-}
-
-.highlight a[href]:hover {
-  color: var(--TEXT);
-  background-color: var(--DARKER);
-}
-
-.highlight tr {
-  background-color: var(--DARKER);
-}
-
 .can-fade {
-  transition: background-color 1s ease, color 1s ease, border-radius 1s ease;
+  transition: background-color 1s ease-in-out;
 }
 
 .can-fade tr {
@@ -603,6 +577,10 @@ td {
 }
 
 /* ====METHODS/DIAGNOSTICS PAGE==== */
+.sectionContainer {
+  width: 100%;
+}
+
 .docHeadMethod {
   width: 100%;
   text-align: start;
@@ -1023,6 +1001,8 @@ input:checked + .methodsSlider:before {
 
   --THEMESWITCH: #f5ebe0;
   --THEMESWITCHBG: #d5bdaf;
+
+  --HIGHLIGHT: #f5c083;
 
   --TEXT: #000000;
   --PRETEXT: #000000;
