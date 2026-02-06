@@ -12,11 +12,13 @@ function populateMethods(val, sortMethod) {
   if (sortMethod === "letter" || !sortMethod) {
     for (let i = 0; i < 26; i++) {
       const letter = String.fromCharCode(65 + i);
-      let entryContent = `<div class="docHeadMethod">
-    <h1 id="letter${letter}" class="docName can-fade">${letter}</h1>
-    </div>
-    <div class="subDiv pageSection methodPageSection">
-    `;
+      let entryContent = `
+        <div id="letter${letter}" class="sectionContainer can-fade">
+        <div class="docHeadMethod">
+          <h1 class="docName can-fade">${letter}</h1>
+        </div>
+          <div class="subDiv pageSection methodPageSection can-fade">
+      `;
 
       let counter = 0;
       for (const method of sortedMethods) {
@@ -25,7 +27,7 @@ function populateMethods(val, sortMethod) {
           counter++;
         }
       }
-      entryContent += `</div>`;
+      entryContent += `</div></div>`;
 
       if (counter > 0) {
         content += entryContent;
@@ -37,10 +39,12 @@ function populateMethods(val, sortMethod) {
     let manuals = getUniqueManuals(sortedMethods);
 
     for (const manual of manuals) {
-      content += `<div class="docHeadMethod">
-        <h1 id="${manual[1]}" class="docName can-fade">${manual[0]}</h1>
+      content += `
+      <div id="${manual[1]}" class="sectionContainer can-fade">
+      <div class="docHeadMethod">
+        <h1 class="docName can-fade">${manual[0]}</h1>
         </div>
-        <div class="subDiv pageSection methodPageSection">
+        <div class="subDiv pageSection methodPageSection can-fade">
       `;
 
       for (const method of sortedMethods) {
@@ -48,7 +52,7 @@ function populateMethods(val, sortMethod) {
           content += `<label class="methodPageLabel"><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
         }
       }
-      content += `</div>`;
+      content += `</div></div>`;
     }
   }
 

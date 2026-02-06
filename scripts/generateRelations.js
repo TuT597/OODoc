@@ -125,6 +125,16 @@ function manualOptions(manualID) {
           for (const section of sections) {
             const sectionDiv = section.parentElement;
             html += `<li><a href="${sectionDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
+            const subSections =
+              sectionDiv.querySelectorAll(".subsectionHeader");
+            if (subSections.length) {
+              html += `<ul id="indexSubSubList">`;
+              for (const subSection of subSections) {
+                const subSectionDiv = section.parentElement;
+                html += `<li><a href="${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></li>`;
+              }
+              html += `</ul>`;
+            }
           }
           html += `</ul>`;
         }
@@ -335,7 +345,6 @@ function sortingFunctionality(pageType, checked, html) {
     document
       .querySelectorAll("#methodsManualListDiv")
       .forEach((tab) => tab.remove());
-
     if (pageType === "Methods") {
       // create new lettertabs
       const temp = document.createElement("div");
@@ -362,8 +371,8 @@ function sortingFunctionality(pageType, checked, html) {
       document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
     }
 
-    if (pageType === "Details") {
-      // remove type tabs here
+    if (pageType === "Diagnostics") {
+      document.querySelectorAll("#typeTabs").forEach((tab) => tab.remove());
     }
 
     // Create the manual list

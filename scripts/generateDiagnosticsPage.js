@@ -27,10 +27,11 @@ function populateDiagnostics(val, sortMethod) {
   if (sortMethod === "letter" || !sortMethod) {
     for (const type of diagnosticTypes) {
       let entryContent = `
+      <div id="${type}" class="sectionContainer can-fade">
       <div class="docHeadMethod">
-      <h1 id="${type}" class="docName can-fade">${type.toUpperCase()}</h1>
+      <h1 class="docName">${type.toUpperCase()}</h1>
       </div>
-      <div class="subDiv pageSection diagnosticsPageSection">
+      <div class="subDiv pageSection diagnosticsPageSection can-fade">
     `;
 
       let counter = 0;
@@ -46,7 +47,7 @@ function populateDiagnostics(val, sortMethod) {
           counter++;
         }
       }
-      entryContent += `</div>`;
+      entryContent += `</div></div>`;
 
       if (counter > 0) {
         content += entryContent;
@@ -58,10 +59,11 @@ function populateDiagnostics(val, sortMethod) {
     const manuals = getUniqueManuals(sortedDiagnostics);
     for (const manual of manuals) {
       let entryContent = `
+      <div id="${manual[1]}" class="sectionContainer can-fade">
       <div class="docHeadMethod">
-        <h1 id="${manual[1]}" class="docName can-fade">${manual[0]}</h1>
+        <h1 class="docName can-fade">${manual[0]}</h1>
       </div>
-      <div class="subDiv pageSection methodPageSection">
+      <div class="subDiv pageSection methodPageSection can-fade">
       `;
 
       let counter = 0;
@@ -71,7 +73,7 @@ function populateDiagnostics(val, sortMethod) {
           counter++;
         }
       }
-      entryContent += `</div>`;
+      entryContent += `</div></div>`;
       if (counter > 0) {
         content += entryContent;
         usedDiagnosticManuals.push(manual);

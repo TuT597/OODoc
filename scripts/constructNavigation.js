@@ -124,7 +124,8 @@ function scrollAndHighlight(targetElem) {
   targetElem.querySelectorAll("a").forEach((el) => {
     el.classList.add("can-fade");
   });
-  targetElem.classList.add("highlight");
+
+  pageSection = targetElem.querySelector(".pageSection");
 
   const rect = targetElem.getBoundingClientRect();
   const viewportHeight = window.innerHeight;
@@ -138,13 +139,19 @@ function scrollAndHighlight(targetElem) {
     });
   }
 
-  setTimeout(() => {
-    targetElem.classList.remove("highlight");
-  }, 1000);
-
-  targetElem.querySelectorAll("a").forEach((el) => {
-    el.classList.remove("can-fade");
-  });
+  if (pageSection) {
+    const oldSectionColor = getComputedStyle(pageSection).backgroundColor;
+    pageSection.style.backgroundColor = "var(--HIGHLIGHT)";
+    setTimeout(() => {
+      pageSection.style.backgroundColor = oldSectionColor;
+    }, 1000);
+  } else {
+    const oldColor = getComputedStyle(targetElem).backgroundColor;
+    targetElem.style.backgroundColor = "var(--HIGHLIGHT)";
+    setTimeout(() => {
+      targetElem.style.backgroundColor = oldColor;
+    }, 1000);
+  }
 }
 
 function addClassToChildren(container, className) {
