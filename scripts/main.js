@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const fetchTarget = document.getElementById("config").dataset.fetchTarget;
-  window.data = await fetch(fetchTarget).then((response) =>
+  window.data = await fetch("data/datatree.json").then((response) =>
     response.json()
   );
   console.log(data);
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const relationsDiv = document.getElementById("relationsDiv");
   const pageOptions = document.getElementById("pageOptions");
-  pageOptions.style.display = "none"
+  pageOptions.style.display = "none";
   const generalOptions = document.getElementById("generalOptions");
 
   // Load user settings
