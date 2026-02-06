@@ -449,7 +449,6 @@ input[type="checkbox"]:checked::after {
 }
 .manualCall {
   font-size: 20px;
-  font-weight: bold;
 }
 
 .manualSubText {
