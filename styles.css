@@ -10,20 +10,7 @@
   --TEXT: #c2c2c2;
   --PRETEXT: lightblue;
   --TABLETEXT: darkseagreen;
-}
-
-:root[data-theme="light"] {
-  --DARKER: #e9e9e9;
-  --DARK: #ffffff;
-  --LIGHT: #d6d6d6;
-  --LIGHTER: #ffffff;
-
-  --THEMESWITCH: #ffffff;
-  --THEMESWITCHBG: #c2c2c2;
-
-  --TEXT: #000000;
-  --PRETEXT: #000000;
-  --TABLETEXT: #000000;
+  --PARAMETER: rgb(235, 233, 118);
 }
 
 * {
@@ -466,11 +453,13 @@ input[type="checkbox"]:checked::after {
 }
 
 .manualSubText {
-  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .manualSubText .parameter {
-  color: rgb(235, 233, 118);
+  background-color: var(--DARKER);
+  border-radius: 5px;
+  padding: 1px;
 }
 
 .manualOption {
@@ -563,13 +552,17 @@ td {
   transition: max-height 1s ease !important;
 }
 
+.foldoutSubDiv pre {
+  padding: 0;
+}
+
 .manualDiagnostic {
-  color: rgb(226, 85, 85);
+  font-style: italic;
   margin-top: 3px;
 }
 
 .manualExample {
-  color: rgb(196, 218, 117);
+  font-style: italic;
   margin-top: 3px;
 }
 
@@ -1020,6 +1013,143 @@ input:checked + .methodsSlider:before {
   width: 100%;
   justify-content: space-around;
   bottom: 25%;
+}
+
+/* ====LIGHT MODE====*/
+:root[data-theme="light"] {
+  --DARKER: #d5bdaf;
+  --DARK: #d6ccc2;
+  --LIGHT: #e3d5ca;
+  --LIGHTER: #f5ebe0;
+
+  --THEMESWITCH: #f5ebe0;
+  --THEMESWITCHBG: #d5bdaf;
+
+  --TEXT: #000000;
+  --PRETEXT: #000000;
+  --TABLETEXT: #000000;
+  --PARAMETER: rgb(0, 0, 0);
+}
+
+:root[data-theme="light"] pre {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] pre::selection {
+  color: var(--TEXT);
+  background-color: var(--DARKER);
+}
+
+:root[data-theme="light"] a[href] {
+  color: var(--TEXT);
+  font-weight: bold;
+}
+
+:root[data-theme="light"] a[href]:hover {
+  color: var(--TEXT);
+  background-color: var(--DARKER);
+}
+
+[data-theme="light"] *::selection {
+  color: var(--TEXT);
+  background-color: var(--DARKER);
+}
+
+:root[data-theme="light"] #navSection {
+  background-color: var(--DARK);
+}
+
+:root[data-theme="light"] .mainSelection {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .mainSelection:hover,
+.mainSelection:active {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] #navSearchBar {
+  background-color: var(--LIGHT);
+}
+
+[data-theme="light"] * .navigationListElement:hover {
+  background-color: var(--LIGHT);
+  color: var(--TEXT);
+}
+
+[data-theme="light"] * .navigationListElement.active {
+  background-color: var(--DARKER);
+  color: var(--TEXT);
+}
+
+:root[data-theme="light"] #containerListDiv {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .manualDiv {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] #contentSection {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] #optionsTableDiv {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] .foldoutDiv {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] #generalOptions {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] #pageOptions {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .toggleButton {
+  background-color: var(--LIGHT);
+  border-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .docName {
+  background-color: var(--DARK);
+}
+
+:root[data-theme="light"] .docTitle {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .pageSection {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .methodPageLabel {
+  background-color: var(--LIGHT);
+  border-color: var(--DARKER);
+}
+
+:root[data-theme="light"] .searchBar {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] .methodsSlider::before {
+  background-color: var(--DARKER);
+}
+
+:root[data-theme="light"] #detailsListDiv {
+  background-color: var(--LIGHTER);
+}
+
+:root[data-theme="light"] .detailDiv {
+  background-color: var(--LIGHT);
+}
+
+:root[data-theme="light"] #methodsManualListDiv {
+  background-color: var(--LIGHT);
 }
 
 /* ====ULTRAWIDE==== */
