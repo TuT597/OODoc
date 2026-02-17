@@ -130,7 +130,8 @@ function manualOptions(manualID) {
             if (subSections.length) {
               html += `<ul id="indexSubSubList">`;
               for (const subSection of subSections) {
-                const subSectionDiv = section.parentElement;
+                const subSectionDiv = subSection.parentElement;
+                console.log(subSectionDiv);
                 html += `<li><a href="${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></li>`;
               }
               html += `</ul>`;

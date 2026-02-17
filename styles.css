@@ -26,8 +26,9 @@ body {
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: 1fr;
   color: var(--TEXT);
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
   font-size: 16px;
   max-height: 100vh;
 }
@@ -275,7 +276,9 @@ input[type="checkbox"]:checked::after {
   background-color: var(--LIGHTER);
   grid-column: 2;
   align-items: center;
-  box-shadow: inset 5px 0px 12px -8px black, inset -5px 0px 12px -8px black;
+  box-shadow:
+    inset 5px 0px 12px -8px black,
+    inset -5px 0px 12px -8px black;
 }
 
 #contentDiv {
@@ -318,8 +321,8 @@ input[type="checkbox"]:checked::after {
 .manualDiv {
   display: flex;
   flex-flow: column wrap;
- 
   background-color: var(--LIGHT);
+  border-radius: 5px;
 }
 
 .manualDiv ul {
@@ -629,16 +632,20 @@ td {
   overflow-x: hidden;
   padding: 15px;
   display: flex;
-  flex-flow: column wrap;
-  align-content: start;
+  flex-flow: row wrap;
+  justify-content: center;
   gap: 2em;
   background-color: var(--LIGHT);
   border-radius: 5px;
   border: 2px solid var(--DARKER);
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--DARKER) var(--LIGHT);
+  -ms-overflow-style: none;
 }
 
 .detailDiv {
-  min-width: fit-content;
+  width: fit-content;
   max-width: 100%;
   height: fit-content;
   border: black solid 1px;
