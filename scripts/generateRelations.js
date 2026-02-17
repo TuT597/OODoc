@@ -12,10 +12,7 @@ function generateRelations() {
     <span class="slider round">
     <i id="themeIcon" class="fa-solid fa-moon"></i>`);
 
-  content += `</span>
-  </label>
-  </div>
-  `;
+  content += `</span></label></div>`;
 
   generalOptions.innerHTML = content;
   themeButton();
@@ -45,24 +42,29 @@ function applyTheme(theme) {
 
 function updateRelations(pageType, parameter) {
   if (pageOptions.style.display == "none") {
-    pageOptions.style.display = "grid";
+    pageOptions.style.display = "flex";
   }
   pageOptions.innerHTML = ``;
+  document.getElementById("preferencesDiv")?.remove();
   switch (pageType) {
     case "manual":
       manualOptions(parameter);
+      localStorage.setItem("pageType", "manual");
       break;
 
     case "methods":
       methodOptions();
+      localStorage.setItem("pageType", "methods");
       break;
 
     case "details":
       detailsOptions();
+      localStorage.setItem("pageType", "details");
       break;
 
     case "diagnostics":
       diagnosticsOptions();
+      localStorage.setItem("pageType", "diagnostics");
       break;
   }
 }
@@ -82,65 +84,83 @@ function manualOptions(manualID) {
 
   // Delay the DOM queries until the next frame so the page switch can complete
   requestAnimationFrame(() => {
-    // Add section for user preferences
+    // Add section for user preferences in the general options
+    if (localStorage.getItem("pageType") === "manual") {
+      let expandToggles = `
+            <label>
+              <input type="checkbox" id="diagnosticsToggle" class="toggleButton" data-toggle-type="diagnostics" 
+              ${enabledState["diagnostics"] === "true" ? "checked" : ""}>
+                Show diagnostics
+            </label>
+            <label>
+              <input type="checkbox" id="examplesToggle" class="toggleButton" data-toggle-type="examples" 
+              ${enabledState["examples"] === "true" ? "checked" : ""}>
+                Show examples
+            </label>`;
+
+      const temp = document.createElement("div");
+
+      temp.innerHTML = expandToggles;
+      temp.id = "preferencesDiv";
+      generalOptions.insertBefore(temp, generalOptions.firstChild);
+    }
+
     let html = `
-    <div class="pageOptionsPreferences">
+    <div id="currentPageData">
       <span id="currentPageDisplay">
-        <h4>Current manual:</h4>
         <label id="currentPageManual">${manualName}</label>
         <label id="currentPageDistro">${manualDistribution}</label>
-      </span>
-      <div id="preferencesDiv">
-        <h3>Preferences:</h3>
-        <label>
-        <input type="checkbox" id="diagnosticsToggle" class="toggleButton" data-toggle-type="diagnostics" ${
-          enabledState["diagnostics"] === "true" ? "checked" : ""
-        }>
-          Show diagnostics
-        </label>
-        <label>
-        <input type="checkbox" id="examplesToggle" class="toggleButton" data-toggle-type="examples" ${
-          enabledState["examples"] === "true" ? "checked" : ""
-        }>
-          Show examples
-        </label>
-      </div>
-    </div>`;
+      </span>`;
 
-    // Grab all the main divs making up the manual
+    // Generate an index tree for quick manual navigation
     const chapterDivs = contentDiv.querySelectorAll(".chapterDiv");
     html += `
     <div id="manualContentTree">
-    <h3>Contents:</h3>
-    <ul id="indexList">`;
-    // Loop through them and look for all the Chapters then put them in the list
+      <div id="indexListDiv">`;
+    // Chapters
     for (const chapterDiv of chapterDivs) {
       const chapterHeaders = chapterDiv.querySelectorAll(".chapterHeader");
       for (const chapter of chapterHeaders) {
-        html += `<li><a class="jump" href="${chapterDiv.attributes[0].nodeValue}">${chapter.textContent}</a></li>`;
-        // Grab all the sections inside the current main div and if they exist generate a second nested list for these
+        html += `<div class="indexListChapter"><label class="indexListLabel"><a href="#${chapterDiv.attributes[0].nodeValue}">
+        ${chapter.textContent}</a>`;
+
+        // Sections
         const sections = chapterDiv.querySelectorAll(".sectionHeader");
-        if (sections.length) {
-          html += `<ul id="indexSubList">`;
+        if (!sections.length) {
+          html += `</label></div><hr class="indexDivider"/>`;
+        } else {
+          // Set up a key generator for button -> list linking
+          const key = chapter.textContent.trim().replace(/\s+/g, "_");
+          html += `
+          <button id="${key}_btn" class="indexListButton" data-open="false" data-target="${key}_list"><i class="fa-solid fa-chevron-left"></i></button></label>
+          <div id="${key}_list" class="indexListSections manualIndexList" style="display:none">`;
           for (const section of sections) {
             const sectionDiv = section.parentElement;
-            html += `<li><a href="${sectionDiv.attributes[0].nodeValue}">${section.textContent}</a></li>`;
+            html += `<div class="indexListSection"><label class="indexListLabel"><a href="#${sectionDiv.attributes[0].nodeValue}">
+            ${section.textContent}</a>`;
+
+            // SubSections
             const subSections =
               sectionDiv.querySelectorAll(".subsectionHeader");
-            if (subSections.length) {
-              html += `<ul id="indexSubSubList">`;
+            if (!subSections.length) {
+              html += `</label></div>`;
+            } else {
+              const key = section.textContent.trim().replace(/\s+/g, "_");
+              html += `
+              <button id="${key}_btn" class="indexListButton" data-open="true" data-target="${key}_list"><i class="fa-solid fa-chevron-left"></i></button></label>
+              <div id="${key}_list" class="indexListSubs manualIndexList">`;
               for (const subSection of subSections) {
                 const subSectionDiv = subSection.parentElement;
-                html += `<li><a href="${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></li>`;
+                html += `<div class="indexListSub"><a href="#${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></div>`;
               }
-              html += `</ul>`;
+              html += `</div></div>`;
             }
           }
-          html += `</ul>`;
+          html += `</div></div><hr class="indexDivider"/>`;
         }
       }
     }
-    html += `</ul></div>`;
+    html += `</div></div></div>`;
 
     // Add section for methods
     const currentManual = Object.entries(indexLinks).find(
@@ -170,6 +190,20 @@ function manualOptions(manualID) {
     html += `</div></div>`;
 
     pageOptions.innerHTML = html;
+
+    document.querySelectorAll(".indexListButton").forEach((btn) => {
+      btn.parentElement.setAttribute("data-button", "true");
+      btn.addEventListener("click", () => {
+        const target = btn.getAttribute("data-target");
+        const list = document.getElementById(target);
+
+        if (list) {
+          const isOpen = btn.getAttribute("data-open") === "true";
+          btn.setAttribute("data-open", !isOpen);
+          list.style.display = isOpen ? "none" : "";
+        }
+      });
+    });
 
     foldoutFunctionality();
     constructNavigation();
@@ -251,19 +285,24 @@ function updateFoldouts(enabled, id, type) {
 // #region Methods
 function methodOptions() {
   let html = `
-    <h2>Diagnostics</h2>
-    <input type="text" id="searchBar" class="searchBar" placeholder="Search Methods..." />
-    <label class="methodsSwitch">
-      <input id="methodsSortingSwitch" type="checkbox">
-      <span class="methodsSlider"></span>
-      <span id="methodSliderText">
-        <span>By Letter</span>
-        <span>By Manual</span>
-      </span>
-    </label>
+    <span id="currentPageDisplay">
+        <label id="currentPageManual">Methods</label>
+    </span>
+
+    <div id="relationsSearch">
+      <input type="text" id="searchBar" class="searchBar" placeholder="Search Methods..." />
+
+      <label class="methodsSwitch">
+        <input id="methodsSortingSwitch" type="checkbox">
+        <span class="methodsSlider"></span>
+        <span id="methodSliderText">
+          <span>By Letter</span>
+          <span>By Manual</span>
+        </span>
+      </label>
   `;
 
-  let htmlLetterTabs = `<ul id="letterTabs">`;
+  let htmlLetterTabs = `<ul id="letterTabs" class="tabList">`;
   for (let i = 0; i < 26; i++) {
     const letter = String.fromCharCode(65 + i);
     const separator = i < 25 ? " /" : "";
@@ -272,6 +311,7 @@ function methodOptions() {
   htmlLetterTabs += `</ul>`;
 
   html += htmlLetterTabs;
+  html += `</div>`;
 
   pageOptions.innerHTML = html;
 
@@ -292,26 +332,31 @@ function detailsOptions() {
 // #region Diagnostics
 function diagnosticsOptions() {
   let html = `
-    <h2>Diagnostics</h2>
-    <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
-    <label class="methodsSwitch">
-      <input id="methodsSortingSwitch" type="checkbox">
-      <span class="methodsSlider"></span>
-      <span id="methodSliderText">
-        <span>By Type</span>
-        <span>By Manual</span>
-      </span>
-    </label>
+    <span id="currentPageDisplay">
+        <label id="currentPageManual">Diagnostics</label>
+    </span>
+
+    <div id="relationsSearch">
+      <input type="text" id="searchBar" class="searchBar" placeholder="Search Diagnostics..." />
+      <label class="methodsSwitch">
+        <input id="methodsSortingSwitch" type="checkbox">
+        <span class="methodsSlider"></span>
+        <span id="methodSliderText">
+          <span>By Type</span>
+          <span>By Manual</span>
+        </span>
+      </label>
   `;
 
   const diagnosticTypes = getDiagnosticTypes(getSortedDiagnostics()).sort();
-  let htmlTypeTabs = `<ul id="typeTabs">`;
+  let htmlTypeTabs = `<ul id="typeTabs" class="tabList">`;
   for (const type of diagnosticTypes) {
     htmlTypeTabs += `<li><a href="#${type}">${type.toUpperCase()}</a></li>`;
   }
   htmlTypeTabs += `</ul>`;
 
   html += htmlTypeTabs;
+  html += `</div>`;
 
   pageOptions.innerHTML = html;
 
@@ -340,6 +385,7 @@ function searchBarFunctionality(type) {
 }
 
 function sortingFunctionality(pageType, checked, html) {
+  const relationsSearch = document.getElementById("relationsSearch");
   if (!checked) {
     window[`populate${pageType}`]("", "letter");
     document
@@ -350,7 +396,7 @@ function sortingFunctionality(pageType, checked, html) {
       const temp = document.createElement("div");
       temp.innerHTML = html;
       const newLetterTabs = temp.firstElementChild;
-      pageOptions.appendChild(newLetterTabs);
+      relationsSearch.appendChild(newLetterTabs);
     }
 
     if (pageType === "Diagnostics") {
@@ -358,7 +404,7 @@ function sortingFunctionality(pageType, checked, html) {
       const temp = document.createElement("div");
       temp.innerHTML = html;
       const newTypeTabs = temp.firstElementChild;
-      pageOptions.appendChild(newTypeTabs);
+      relationsSearch.appendChild(newTypeTabs);
     }
 
     // Reattach navigation
@@ -389,7 +435,7 @@ function sortingFunctionality(pageType, checked, html) {
 
     temp.innerHTML = html;
     const manualList = temp.firstElementChild;
-    pageOptions.appendChild(manualList);
+    relationsSearch.appendChild(manualList);
 
     constructNavigation();
   }

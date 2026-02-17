@@ -680,12 +680,10 @@ td {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  max-height: 100vh;
   align-items: center;
   overflow-x: hidden;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
+  overflow-y: hidden;
 }
 
 #relationsDiv a {
@@ -703,50 +701,58 @@ td {
   box-shadow: inset 0px 0px 3px 1px black;
 }
 
-#pageOptions {
-  /*border: solid yellow 1px;*/
-  display: grid;
-  justify-items: start;
-  gap: 20px;
-  padding: 15px;
-  margin: 10px 0px;
+#generalOptions {
+  display: flex;
   width: 95%;
-  background-color: var(--DARKER);
-  box-shadow: inset 0px 0px 3px 1px black;
-  z-index: 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
-}
-
-#currentPageDisplay {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-#currentPageManual {
-  font-size: 18px;
-}
-
-#currentPageDistro {
-  font-size: 16px;
-}
-
-.pageOptionsPreferences {
-  display: flex;
-  flex-direction: column;
-  font-size: large;
-  width: 100%;
-  justify-content: start;
-  align-content: center;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 #preferencesDiv {
   display: flex;
   flex-direction: column;
+}
+
+#pageOptions {
+  /*border: solid yellow 1px;*/
+  width: 95%;
+  height: 100%;
+  max-height: 100%;
+  padding: 15px;
+  margin: 10px 0px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: start;
+  background-color: var(--LIGHT);
+  box-shadow: inset 0px 0px 3px 1px black;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+#currentPageData {
+  display: flex;
+  flex-direction: column;
+}
+
+#currentPageDisplay {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  border-bottom: 1px solid black;
+}
+
+#currentPageManual {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#currentPageDistro {
+  font-size: 16px;
 }
 
 #pageOptionsMethods {
@@ -770,8 +776,7 @@ td {
 }
 
 #pageOptions .searchBar {
-  justify-self: center;
-  width: 95%;
+  width: 250px;
 }
 
 #pageOptions h3 {
@@ -780,45 +785,101 @@ td {
   padding-bottom: 5px;
 }
 
-#indexList {
-  justify-self: start;
-  padding-left: 13px;
+#manualContentTree {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin: 10px 0px;
+  background-color: var(--LIGHT);
+}
+
+#manualContentTree::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0px 0px 3px 1px black;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#indexListDiv {
   font-size: 20px;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
-#indexList a {
-  text-decoration: none;
+.manualIndexList {
 }
 
-#indexList ::marker {
-  content: "- ";
+.indexListLabel {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
 
-#indexSubList {
+.indexListLabel[data-button="true"] {
+}
+
+.indexListButton {
+  all: unset;
+  color: var(--TEXT);
+  font-size: 12px;
+}
+
+.indexListButton {
+  transition: transform 0.2s ease;
+}
+
+.indexListButton[data-open="true"] {
+  transform: rotate(-45deg);
+}
+
+.indexListChapter {
+  max-width: 100%;
+  text-align: start;
+  padding: 10px;
+}
+
+.indexDivider {
+  align-self: center;
+  width: 100%;
+  border: none;
+  height: 3px;
+  box-shadow: inset 0px 0px 1px 1px var(--DARKER);
+}
+
+.indexListSections {
   font-size: 18px;
   margin-left: 0.5em;
 }
 
-#indexSubList ::marker {
-  content: "- ";
-}
-
-#indexSubSubList {
+.indexListSubs {
   font-size: 16px;
   margin-left: 1em;
 }
 
-#indexSubSubList ::marker {
-  content: "- ";
+#relationsSearch {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+  overflow: hidden;
 }
 
-#letterTabs {
+.tabList {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   list-style-type: none;
   user-select: none;
+  background-color: var(--LIGHT);
+  box-shadow: inset 0px 0px 3px 1px black;
+  padding: 10px;
 }
 
 .letterTabsItem {
@@ -846,35 +907,50 @@ td {
 }
 
 #methodsManualListDiv {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 10px 15px;
-  overflow-y: hidden;
   width: 100%;
-  background-color: var(--DARK);
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  padding: 5px 10px;
+  display: flex;
+  flex: 1 1 0;
+  flex-flow: column nowrap;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
   box-shadow: inset 0px 0px 3px 1px black;
 }
 
 #methodsManualList {
   height: 100%;
-  list-style-type: none;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
   scroll-behavior: smooth;
-  scrollbar-color: var(--LIGHT) var(--DARKER);
   -ms-overflow-style: none;
+}
+
+.methodsManualListItem {
+  display: flex;
+  max-width: 100%;
+  font-size: medium;
+  margin-top: 2px;
+  padding: 4px;
+  text-align: start;
+  overflow: visable;
+  position: relative;
+}
+
+.methodsManualListItem:hover {
+  background-color: var(--LIGHTER);
 }
 
 .methodsManualListItem a {
   text-decoration: none;
 }
 
-.relationsDivider {
-  opacity: 0;
-  margin: 15px 0px;
-  justify-self: center;
+.methodsManualListItem a:hover {
+  background-color: var(--LIGHTER) !important;
 }
 
 /* The switch - the box around the slider */
@@ -1109,6 +1185,14 @@ input:checked + .methodsSlider:before {
   background-color: var(--LIGHTER);
 }
 
+:root[data-theme="light"] #manualContentTree a:hover {
+  background-color: inherit;
+}
+
+:root[data-theme="light"] .indexListChapter:hover {
+  background-color: var(--DARKER);
+}
+
 :root[data-theme="light"] .toggleButton {
   background-color: var(--LIGHT);
   border-color: var(--LIGHTER);
@@ -1149,6 +1233,7 @@ input:checked + .methodsSlider:before {
 
 :root[data-theme="light"] #methodsManualListDiv {
   background-color: var(--LIGHT);
+  scrollbar-color: var(--DARKER) var(--LIGHTER);
 }
 
 /* ====ULTRAWIDE==== */
