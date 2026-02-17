@@ -131,7 +131,6 @@ function manualOptions(manualID) {
               html += `<ul id="indexSubSubList">`;
               for (const subSection of subSections) {
                 const subSectionDiv = subSection.parentElement;
-                console.log(subSectionDiv);
                 html += `<li><a href="${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></li>`;
               }
               html += `</ul>`;
@@ -146,7 +145,7 @@ function manualOptions(manualID) {
     // Add section for methods
     const currentManual = Object.entries(indexLinks).find(
       ([key, valueArray]) =>
-        valueArray[0] === document.querySelector(".docHead").id
+        valueArray[0] === document.querySelector(".docHead").id,
     );
 
     let currentMethods = [];
@@ -220,12 +219,12 @@ function updateFoldouts(enabled, id, type) {
         .querySelectorAll(
           `.manual${
             type.charAt(0).toUpperCase() + type.slice(1, type.length - 1)
-          }Div`
+          }Div`,
         ))
     : (foldouts = document.querySelectorAll(
         `.manual${
           type.charAt(0).toUpperCase() + type.slice(1, type.length - 1)
-        }Div`
+        }Div`,
       ));
 
   foldouts.forEach((div) => {
