@@ -734,6 +734,7 @@ td {
 }
 
 #currentPageData {
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -759,7 +760,8 @@ td {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 100%;
+  height: 30%;
+  max-height: 30%;
   width: 100%;
   margin: 10px 0px;
   justify-content: start;
@@ -794,7 +796,9 @@ td {
 
 #manualContentTree {
   position: relative;
-  height: 100%;
+  min-height: 60%;
+  height: 60%;
+  max-height: 60%;
   width: 100%;
   margin: 10px 0px;
   background-color: var(--LIGHT);
@@ -810,9 +814,15 @@ td {
 }
 
 #indexListDiv {
+  height: 100%;
+  max-height: 100%;
   font-size: 20px;
   display: flex;
   flex-flow: column nowrap;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--DARKER) var(--LIGHT);
 }
 
 .manualIndexList {
@@ -850,6 +860,7 @@ td {
 
 .indexDivider {
   align-self: center;
+  flex-shrink: 0;
   width: 100%;
   border: none;
   height: 3px;
@@ -1093,6 +1104,36 @@ input:checked + .methodsSlider:before {
   width: 100%;
   justify-content: space-around;
   bottom: 25%;
+}
+
+#websiteFooter {
+  width: 100%;
+  height: 25px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  background: var(--LIGHTER);
+  box-shadow: 0px 0px 2px 1px black;
+}
+
+#footerButtons {
+  width: fit-content;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  flex-flow: row;
+  gap: 5px;
+}
+
+.footerButton {
+  font-size: 20px;
+  border-style: none;
+  background: none;
+}
+
+.footerButton:hover {
+  background: none !important;
 }
 
 /* ====LIGHT MODE====*/
