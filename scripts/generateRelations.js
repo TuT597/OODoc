@@ -116,12 +116,12 @@ function manualOptions(manualID) {
     const chapterDivs = contentDiv.querySelectorAll(".chapterDiv");
     html += `
     <div id="manualContentTree">
-      <div id="indexListDiv">`;
+    <div id="indexListDiv">`;
     // Chapters
     for (const chapterDiv of chapterDivs) {
       const chapterHeaders = chapterDiv.querySelectorAll(".chapterHeader");
       for (const chapter of chapterHeaders) {
-        html += `<div class="indexListChapter"><label class="indexListLabel"><a href="#${chapterDiv.attributes[0].nodeValue}">
+        html += `<div class="indexListChapter" list-displayed="false"><label class="indexListLabel"><a href="#${chapterDiv.attributes[0].nodeValue}">
         ${chapter.textContent}</a>`;
 
         // Sections
@@ -133,7 +133,7 @@ function manualOptions(manualID) {
           const key = chapter.textContent.trim().replace(/\s+/g, "_");
           html += `
           <button id="${key}_btn" class="indexListButton" data-open="false" data-target="${key}_list"><i class="fa-solid fa-chevron-left"></i></button></label>
-          <div id="${key}_list" class="indexListSections manualIndexList" style="display:none">`;
+          <div id="${key}_list" class="indexListSections manualIndexList">`;
           for (const section of sections) {
             const sectionDiv = section.parentElement;
             html += `<div class="indexListSection"><label class="indexListLabel"><a href="#${sectionDiv.attributes[0].nodeValue}">
@@ -147,8 +147,8 @@ function manualOptions(manualID) {
             } else {
               const key = section.textContent.trim().replace(/\s+/g, "_");
               html += `
-              <button id="${key}_btn" class="indexListButton" data-open="true" data-target="${key}_list"><i class="fa-solid fa-chevron-left"></i></button></label>
-              <div id="${key}_list" class="indexListSubs manualIndexList">`;
+              </label>
+              <div id="" class="indexListSubs manualIndexList">`;
               for (const subSection of subSections) {
                 const subSectionDiv = subSection.parentElement;
                 html += `<div class="indexListSub"><a href="#${subSectionDiv.attributes[0].nodeValue}">${subSection.textContent}</a></div>`;
@@ -160,13 +160,15 @@ function manualOptions(manualID) {
         }
       }
     }
-    html += `</div></div></div>`;
+    html += `</div></div>`;
 
     // Add section for methods
     const currentManual = Object.entries(indexLinks).find(
       ([key, valueArray]) =>
         valueArray[0] === document.querySelector(".docHead").id,
     );
+
+    console.log(currentManual);
 
     let currentMethods = [];
     for (const id of currentManual[1][1]) {
@@ -180,27 +182,35 @@ function manualOptions(manualID) {
 
     html += `
     <div id="pageOptionsMethods">
-      <h3>Methods:</h3>
-      <div id="pageOptionsMethodsList">`;
+      <div id="pageOptionsMethodsBar">
+        <h3>Methods</h3>
+      </div>
+    <div id="pageOptionsMethodsList">`;
 
     for (const method of currentMethods) {
       html += `<label><a href="#${method.id}">${method.name}</a></label>`;
     }
 
-    html += `</div></div>`;
+    html += `</div></div></div>`;
 
     pageOptions.innerHTML = html;
 
     document.querySelectorAll(".indexListButton").forEach((btn) => {
-      btn.parentElement.setAttribute("data-button", "true");
       btn.addEventListener("click", () => {
         const target = btn.getAttribute("data-target");
         const list = document.getElementById(target);
 
         if (list) {
+          const chapter = btn.parentElement.parentElement;
+          chapter.setAttribute(
+            "list-displayed",
+            chapter.getAttribute("list-displayed") === "false"
+              ? "true"
+              : "false",
+          );
           const isOpen = btn.getAttribute("data-open") === "true";
           btn.setAttribute("data-open", !isOpen);
-          list.style.display = isOpen ? "none" : "";
+          list.style.height = isOpen ? "0px" : list.scrollHeight + "px";
         }
       });
     });

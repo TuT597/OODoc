@@ -758,12 +758,25 @@ td {
 #pageOptionsMethods {
   display: flex;
   flex-direction: column;
+  position: relative;
+  height: 100%;
   width: 100%;
+  margin: 10px 0px;
   justify-content: start;
   align-content: center;
+  background-color: var(--LIGHT);
+  box-shadow: inset 0px 0px 3px 1px black;
+}
+
+#pageOptionsMethodsBar {
+  display: flex;
+  flex-flow: row nowrap;
+  border-bottom: 1px solid black;
+  padding: 3px 0px 0px 8px;
 }
 
 #pageOptionsMethodsList {
+  padding: 3px 8px 5px 8px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -777,12 +790,6 @@ td {
 
 #pageOptions .searchBar {
   width: 250px;
-}
-
-#pageOptions h3 {
-  font-weight: bold;
-  font-size: 20px;
-  padding-bottom: 5px;
 }
 
 #manualContentTree {
@@ -811,13 +818,20 @@ td {
 .manualIndexList {
 }
 
+.indexListChapter {
+  max-width: 100%;
+  text-align: start;
+  padding: 10px;
+}
+
+.indexListChapter[list-displayed="true"] {
+  background-color: var(--DARKER);
+}
+
 .indexListLabel {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-}
-
-.indexListLabel[data-button="true"] {
 }
 
 .indexListButton {
@@ -834,23 +848,20 @@ td {
   transform: rotate(-45deg);
 }
 
-.indexListChapter {
-  max-width: 100%;
-  text-align: start;
-  padding: 10px;
-}
-
 .indexDivider {
   align-self: center;
   width: 100%;
   border: none;
   height: 3px;
-  box-shadow: inset 0px 0px 1px 1px var(--DARKER);
+  box-shadow: inset 0px 0px 2px 2px var(--DARK);
 }
 
 .indexListSections {
+  height: 0px;
+  overflow: hidden;
   font-size: 18px;
   margin-left: 0.5em;
+  transition: height 0.4s ease;
 }
 
 .indexListSubs {
