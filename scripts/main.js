@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
       window[`generate${mainSelection.innerText}Page`]();
-      generateRelations(mainSelection.innerText);
       if (activeItem) {
         activeItem.classList.toggle("active");
         activeItem = null;

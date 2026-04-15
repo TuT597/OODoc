@@ -77,6 +77,7 @@ function manualOptions(manualID) {
   const currentManual = getDocFrag(manualID);
   const manualName = currentManual.name;
   const manualDistribution = currentManual.distribution;
+  const distributionVersion = currentManual.version;
 
   const enabledState = {
     diagnostics: localStorage.getItem("diagnosticsEnabled"),
@@ -110,7 +111,7 @@ function manualOptions(manualID) {
     <div id="currentPageData">
       <span id="currentPageDisplay">
         <label id="currentPageManual">${manualName}</label>
-        <label id="currentPageDistro">${manualDistribution}</label>
+        <label id="currentPageDistro">${manualDistribution} v${distributionVersion}</label>
       </span>`;
 
     // Generate an index tree for quick manual navigation
@@ -179,7 +180,7 @@ function manualOptions(manualID) {
       }
     }
 
-    sortMethods(currentMethods);
+    sortItems(currentMethods);
 
     html += `
     <div id="pageOptionsMethods">
@@ -317,7 +318,7 @@ function methodOptions() {
   for (let i = 0; i < 26; i++) {
     const letter = String.fromCharCode(65 + i);
     const separator = i < 25 ? " /" : "";
-    htmlLetterTabs += `<li class="letterTabsItem"><a href="#letter${letter}">${letter}</a>${separator}</li>`;
+    htmlLetterTabs += `<li class="letterTabsItem"><a href="#${letter}">${letter}</a>${separator}</li>`;
   }
   htmlLetterTabs += `</ul>`;
 
@@ -335,9 +336,7 @@ function methodOptions() {
 // #endregion Methods
 
 // #region Details
-function detailsOptions() {
-  pageOptions.style.display = "none";
-}
+function detailsOptions() {}
 // #endregion Details
 
 // #region Diagnostics
@@ -359,7 +358,7 @@ function diagnosticsOptions() {
       </label>
   `;
 
-  const diagnosticTypes = getDiagnosticTypes(getSortedDiagnostics()).sort();
+  const diagnosticTypes = getItemTypes(getData("", "diagnostics")).sort();
   let htmlTypeTabs = `<ul id="typeTabs" class="tabList">`;
   for (const type of diagnosticTypes) {
     htmlTypeTabs += `<li><a href="#${type}">${type.toUpperCase()}</a></li>`;
@@ -387,10 +386,10 @@ function searchBarFunctionality(type) {
     let sortMethod = methodSwitch.checked ? "manual" : "letter";
     let val = searchBar.value;
     if (!val) {
-      window[`populate${type}`]("", sortMethod);
+      populatePage("", sortMethod, type);
     }
     if (val.length > 2) {
-      window[`populate${type}`](val, sortMethod);
+      populatePage(val, sortMethod, type);
     }
   });
 }
@@ -398,7 +397,7 @@ function searchBarFunctionality(type) {
 function sortingFunctionality(pageType, checked, html) {
   const relationsSearch = document.getElementById("relationsSearch");
   if (!checked) {
-    window[`populate${pageType}`]("", "letter");
+    populatePage("", "letter", pageType.toLowerCase());
     document
       .querySelectorAll("#methodsManualListDiv")
       .forEach((tab) => tab.remove());
@@ -423,7 +422,7 @@ function sortingFunctionality(pageType, checked, html) {
   }
 
   if (checked) {
-    window[`populate${pageType}`]("", "manual");
+    populatePage("", "manual", pageType.toLowerCase());
     if (pageType === "Methods") {
       document.querySelectorAll("#letterTabs").forEach((tab) => tab.remove());
     }
@@ -436,7 +435,7 @@ function sortingFunctionality(pageType, checked, html) {
     const temp = document.createElement("div");
     let html = `<div id="methodsManualListDiv"><ul id="methodsManualList">`;
 
-    const items = window[`getSorted${pageType}`]();
+    const items = getData("", pageType.toLowerCase());
     const manuals = getUniqueManuals(items);
     for (const manual of manuals) {
       html += `<li class="methodsManualListItem"><a href="#${manual[1]}">${manual[0]}</a></li>`;
@@ -456,7 +455,7 @@ function addFooter() {
   const footer = document.createElement("div");
   footer.id = "websiteFooter";
   footer.innerHTML = `
-      <p>Website by Tuyan Tatliparmak</p>
+      <p>Website by Tuyan Tatliparmak v1.2.0</p>
       <div id="footerButtons">
         <a class="footerButton" href="https://www.linkedin.com/in/tuyan/"><i class="fa-brands fa-linkedin"></i></a>
         <a class="footerButton" href="https://github.com/TuT597"><i class="fa-brands fa-square-github"></i></a>

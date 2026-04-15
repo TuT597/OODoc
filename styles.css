@@ -161,7 +161,7 @@ input[type="checkbox"]:checked::after {
 }
 
 .listElementDiv {
-  padding: 5px 10px;
+  padding: 0px 3px 5px 5px;
   display: flex;
   flex-flow: column nowrap;
   overflow-y: hidden;
@@ -757,6 +757,7 @@ td {
 }
 
 #pageOptionsMethods {
+  padding: 3px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -784,6 +785,10 @@ td {
   flex-wrap: wrap;
   gap: 5px;
   font-size: medium;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--DARKER) var(--LIGHT);
 }
 
 #pageOptionsMethodsList label::after {
@@ -802,6 +807,9 @@ td {
   width: 100%;
   margin: 10px 0px;
   background-color: var(--LIGHT);
+  padding-right: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 #manualContentTree::after {
@@ -823,6 +831,7 @@ td {
   scrollbar-width: thin;
   scroll-behavior: smooth;
   scrollbar-color: var(--DARKER) var(--LIGHT);
+  
 }
 
 .manualIndexList {

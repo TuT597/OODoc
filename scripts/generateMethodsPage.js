@@ -1,4 +1,4 @@
-function generateMethodsPage() {
+/*function generateMethodsPage() {
   populateMethods();
   updateRelations("methods");
   constructNavigation();
@@ -23,7 +23,8 @@ function populateMethods(val, sortMethod) {
       let counter = 0;
       for (const method of sortedMethods) {
         if (method.name[0]?.toUpperCase() === letter) {
-          entryContent += `<label class="methodPageLabel"><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
+          entryContent += `<label class="methodPageLabel"><a href="${method.id}">
+          ${method.name}</a> - ${method.manualName}</label>`;
           counter++;
         }
       }
@@ -49,7 +50,8 @@ function populateMethods(val, sortMethod) {
 
       for (const method of sortedMethods) {
         if (method.manualName === manual[0]) {
-          content += `<label class="methodPageLabel"><a href="${method.id}">${method.name}</a> - ${method.manualName}</label>`;
+          content += `<label class="methodPageLabel"><a href="${method.id}">
+          ${method.name}</a> - ${method.manualName}</label>`;
         }
       }
       content += `</div></div>`;
@@ -112,4 +114,6 @@ function getUniqueManuals(items) {
     }
   }
   return manuals.sort();
-}
+} 
+  
+*/
