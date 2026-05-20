@@ -32,6 +32,7 @@ function getData(val, pageType) {
         if (item.type && item.type.includes("method")) {
           if (val && !item.name.includes(val)) {
             continue;
+            console.log("hi");
           }
           pageItems.push(labelItem(item));
         }

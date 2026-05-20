@@ -1,4 +1,4 @@
-/*function generateMethodsPage() {
+function generateMethodsPage() {
   populateMethods();
   updateRelations("methods");
   constructNavigation();
@@ -116,4 +116,3 @@ function getUniqueManuals(items) {
   return manuals.sort();
 } 
   
-*/

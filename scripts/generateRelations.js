@@ -386,10 +386,10 @@ function searchBarFunctionality(type) {
     let sortMethod = methodSwitch.checked ? "manual" : "letter";
     let val = searchBar.value;
     if (!val) {
-      populatePage("", sortMethod, type);
+      populatePage("", sortMethod, type.toLowerCase());
     }
     if (val.length > 2) {
-      populatePage(val, sortMethod, type);
+      populatePage(val, sortMethod, type.toLowerCase());
     }
   });
 }
