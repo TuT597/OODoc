@@ -106,7 +106,7 @@ function generateSubroutines(subroutines) {
 
     // check for options
     if (docFrag.options) {
-      let optionsTable = `<div id="optionsTableDiv"><table class="optionsTable">
+      let optionsTable = `<div class="methodOptionsDiv"><div id="optionsTableDiv"><table class="optionsTable">
         <tr>
           <th>Option</th>
           <th>Default</th>
@@ -123,6 +123,7 @@ function generateSubroutines(subroutines) {
       optionsTable += `</table></div>`;
       content += optionsTable;
       content += optionContent;
+      content += `</div>`;
     }
 
     // check for diagnostics
