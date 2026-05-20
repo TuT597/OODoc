@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   window.data = await fetch(fetchTarget).then((response) =>
     response.json(),
   );
-  console.log(data);
 
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);

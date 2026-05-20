@@ -170,8 +170,6 @@ function manualOptions(manualID) {
         valueArray[0] === document.querySelector(".docHead").id,
     );
 
-    console.log(currentManual);
-
     let currentMethods = [];
     for (const id of currentManual[1][1]) {
       item = getDocFrag(id);
