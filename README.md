@@ -11,11 +11,7 @@ visible in the usual Perl way: as locally installed manuals and via
 [MetaCPAN](https://metacpan.org). However, OODoc also produces a much
 improved HTML output: with far more useful links.
 
-Some examples:
-
-- small: [OODoc itself](https://perl.overmeer.net/oodoc/html3/).
-- modest: [Log::Report](https://perl.overmeer.net/log-report/html1/).
-- huge: [Mail::Box](https://perl.overmeer.net/mail-box/html4/).
+For example: [Mail::Box](https://perl.overmeer.net/mail-box/html4/).
 
 ## Overview
 
