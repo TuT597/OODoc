@@ -152,7 +152,7 @@ function generateSubroutines(subroutines) {
 function generateOption(option) {
   let optionContent = ``;
   if (option.type === "option") {
-    optionContent += `<div class="manualOption can-fade"><p class="optionCall">${option.name} => ${option.params}</p>`;
+    optionContent += `<div id="${option.id}" class="manualOption can-fade"><p class="optionCall">${option.name} => ${option.params}</p>`;
     option.intro
       ? (optionContent += `<div class="optionText">${option.intro}</div></div>`)
       : (optionContent += `</div>`);
