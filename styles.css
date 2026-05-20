@@ -628,16 +628,17 @@ td {
   width: 100%;
   max-width: 100%;
   min-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 15px;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  gap: 2em;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-auto-rows: max-content;
+  grid-auto-flow: dense;
   background-color: var(--LIGHT);
   border-radius: 5px;
   border: 2px solid var(--DARKER);
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: thin;
   scroll-behavior: smooth;
   scrollbar-color: var(--DARKER) var(--LIGHT);
@@ -645,9 +646,10 @@ td {
 }
 
 .detailDiv {
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
-  height: fit-content;
+  height: 100%;
+  max-height: 100%;
   border: black solid 1px;
   background-color: var(--DARK);
   border-radius: 5px;
@@ -831,10 +833,6 @@ td {
   scrollbar-width: thin;
   scroll-behavior: smooth;
   scrollbar-color: var(--DARKER) var(--LIGHT);
-  
-}
-
-.manualIndexList {
 }
 
 .indexListChapter {

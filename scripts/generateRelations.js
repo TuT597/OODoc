@@ -92,12 +92,12 @@ function manualOptions(manualID) {
             <label>
               <input type="checkbox" id="diagnosticsToggle" class="toggleButton" data-toggle-type="diagnostics" 
               ${enabledState["diagnostics"] === "true" ? "checked" : ""}>
-                Show diagnostics
+                Expand diagnostics
             </label>
             <label>
               <input type="checkbox" id="examplesToggle" class="toggleButton" data-toggle-type="examples" 
               ${enabledState["examples"] === "true" ? "checked" : ""}>
-                Show examples
+                Expand examples
             </label>`;
 
       const temp = document.createElement("div");
