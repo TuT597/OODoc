@@ -453,7 +453,7 @@ function addFooter() {
   const footer = document.createElement("div");
   footer.id = "websiteFooter";
   footer.innerHTML = `
-      <p>Website by Tuyan Tatliparmak v1.2.0</p>
+      <p>Website by Tuyan Tatliparmak v1.3.0</p>
       <div id="footerButtons">
         <a class="footerButton" href="https://www.linkedin.com/in/tuyan/"><i class="fa-brands fa-linkedin"></i></a>
         <a class="footerButton" href="https://github.com/TuT597"><i class="fa-brands fa-square-github"></i></a>
