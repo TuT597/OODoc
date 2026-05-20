@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   window.data = await fetch(fetchTarget).then((response) =>
     response.json()
   );
-  console.log(data);
 
   // Create variables needed
   window.indexLinks = mapIndexLinks(data);
@@ -35,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   navListMainSelections.forEach(function (mainSelection) {
     mainSelection.addEventListener("click", function () {
       window[`generate${mainSelection.innerText}Page`]();
-      generateRelations(mainSelection.innerText);
       if (activeItem) {
         activeItem.classList.toggle("active");
         activeItem = null;
@@ -156,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function handleNameOverflow(
     navigationListElement,
-    navigationListElementText
+    navigationListElementText,
   ) {
     // Create new span element to hover over the element
     let navigationListElementTextFull = document.createElement("span");
@@ -171,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Generate shortened name
     navigationListElementText.dataset.shortName = fixOverflownNavText(
-      navigationListElementText
+      navigationListElementText,
     );
 
     navigationListElementText.innerText =
@@ -284,7 +282,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Now we check indexLinks for matches
     for (const [manualName, [manualID, subitemIDs]] of Object.entries(
-      indexLinks
+      indexLinks,
     )) {
       // Make new array by grabbing the objects from matchingObjects that are found within each manual
       let matchedSubItems = subitemIDs
@@ -325,7 +323,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     } else {
       navigationListElementText = generateNavigationListElementText(
         obj.name,
-        obj.type
+        obj.type,
       );
     }
 

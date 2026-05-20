@@ -1,5 +1,5 @@
-let usedDiagnosticManuals = [];
-
+//let usedDiagnosticManuals = [];
+/*
 function generateDiagnosticsPage() {
   populateDiagnostics();
   updateRelations("diagnostics");
@@ -76,7 +76,7 @@ function populateDiagnostics(val, sortMethod) {
       entryContent += `</div></div>`;
       if (counter > 0) {
         content += entryContent;
-        usedDiagnosticManuals.push(manual);
+        //usedDiagnosticManuals.push(manual);
       }
     }
   }
@@ -97,7 +97,7 @@ function getSortedDiagnostics(val) {
       item = getDocFrag(entryItems[entryItem]);
       if (item.diagnostics) {
         for (const diag in item.diagnostics) {
-          diagnostic = getDocFrag(item.diagnostics[diag]);
+          let diagnostic = getDocFrag(item.diagnostics[diag]);
           if (val && !diagnostic.name.includes(val)) {
             continue;
           }
@@ -125,3 +125,5 @@ function getDiagnosticTypes(items) {
   }
   return diagnosticTypes;
 }
+
+*/

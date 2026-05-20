@@ -58,6 +58,7 @@ function processLinkObj(linkObj) {
     for (item in indexLinks) {
       if (indexLinks[item][1].includes(linkObj.id)) {
         contentDiv.innerHTML = generateManualPage(indexLinks[item][0]);
+        activateNavList(item);
         requestAnimationFrame(() => {
           constructNavigation();
         });
